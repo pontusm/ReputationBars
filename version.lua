@@ -33,6 +33,8 @@ if updateVersion then
 	file:close()
 end
 
+--[[
+
 -- Read TOC template file
 local toctemplatefile = tocfile..".tmpl"
 print("Reading '"..toctemplatefile.."'")
@@ -52,3 +54,5 @@ file = io.open(tocfile, "w")
 assert(file, "Could not write file "..tocfile)
 file:write(newtext)
 file:close()
+
+]]--
