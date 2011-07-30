@@ -1,8 +1,7 @@
+require_relative "build/robocopy"
+
 ADDON_NAME = "ReputationBars"
-
 BASE_PATH = "#{File.dirname(__FILE__)}"
-
-load File.join(BASE_PATH, "build/robocopy.rb")
 
 WOW_PATH = ENV['WOW_PATH'].nil? ? "C:\Program Files\World of Warcraft" : ENV['WOW_PATH']
 if not Dir.exists?(WOW_PATH) then
@@ -20,7 +19,7 @@ desc "Update files and deploy addon to the WoW folder"
 task :deploy => [:updatelocale, :maketoc, :copyaddon, :cleanup]
 
 desc "Perform a deploy and package a release version"
-task :release => [:deploy, :package]
+task :release => [:newversion, :deploy, :package]
 
 desc "Update Babelfish locale files"
 task :updatelocale do
