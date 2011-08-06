@@ -42,7 +42,7 @@ function mod:OnInitialize()
 	self:SetupOptions()
 	
 	-- Register slash command
-	self:RegisterChatCommand("rptb", "ShowConfig")
+	--self:RegisterChatCommand("rptb", "ShowConfig")
 end
 
 function mod:OnProfileChanged(event, database, newProfileKey)
@@ -234,7 +234,7 @@ function mod:SetupOptions()
 	mod.options.args.profiles.order = -1
 	
 	-- Register all options
-	LibStub("AceConfig-3.0"):RegisterOptionsTable(appName, mod.options, nil)
+	LibStub("AceConfig-3.0"):RegisterOptionsTable(appName, mod.options, "rptb")
 	
 	-- Add to Blizzard options
 	self.optionFrames = {}
@@ -257,7 +257,7 @@ mod.options = {
 	args = {
 
 		general = {
-			name = "General settings",
+			name = L["General settings"],
 			type = "group",
 			order = 1,
 			args = {
@@ -326,6 +326,14 @@ mod.options = {
                 },
 				
 			},
+		},
+		
+		config = {
+			name = L["Show configuration"],
+			type = "execute",
+			func = function(info)
+				mod:ShowConfig()
+			end,
 		},
 	},
 }
