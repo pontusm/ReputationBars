@@ -1,5 +1,5 @@
 local MAJOR = "LibBars-1.0"
-local MINOR = 90000 + tonumber(("$Revision: 13 $"):match("%d+"))
+local MINOR = 90000 + tonumber(("$Revision: 20 $"):match("%d+"))
 
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end -- No Upgrade needed.
@@ -174,8 +174,12 @@ do
 				upperBoundIndex = colors[i][1]
 				break
 			end
+		     end
+		local diff = (upperBoundIndex - lowerBoundIndex)
+		local pct = 1
+		if diff ~= 0 then
+		      pct = (point - lowerBoundIndex) / diff
 		end
-		local pct = (point - lowerBoundIndex) / (upperBoundIndex - lowerBoundIndex)
 		local r = lowerBound[2] + ((upperBound[2] - lowerBound[2]) * pct)
 		local g = lowerBound[3] + ((upperBound[3] - lowerBound[3]) * pct)
 		local b = lowerBound[4] + ((upperBound[4] - lowerBound[4]) * pct)
@@ -1492,7 +1496,14 @@ function barPrototype:SetValue(val, maxValue)
 	else
 		displayMax = self.maxValue
 	end
-	local amt = min(1, val / displayMax)
+	local amt
+	
+	if val == 0 then
+		amt = 0
+	else
+		amt = min(1, val / displayMax)
+	end
+
 	if amt == 1 or amt == 0 then
 		self.spark:Hide()
 	else
@@ -1581,16 +1592,19 @@ function barPrototype:SetFill(fill)
 end
 
 function barPrototype:UpdateColor()
-	local amt = floor(self.value / self.maxValue * 200) * 4
-	local map
-	if self.gradMap and #self.gradMap > 0 then
-		map = self.gradMap
-	elseif self.ownerGroup and self.ownerGroup.gradMap and #self.ownerGroup.gradMap > 0 then
-		map = self.ownerGroup.gradMap
-	end
-	if map then
-		self.texture:SetVertexColor(map[amt], map[amt+1], map[amt+2], map[amt+3])
-	end
+   local amt = 1
+   if self.maxValue ~= 0 then
+       amt = floor(self.value / self.maxValue * 200) * 4
+   end
+   local map
+   if self.gradMap and #self.gradMap > 0 then
+      map = self.gradMap
+   elseif self.ownerGroup and self.ownerGroup.gradMap and #self.ownerGroup.gradMap > 0 then
+      map = self.ownerGroup.gradMap
+   end
+   if map then
+      self.texture:SetVertexColor(map[amt], map[amt+1], map[amt+2], map[amt+3])
+   end
 end
 
 function barPrototype:UpdateTimer(t)
