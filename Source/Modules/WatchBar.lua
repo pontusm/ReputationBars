@@ -103,9 +103,29 @@ end
 -------------------------------------------------------------------------------
 -- Bar update
 -------------------------------------------------------------------------------
+local lastFactionName -- not the same as currentFaction - this one is (and should be) only used and updated in this function
+local lastFactionIndex
 local function UpdateBarVisual()
 	local name, standingID, min, max, value = GetWatchedFactionInfo()
 	if name then
+		-- Try and figure out which faction it is we're dealing with
+		local factionIndex
+		if name == lastFactionName then
+			factionIndex = lastFactionIndex
+		else
+			factionIndex = ReputationBars:GetFactionIndex( name )
+			if not factionIndex then
+				ReputationBars:RefreshAllFactions()
+				ReputationBars:GetFactionIndex( name )
+			end
+			lastFactionName = name
+			lastFactionIndex = factionIndex
+		end
+		local factionInfo = nil
+		if factionIndex then
+			factionInfo = ReputationBars:GetFactionInfo( factionIndex )
+		end
+
 		currentFaction = name
 		local colors = FACTION_BAR_COLORS[standingID]
 		WatchBar:UnsetAllColors()
@@ -124,13 +144,18 @@ local function UpdateBarVisual()
 			barLabel = ""
 		else
 			if hovering and db.showText ~= "mouseover" then
-				local gender = UnitSex("player")
-				local standingText = GetText("FACTION_STANDING_LABEL"..standingID, gender)
-				if standingID < 8 then
-					local nextStandingText = GetText("FACTION_STANDING_LABEL"..standingID+1, gender);
-					barLabel = string.format("%s |cffedf55f(%d to %s)", standingText, displayMax-displayVal, nextStandingText)
+				if factionInfo and factionInfo.friendID ~= nil then
+					local _, _, _, _, _, friendTextLevel, _ = GetFriendshipReputationByID(factionInfo.factionID)
+					barLabel = string.format("%s", friendTextLevel)
 				else
-					barLabel = string.format("%s", standingText)
+					local gender = UnitSex("player")
+					local standingText = GetText("FACTION_STANDING_LABEL"..standingID, gender)
+					if standingID < 8 then
+						local nextStandingText = GetText("FACTION_STANDING_LABEL"..standingID+1, gender);
+						barLabel = string.format("%s |cffedf55f(%d to %s)", standingText, displayMax-displayVal, nextStandingText)
+					else
+						barLabel = string.format("%s", standingText)
+					end
 				end
 			else
 				barLabel = string.format("%s (%d / %d)%s", name, displayVal, displayMax, recentGainText)
@@ -174,15 +199,15 @@ function mod:AnchorMoved(cbk, group, x, y)
 end
 
 local function OnEnterAnchor(frame)
-    GameTooltip:SetOwner(frame)
-    GameTooltip:AddLine(appName .. " : "..modName)
-    GameTooltip:AddLine(L["|cffeda55fDrag|r to move the frame"])
-    GameTooltip:AddLine(L["|cffeda55fRight Click|r to open the configuration window"])
-    GameTooltip:Show()
+	GameTooltip:SetOwner(frame)
+	GameTooltip:AddLine(appName .. " : "..modName)
+	GameTooltip:AddLine(L["|cffeda55fDrag|r to move the frame"])
+	GameTooltip:AddLine(L["|cffeda55fRight Click|r to open the configuration window"])
+	GameTooltip:Show()
 end
 
 local function OnLeaveAnchor(frame)
-    GameTooltip:Hide()
+	GameTooltip:Hide()
 end
 
 -------------------------------------------------------------------------------

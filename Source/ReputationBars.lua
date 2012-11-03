@@ -112,9 +112,15 @@ function mod:RefreshAllFactions()
 	local factions = {}
 	repeat
 		-- name, description, standingId, bottomValue, topValue, earnedValue, atWarWith,
-		--  canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild = GetFactionInfo(factionIndex)
-		local name, _, standingId, bottomValue, topValue, earnedValue, _, _, isHeader, _, hasRep, _, _ = GetFactionInfo(i)
+		--  canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID = GetFactionInfo(factionIndex)
+		local name, _, standingId, bottomValue, topValue, earnedValue, _, _, isHeader, _, hasRep, _, _, factionID = GetFactionInfo(i)
 		if not name or name == lastName then break end
+		local friendID, friendRep, friendMaxRep, _, _, friendTextLevel, friendThresh = GetFriendshipReputationByID(factionID)
+		if (friendID ~= nil) then
+			bottomValue = friendThresh
+			topValue = friendThresh + min( friendMaxRep - friendThresh, 8400 ) -- Magic number! Yay!
+			earnedValue = friendRep
+		end
 		lastName = name
 		tinsert(factions, {
 			name = name,
@@ -124,7 +130,9 @@ function mod:RefreshAllFactions()
 			value = earnedValue,
 			isHeader = isHeader,
 			hasRep = hasRep,
-			isActive = not IsFactionInactive(i)
+			isActive = not IsFactionInactive(i),
+			factionID = factionID,
+			friendID = friendID
 		})
 		i = i + 1
 	until i > 100
@@ -304,26 +312,26 @@ mod.options = {
 							end,
 				},
 
-                spacer = {
-                    type = 'description',
-                    order = 99,
-                    name = "\n\n\n\n\n\n\n",
-                },
-                hdr2 = {
-                    type = 'header',
-                    name = "",
-                    order = 100,
-                },
-                author = {
-                    type = 'description',
-                    name = "Addon developed by Pontus Munck aka Garderobert of Moonglade (EU)\n",
-                    order = 101,
-                },
-                thanks = {
-                    type = 'description',
-                    name = "Credits go to the Ace3 team for an excellent framework.\n",
-                    order = 102,
-                },
+				spacer = {
+					type = 'description',
+					order = 99,
+					name = "\n\n\n\n\n\n\n",
+				},
+				hdr2 = {
+					type = 'header',
+					name = "",
+					order = 100,
+				},
+				author = {
+					type = 'description',
+					name = "Addon developed by Pontus Munck aka Garderobert of Moonglade (EU)\n",
+					order = 101,
+				},
+				thanks = {
+					type = 'description',
+					name = "Credits go to the Ace3 team for an excellent framework.\n",
+					order = 102,
+				},
 				
 			},
 		},

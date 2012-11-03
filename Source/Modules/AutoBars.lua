@@ -171,13 +171,18 @@ local function UpdateBarVisual()
 				barLabel = ""
 			else
 				if hovering == bar and db.showText ~= "mouseover" then
-					local gender = UnitSex("player")
-					local standingText = GetText("FACTION_STANDING_LABEL"..fi.standingId, gender)
-					if fi.standingId < 8 then
-						local nextStandingText = GetText("FACTION_STANDING_LABEL"..fi.standingId+1, gender);
-						barLabel = string.format("%s |cffedf55f(%d to %s)", standingText, displayMax-displayVal, nextStandingText)
+					if fi.friendID ~= nil then
+						local _, _, _, _, _, friendTextLevel, _ = GetFriendshipReputationByID(fi.factionID)
+						barLabel = string.format("%s", friendTextLevel)
 					else
-						barLabel = string.format("%s", standingText)
+						local gender = UnitSex("player")
+						local standingText = GetText("FACTION_STANDING_LABEL"..fi.standingId, gender)
+						if fi.standingId < 8 then
+							local nextStandingText = GetText("FACTION_STANDING_LABEL"..fi.standingId+1, gender);
+							barLabel = string.format("%s |cffedf55f(%d to %s)", standingText, displayMax-displayVal, nextStandingText)
+						else
+							barLabel = string.format("%s", standingText)
+						end
 					end
 				else
 					barLabel = string.format("%s (%d / %d)%s", name, displayVal, displayMax, recentGainText)
@@ -209,15 +214,15 @@ function mod:AnchorMoved(cbk, group, x, y)
 end
 
 local function OnEnterAnchor(frame)
-    GameTooltip:SetOwner(frame)
-    GameTooltip:AddLine(appName .. " : "..modName)
-    GameTooltip:AddLine(L["|cffeda55fDrag|r to move the frame"])
-    GameTooltip:AddLine(L["|cffeda55fRight Click|r to open the configuration window"])
-    GameTooltip:Show()
+	GameTooltip:SetOwner(frame)
+	GameTooltip:AddLine(appName .. " : "..modName)
+	GameTooltip:AddLine(L["|cffeda55fDrag|r to move the frame"])
+	GameTooltip:AddLine(L["|cffeda55fRight Click|r to open the configuration window"])
+	GameTooltip:Show()
 end
 
 local function OnLeaveAnchor(frame)
-    GameTooltip:Hide()
+	GameTooltip:Hide()
 end
 
 -------------------------------------------------------------------------------
