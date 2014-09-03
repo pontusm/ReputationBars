@@ -92,7 +92,7 @@ end
 ------------------------------------------------------------------------------
 function mod:GetFactionIndex(factionName)
 	for i = 1, #allFactions do
-		local name, _, _, _, _, _, _, _, _, _ = GetFactionInfo(i);
+		local name, _, _, _, _, _, _, _, _, _, _, _, _ = GetFactionInfo(i); --added 2 or 3 _, to the end
 		if name == factionName then return i end
 	end
 end
@@ -114,11 +114,13 @@ function mod:RefreshAllFactions()
 		-- name, description, standingId, bottomValue, topValue, earnedValue, atWarWith,
 		--  canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID = GetFactionInfo(factionIndex)
 		local name, _, standingId, bottomValue, topValue, earnedValue, _, _, isHeader, _, hasRep, _, _, factionID = GetFactionInfo(i)
-		if not name or name == lastName then break end
-		local friendID, friendRep, friendMaxRep, _, _, friendTextLevel, friendThresh = GetFriendshipReputationByID(factionID)
+		if not name or name == lastName and name ~= GUILD then break end
+		local friendID, friendRep, friendMaxRep, _, _, _, friendTextLevel, friendThresh = GetFriendshipReputation(factionID)
 		if (friendID ~= nil) then
 			bottomValue = friendThresh
-			topValue = friendThresh + min( friendMaxRep - friendThresh, 8400 ) -- Magic number! Yay!
+			if nextThresh then
+				topValue = friendThresh + min( friendMaxRep - friendThresh, 8400 ) -- Magic number! Yay!
+			end
 			earnedValue = friendRep
 		end
 		lastName = name

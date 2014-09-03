@@ -172,14 +172,13 @@ local function UpdateBarVisual()
 			local displayMax = fi.max - fi.min
 			local displayVal = fi.value - fi.min
 			bar:SetValue(displayVal, displayMax)
-
 			local barLabel
 			if db.showText == "never" or (db.showText == "mouseover" and hovering ~= bar) then
 				barLabel = ""
 			else
 				if hovering == bar and db.showText ~= "mouseover" then
 					if fi.friendID ~= nil then
-						local _, _, _, _, _, friendTextLevel, _ = GetFriendshipReputationByID(fi.factionID)
+						local _, _, _, _, _, _, friendTextLevel, _, _ = GetFriendshipReputation(fi.factionID)
 						barLabel = string.format("%s", friendTextLevel)
 					else
 						local gender = UnitSex("player")

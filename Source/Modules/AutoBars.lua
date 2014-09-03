@@ -172,7 +172,7 @@ local function UpdateBarVisual()
 			else
 				if hovering == bar and db.showText ~= "mouseover" then
 					if fi.friendID ~= nil then
-						local _, _, _, _, _, friendTextLevel, _ = GetFriendshipReputationByID(fi.factionID)
+						local _, _, _, _, _, _, friendTextLevel, _ = GetFriendshipReputation(fi.factionID)
 						barLabel = string.format("%s", friendTextLevel)
 					else
 						local gender = UnitSex("player")
