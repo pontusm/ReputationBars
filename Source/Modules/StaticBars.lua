@@ -41,6 +41,8 @@ local defaults = {
 
 		growUp = false,
 		showText = "always",
+
+		visible = true
 	},
 
 	char = {
@@ -60,18 +62,23 @@ end
 -------------------------------------------------------------------------------
 -- Show/hide
 -------------------------------------------------------------------------------
-local function FadeOut()
+local function FadeOut(time)
 	if hidden then return end
-	UIFrameFadeOut(StaticBarsGroup, 5, StaticBarsGroup:GetAlpha(), 0)
+	UIFrameFadeOut(StaticBarsGroup, time, StaticBarsGroup:GetAlpha(), 0)
 	hidden = true
 end
 
+local function FadeOutSlow()
+	FadeOut(5)
+end
+
 local function FadeIn(time)
+	if not db.visible then return end
 	if db.autoHide then
 		if fadeTimer then
 			ReputationBars:CancelTimer(fadeTimer, true)
 		end
-		fadeTimer = ReputationBars:ScheduleTimer(FadeOut, db.autoHideSeconds)
+		fadeTimer = ReputationBars:ScheduleTimer(FadeOutSlow, db.autoHideSeconds)
 	end
 
 	if not hidden then return end
@@ -290,6 +297,12 @@ function mod:ApplySettings()
 	StaticBarsGroup:SetScale(db.barScale)
 	StaticBarsGroup:SetLength(db.barLength)
 	StaticBarsGroup:SetThickness(db.barThickness)
+
+	if db.visible == false then
+		FadeOut(0.5)
+	else
+		FadeIn(0.5)
+	end
 end
 
 
@@ -473,6 +486,7 @@ mod.options = {
 					name = L["Grow upwards"],
 					desc = L["Bars are added above the anchor instead of below it."],
 				},
+
 			},
 		},
 
@@ -620,19 +634,10 @@ mod.options = {
 			},
 		},
 
-		show = {
-			name = L["Show bars"],
-			type = "execute",
-			func = function(info)
-				StaticBarsGroup:Show()
-			end,
-		},
-		hide = {
-			name = L["Hide bars"],
-			type = "execute",
-			func = function(info)
-				StaticBarsGroup:Hide()
-			end,
+		visible = {
+			type = "toggle",
+			name = L["Visible"],
+			desc = L["Controls whether bars are visible or not.\nYou can toggle this from the console using |cffeda55f/rptb StaticBars visible|r."],
 		},
 	}
 }
