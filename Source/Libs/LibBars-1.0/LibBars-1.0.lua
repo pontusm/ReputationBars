@@ -1,5 +1,5 @@
 local MAJOR = "LibBars-1.0"
-local MINOR = 90000 + tonumber(("$Revision: 20 $"):match("%d+"))
+local MINOR = 90000 + tonumber(("$Revision: 22 $"):match("%d+"))
 
 local lib, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end -- No Upgrade needed.
