@@ -127,7 +127,9 @@ local function UpdateBarVisual()
 		end
 
 		currentFaction = name
-		local colors = FACTION_BAR_COLORS[standingID]
+		local colorIndex
+		if factionInfo and factionInfo.friendID ~= nil then colorIndex = 5 else colorIndex = fi.standingId end
+		local colors = FACTION_BAR_COLORS[colorIndex]
 		WatchBar:UnsetAllColors()
 		WatchBar:SetColorAt(0, colors.r, colors.g, colors.b, 1)
 
