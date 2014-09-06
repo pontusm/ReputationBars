@@ -112,8 +112,8 @@ end
 -- Bar update
 -------------------------------------------------------------------------------
 local function CompareBarSortOrder(a, b)
-	if not a.sortOrder then return true end
-	if not b.sortOrder then return false end
+	if not a.sortOrder or type(a.sortOrder) ~= "number" then return true end
+	if not b.sortOrder or type(b.sortOrder) ~= "number" then return false end
 	return a.sortOrder < b.sortOrder
 end
 
@@ -153,7 +153,9 @@ local function UpdateBarVisual()
 				AutoBarsGroup:SortBars()
 			end
 
-			local colors = FACTION_BAR_COLORS[fi.standingId]
+			local colorIndex
+			if fi.friendID ~= nil then colorIndex = 5 else colorIndex = fi.standingId end
+			local colors = FACTION_BAR_COLORS[colorIndex]
 			bar:UnsetAllColors()
 			bar:SetColorAt(0, colors.r, colors.g, colors.b, 1)
 

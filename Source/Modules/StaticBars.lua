@@ -160,7 +160,9 @@ local function UpdateBarVisual()
 				StaticBarsGroup:SortBars()
 			end
 
-			local colors = FACTION_BAR_COLORS[fi.standingId]
+			local colorIndex
+			if fi.friendID ~= nil then colorIndex = 5 else colorIndex = fi.standingId end
+			local colors = FACTION_BAR_COLORS[colorIndex]
 			bar:UnsetAllColors()
 			bar:SetColorAt(0, colors.r, colors.g, colors.b, 1)
 
