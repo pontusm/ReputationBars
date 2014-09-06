@@ -620,5 +620,19 @@ mod.options = {
 			},
 		},
 
+		show = {
+			name = L["Show bars"],
+			type = "execute",
+			func = function(info)
+				StaticBarsGroup:Show()
+			end,
+		},
+		hide = {
+			name = L["Hide bars"],
+			type = "execute",
+			func = function(info)
+				StaticBarsGroup:Hide()
+			end,
+		},
 	}
 }
