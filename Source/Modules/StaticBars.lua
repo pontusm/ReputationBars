@@ -42,7 +42,9 @@ local defaults = {
 		growUp = false,
 		showText = "always",
 
-		visible = true
+		sortBy = "alpha",
+
+		visible = true,
 	},
 
 	char = {
@@ -122,11 +124,15 @@ end
 -- Bar update
 -------------------------------------------------------------------------------
 local function CompareBarSortOrder(a, b)
-	local bar1 = tostring(a.sortOrder)
-	local bar2 = tostring(b.sortOrder)
-	if not bar1 then return true end
-	if not bar2 then return false end
-	return bar1 < bar2
+	local faction1 = a.sortOrder
+	local faction2 = b.sortOrder
+	if not faction1 then return true end
+	if not faction2 then return false end
+	if db.sortBy == "rep" then
+		return faction2.value < faction1.value
+	else
+		return faction1.name < faction2.name
+	end
 end
 
 local function UpdateBarVisual()
@@ -148,7 +154,6 @@ local function UpdateBarVisual()
 
 				-- Remember bar position
 				--tinsert(barlist, name)
-				bar.sortOrder = name
 
 				UIFrameFadeIn(bar, 0.5, 0, 1)
 
@@ -163,9 +168,12 @@ local function UpdateBarVisual()
 				end)
 				
 				faction.bar = bar
-				
-				StaticBarsGroup:SortBars()
+
 			end
+
+			bar.sortOrder = { name = fi.name, value = fi.value }
+
+			StaticBarsGroup:SortBars()
 
 			local colorIndex
 			if fi.friendID ~= nil then colorIndex = 5 else colorIndex = fi.standingId end
@@ -462,16 +470,24 @@ mod.options = {
 					name = ""
 				},
 
-				autoHide = {
+				growUp = {
 					type = "toggle",
 					order = 50,
+					name = L["Grow upwards"],
+					desc = L["Bars are added above the anchor instead of below it."],
+					width = "full",
+				},
+
+				autoHide = {
+					type = "toggle",
+					order = 60,
 					name = L["Auto hide"],
 					desc = L["Automatically hide if no reputation has been gained recently."],
 				},
 
 				autoHideSeconds = {
 					type = "range",
-					order = 51,
+					order = 61,
 					name = L["Auto hide (seconds)"],
 					desc = L["Automatically hide after this many seconds."],
 					disabled = function(info) return not mod.db.profile.autoHide end,
@@ -480,11 +496,17 @@ mod.options = {
 					step = 1,
 				},
 
-				growUp = {
-					type = "toggle",
-					order = 60,
-					name = L["Grow upwards"],
-					desc = L["Bars are added above the anchor instead of below it."],
+				sortBy = {
+					type = "select",
+					order = 70,
+					name = L["Sort bars"],
+					desc = L["Determines the sort order for the bars."],
+					style = "dropdown",
+					width = "full",
+					values = {
+						alpha = L["Alphabetically (A-Z)"],
+						rep = L["By reputation (high to low)"],
+					},
 				},
 
 			},
@@ -535,9 +557,9 @@ mod.options = {
 					name = L["Show text on bar"],
 					desc = L["Determines when to show text on the bar."],
 					values = {
-						always = "Always",
-						mouseover = "On mouse over",
-						never = "Never",
+						always = L["Always"],
+						mouseover = L["On mouse over"],
+						never = L["Never"],
 					},
 				},
 

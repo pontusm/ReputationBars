@@ -600,16 +600,24 @@ mod.options = {
 					name = ""
 				},
 
-				autoHide = {
+				growUp = {
 					type = "toggle",
 					order = 50,
+					name = L["Grow upwards"],
+					desc = L["Bars are added above the anchor instead of below it."],
+					width = "full",
+				},
+
+				autoHide = {
+					type = "toggle",
+					order = 60,
 					name = L["Auto hide"],
 					desc = L["Automatically hide if no reputation has been gained recently."],
 				},
 
 				autoHideSeconds = {
 					type = "range",
-					order = 51,
+					order = 61,
 					name = L["Auto hide (seconds)"],
 					desc = L["Automatically hide after this many seconds."],
 					disabled = function(info) return not mod.db.profile.autoHide end,
@@ -618,12 +626,6 @@ mod.options = {
 					step = 1,
 				},
 
-				growUp = {
-					type = "toggle",
-					order = 60,
-					name = L["Grow upwards"],
-					desc = L["Bars are added above the anchor instead of below it."],
-				},
 			},
 		},
 
