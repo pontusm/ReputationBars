@@ -18,6 +18,9 @@ local CreateFrame, UIParent = CreateFrame, UIParent
 -- List them here for Mikk's FindGlobals script
 -- GLOBALS: GameTooltip, FONT_COLOR_CODE_CLOSE
 
+local factionLookup = {}
+local watchedFactions = {}
+
 -- Recycling functions
 local new, del
 do
@@ -158,6 +161,13 @@ local function addLine(self, v, tree, level, parent)
 	return line
 end
 
+local function findLine(self, uniquevalue)
+	for i,line in ipairs(self.lines) do
+		if line.uniquevalue == uniquevalue then return line end
+	end
+	return nil
+end
+
 --fire an update after one frame to catch the treeframes height
 local function FirstFrameUpdate(frame)
 	local self = frame.obj
@@ -288,16 +298,35 @@ local function Dragger_OnMouseUp(frame)
 	treeframe.obj:DoLayout()
 end
 
+local function CheckBox_ValueChanged(widget, event, value)
+	faction = widget:GetUserData("faction")
+	widget.parent:Fire("OnValueChanged", faction, value)
+end
+
 local function GetFactionTree()
+	factionLookup = {}
 	local factionTree = {}
+	local group, subgroup, faction
 	for factionIndex = 1, #ReputationBars:GetAllFactions() do
 		local fi = ReputationBars:GetFactionInfo(factionIndex)
-		--print(fi.name, fi.isHeader)
-		if fi.isHeader and fi.isActive then
-			tinsert(factionTree, {
-				value = factionIndex,
-				text = fi.name
-			})
+		faction = {
+			value = factionIndex,
+			text = fi.name
+		}
+		if fi.isHeader then
+			if not fi.isChild or not group then
+				group = faction
+				subgroup = nil
+				tinsert(factionTree, group)
+			else
+				if not group.children then group.children = {} end
+				subgroup = faction
+				tinsert(group.children, subgroup)
+			end
+		else
+			local parent = subgroup or group
+			if not factionLookup[parent.value] then factionLookup[parent.value] = {} end
+			tinsert(factionLookup[parent.value], fi)
 		end
 	end
 	return factionTree
@@ -310,28 +339,12 @@ local methods = {
 	["OnAcquire"] = function(self)
 		self:SetTreeWidth(DEFAULT_TREE_WIDTH, DEFAULT_TREE_SIZABLE)
 		self:EnableButtonTooltips(true)
+		--self:SetAutoAdjustHeight(false)
+		--self:SetFullHeight(true)
+		--self:SetHeight(200)
+
 		local tree = GetFactionTree()
-		--[[
-		local tree = {
-			{
-			value = "A",
-			text = "Alpha"
-			},
-			{
-			value = "B",
-			text = "Beta",
-			children = {
-				{
-				value = "C",
-				text = "Charlie",
-				--disabled = true
-				},
-			},
-			},
-		}
-		]]
 		self:SetTree(tree, nil)
-		self:SetHeight(200)
 	end,
 
 	["OnRelease"] = function(self)
@@ -537,6 +550,10 @@ local methods = {
 	["SetDisabled"] = function(self, disabled)
 	end,
 
+	["SetItemValue"] = function(self, key, value)
+		watchedFactions[key] = value
+	end,
+
 	["SetLabel"] = function(self, label)
 	end,
 	
@@ -547,11 +564,26 @@ local methods = {
 	end,
 
 	["SetSelected"] = function(self, value)
-		print("SetSelected")
 		local status = self.status or self.localstatus
 		if status.selected ~= value then
 			status.selected = value
 			self:Fire("OnGroupSelected", value)
+
+			--local group = AceGUI:Create("SimpleGroup")
+			self:ReleaseChildren()
+
+			local line = findLine(self, value)
+			local factions = factionLookup[line.value]
+			if factions then
+				for i,fi in ipairs(factions) do
+					local cb = AceGUI:Create("CheckBox")
+					cb:SetLabel(fi.name)
+					cb:SetUserData("faction", fi.name)
+					if watchedFactions[fi.name] then cb:SetValue(true) end
+					cb:SetCallback("OnValueChanged", CheckBox_ValueChanged)
+					self:AddChild(cb)
+				end
+			end
 		end
 	end,
 
@@ -653,9 +685,11 @@ local methods = {
 	end,
 
 	["LayoutFinished"] = function(self, width, height)
+		--print("LayoutFinished", width, height, self.parent)
 		if self.noAutoHeight then return end
-		--self:SetHeight((height or 0) + 20)
-		self:SetHeight(300)
+		if not height or height < 200 then height = 200 end
+		self:SetHeight((height or 0) + 20)
+		--self:SetHeight(300)
 	end
 }
 

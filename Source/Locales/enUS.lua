@@ -45,6 +45,7 @@ L["Replace Blizzard reputation bar"] = true
 L["Replaces the default Blizzard reputation watch bar that is shown next to the experience bar in the standard UI."] = true
 L["Reset position"] = true
 L["Scale"] = true
+L["Select the factions that you wish to monitor."] = true
 L["Set the font for the bar text."] = true
 L["Set the font size of the bar text."] = true
 L["Set the length of the bar."] = true

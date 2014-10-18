@@ -112,11 +112,12 @@ function mod:RefreshAllFactions()
 	local factions = {}
 	repeat
 		-- name, description, standingId, bottomValue, topValue, earnedValue, atWarWith,
-		--  canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID = GetFactionInfo(factionIndex)
-		local name, _, standingId, bottomValue, topValue, earnedValue, _, _, isHeader, _, hasRep, _, _, factionID = GetFactionInfo(i)
+		--  canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID,
+		--  hasBonusRepGain, canBeLFGBonus = GetFactionInfo(factionIndex)
+		local name, _, standingId, bottomValue, topValue, earnedValue, _, _, isHeader, _, hasRep, _, isChild, factionID = GetFactionInfo(i)
 		if not name or name == lastName and name ~= GUILD then break end
 		local friendID, friendRep, friendMaxRep, _, _, _, friendTextLevel, friendThresh = GetFriendshipReputation(factionID)
-		if (friendID ~= nil) then
+		if friendID ~= nil then
 			bottomValue = friendThresh
 			if nextThresh then
 				topValue = friendThresh + min( friendMaxRep - friendThresh, 8400 ) -- Magic number! Yay!
@@ -131,6 +132,7 @@ function mod:RefreshAllFactions()
 			max = topValue,
 			value = earnedValue,
 			isHeader = isHeader,
+			isChild = isChild,
 			hasRep = hasRep,
 			isActive = not IsFactionInactive(i),
 			factionID = factionID,
