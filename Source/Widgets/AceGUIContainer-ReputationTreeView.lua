@@ -685,9 +685,9 @@ local methods = {
 	end,
 
 	["LayoutFinished"] = function(self, width, height)
-		--print("LayoutFinished", width, height, self.parent)
+		--print("LayoutFinished", width, height)
 		if self.noAutoHeight then return end
-		if not height or height < 200 then height = 200 end
+		if not height or height < 300 then height = 300 end
 		self:SetHeight((height or 0) + 20)
 		--self:SetHeight(300)
 	end
