@@ -114,7 +114,8 @@ function mod:RefreshAllFactions()
 		-- name, description, standingId, bottomValue, topValue, earnedValue, atWarWith,
 		--  canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID,
 		--  hasBonusRepGain, canBeLFGBonus = GetFactionInfo(factionIndex)
-		local name, _, standingId, bottomValue, topValue, earnedValue, _, _, isHeader, _, hasRep, _, isChild, factionID = GetFactionInfo(i)
+		local name, _, standingId, bottomValue, topValue, earnedValue, _,
+			_, isHeader, isCollapsed, hasRep, _, isChild, factionID = GetFactionInfo(i)
 		if not name or name == lastName and name ~= GUILD then break end
 		local friendID, friendRep, friendMaxRep, _, _, _, friendTextLevel, friendThresh = GetFriendshipReputation(factionID)
 		if friendID ~= nil then
@@ -138,6 +139,7 @@ function mod:RefreshAllFactions()
 			factionID = factionID,
 			friendID = friendID
 		})
+		if isCollapsed then ExpandFactionHeader(i) end
 		i = i + 1
 	until i > 100
 	
