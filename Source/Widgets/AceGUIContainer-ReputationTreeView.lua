@@ -322,6 +322,12 @@ local function GetFactionTree()
 				if not group.children then group.children = {} end
 				subgroup = faction
 				tinsert(group.children, subgroup)
+
+				if fi.hasRep then
+					-- Subgroup has rep so show it under parent group
+					if not factionLookup[group.value] then factionLookup[group.value] = {} end
+					tinsert(factionLookup[group.value], fi)
+				end
 			end
 		else
 			local parent = subgroup or group
