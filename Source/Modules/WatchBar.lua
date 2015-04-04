@@ -92,12 +92,17 @@ function mod:OnEnable()
 	end
 
 	self:RegisterEvent("UPDATE_FACTION")
+	self:RegisterEvent("PET_BATTLE_OPENING_START")
+	self:RegisterEvent("PET_BATTLE_CLOSE")
 end
 
 function mod:OnDisable()
 	if WatchBarGroup then
 		WatchBarGroup:Hide()
 	end
+
+	db = nil
+	self.db = nil
 end
 
 -------------------------------------------------------------------------------
@@ -369,6 +374,18 @@ function mod:UPDATE_FACTION()
 	self:UpdateBar(false)
 end
 
+function mod:PET_BATTLE_OPENING_START()
+	if WatchBarGroup then
+		WatchBarGroup:Hide()
+	end
+end
+
+function mod:PET_BATTLE_CLOSE()
+	if WatchBarGroup then
+		WatchBarGroup:Show()
+	end
+end
+
 -------------------------------------------------------------------------------
 -- Load/save position
 -------------------------------------------------------------------------------
@@ -417,7 +434,10 @@ mod.options = {
 	name = L["WatchBar settings"],
 	type = "group",
 	childGroups = "tab",
-	get = function(info) return mod.db.profile[info[#info]] end,
+	get = function(info)
+		if not mod.db then return nil end
+		return mod.db.profile[info[#info]]
+	end,
 	set = function(info, val)
 		mod.db.profile[info[#info]] = val
 		mod:ApplySettings()

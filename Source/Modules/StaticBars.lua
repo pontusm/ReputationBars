@@ -64,10 +64,19 @@ end
 -------------------------------------------------------------------------------
 -- Show/hide
 -------------------------------------------------------------------------------
+local function FadeOutCompleted()
+	if not db.locked then
+		StaticBarsGroup:Lock()
+		StaticBarsGroup:HideAnchor()
+	end
+end
+
 local function FadeOut(time)
 	if hidden then return end
 	UIFrameFadeOut(StaticBarsGroup, time, StaticBarsGroup:GetAlpha(), 0)
 	hidden = true
+	if fadeTimer then ReputationBars:CancelTimer(fadeTimer, true) end
+	fadeTimer = ReputationBars:ScheduleTimer(FadeOutCompleted, time)
 end
 
 local function FadeOutSlow()
@@ -81,6 +90,11 @@ local function FadeIn(time)
 			ReputationBars:CancelTimer(fadeTimer, true)
 		end
 		fadeTimer = ReputationBars:ScheduleTimer(FadeOutSlow, db.autoHideSeconds)
+	end
+
+	if not db.locked then
+		StaticBarsGroup:Unlock()
+		StaticBarsGroup:ShowAnchor()
 	end
 
 	if not hidden then return end
@@ -108,6 +122,8 @@ function mod:OnEnable()
 	end
 
 	self:RegisterEvent("UPDATE_FACTION")
+	self:RegisterEvent("PET_BATTLE_OPENING_START")
+	self:RegisterEvent("PET_BATTLE_CLOSE")
 end
 
 function mod:OnDisable()
@@ -118,6 +134,9 @@ function mod:OnDisable()
 		ReputationBars:CancelTimer(cleanupTimer, true)
 		cleanupTimer = nil
 	end
+
+	db = nil
+	self.db = nil
 end
 
 -------------------------------------------------------------------------------
@@ -344,6 +363,18 @@ function mod:UPDATE_FACTION()
 	self:UpdateBar(false)
 end
 
+function mod:PET_BATTLE_OPENING_START()
+	if StaticBarsGroup then
+		StaticBarsGroup:Hide()
+	end
+end
+
+function mod:PET_BATTLE_CLOSE()
+	if StaticBarsGroup then
+		StaticBarsGroup:Show()
+	end
+end
+
 -------------------------------------------------------------------------------
 -- Load/save position
 -------------------------------------------------------------------------------
@@ -413,7 +444,10 @@ mod.options = {
 	name = L["StaticBars settings"],
 	type = "group",
 	childGroups = "tab",
-	get = function(info) return mod.db.profile[info[#info]] end,
+	get = function(info)
+		if not mod.db then return nil end
+		return mod.db.profile[info[#info]]
+	end,
 	set = function(info, val)
 		mod.db.profile[info[#info]] = val
 		mod:ApplySettings()

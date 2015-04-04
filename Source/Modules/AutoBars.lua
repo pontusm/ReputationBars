@@ -58,10 +58,20 @@ end
 -------------------------------------------------------------------------------
 -- Show/hide
 -------------------------------------------------------------------------------
+local function FadeOutCompleted()
+	if not db.locked then
+		AutoBarsGroup:Lock()
+		AutoBarsGroup:HideAnchor()
+	end
+end
+
 local function FadeOut()
+	local time = 5
 	if hidden then return end
-	UIFrameFadeOut(AutoBarsGroup, 5, AutoBarsGroup:GetAlpha(), 0)
+	UIFrameFadeOut(AutoBarsGroup, time, AutoBarsGroup:GetAlpha(), 0)
 	hidden = true
+	if fadeTimer then ReputationBars:CancelTimer(fadeTimer, true) end
+	fadeTimer = ReputationBars:ScheduleTimer(FadeOutCompleted, time)
 end
 
 local function FadeIn(time)
@@ -70,6 +80,11 @@ local function FadeIn(time)
 			ReputationBars:CancelTimer(fadeTimer, true)
 		end
 		fadeTimer = ReputationBars:ScheduleTimer(FadeOut, db.autoHideSeconds)
+	end
+
+	if not db.locked then
+		AutoBarsGroup:Unlock()
+		AutoBarsGroup:ShowAnchor()
 	end
 
 	if not hidden then return end
@@ -94,6 +109,9 @@ function mod:OnEnable()
 		self:UpdateBar(true)
 		AutoBarsGroup:Show()
 	end
+
+	self:RegisterEvent("PET_BATTLE_OPENING_START")
+	self:RegisterEvent("PET_BATTLE_CLOSE")
 	
 	cleanupTimer = ReputationBars:ScheduleRepeatingTimer(mod.Cleanup, 1)
 end
@@ -106,6 +124,9 @@ function mod:OnDisable()
 		ReputationBars:CancelTimer(cleanupTimer, true)
 		cleanupTimer = nil
 	end
+
+	db = nil
+	self.db = nil
 end
 
 -------------------------------------------------------------------------------
@@ -459,6 +480,22 @@ function mod:SavePosition()
 end
 
 -------------------------------------------------------------------------------
+-- Events
+-------------------------------------------------------------------------------
+
+function mod:PET_BATTLE_OPENING_START()
+	if AutoBarsGroup then
+		AutoBarsGroup:Hide()
+	end
+end
+
+function mod:PET_BATTLE_CLOSE()
+	if AutoBarsGroup then
+		AutoBarsGroup:Show()
+	end
+end
+
+-------------------------------------------------------------------------------
 -- Options
 -------------------------------------------------------------------------------
 function mod:GetOptions()
@@ -494,7 +531,10 @@ mod.options = {
 	name = L["AutoBars settings"],
 	type = "group",
 	childGroups = "tab",
-	get = function(info) return mod.db.profile[info[#info]] end,
+	get = function(info)
+		if not mod.db then return nil end
+		return mod.db.profile[info[#info]]
+	end,
 	set = function(info, val)
 		mod.db.profile[info[#info]] = val
 		mod:ApplySettings()
