@@ -470,6 +470,65 @@ mod.options = {
 			--end,
 		--},
 
+		barFactions = {
+			type = "group",
+			name = L["Factions"],
+			order = 15,
+			args = {
+
+				--[[
+				selectFactions = {
+					type = "multiselect",
+					order = 10,
+					name = L["Factions"],
+					desc = L["Select the factions that you wish to monitor."],
+					width = "full",
+					values = function(info)
+								local allFactions = {}
+								for factionIndex = 1, #ReputationBars:GetAllFactions() do
+									local fi = ReputationBars:GetFactionInfo(factionIndex)
+									if not fi.isHeader or fi.hasRep then allFactions[fi.name] = fi.name end
+								end
+								return allFactions
+							end,
+					get =	function(info, key)
+								return mod.db.char.watchedFactions[key]
+							end,
+					set =	function(info, key, val)
+								mod.db.char.watchedFactions[key] = val
+								mod:UpdateBar(true)
+								StaticBarsGroup:SortBars()
+							end,
+				},
+				]]
+
+				selectFactions2 = {
+					type = "multiselect",
+					order = 10,
+					name = L["Factions"],
+					desc = L["Select the factions that you wish to monitor."],
+					width = "full",
+					dialogControl = "ReputationTreeView",
+					values = function(info)
+								local allFactions = {}
+								for factionIndex = 1, #ReputationBars:GetAllFactions() do
+									local fi = ReputationBars:GetFactionInfo(factionIndex)
+									if not fi.isHeader or fi.hasRep then allFactions[fi.name] = fi.name end
+								end
+								return allFactions
+							end,
+					get =	function(info, key)
+								return mod.db.char.watchedFactions[key]
+							end,
+					set =	function(info, key, val)
+								mod.db.char.watchedFactions[key] = val
+								mod:UpdateBar(true)
+								StaticBarsGroup:SortBars()
+							end,
+				}
+			},
+		},
+
 		barBehavior = {
 			type = "group",
 			name = L["Behavior"],
@@ -543,65 +602,6 @@ mod.options = {
 					},
 				},
 
-			},
-		},
-
-		barFactions = {
-			type = "group",
-			name = L["Factions"],
-			order = 25,
-			args = {
-
-				--[[
-				selectFactions = {
-					type = "multiselect",
-					order = 10,
-					name = L["Factions"],
-					desc = L["Select the factions that you wish to monitor."],
-					width = "full",
-					values = function(info)
-								local allFactions = {}
-								for factionIndex = 1, #ReputationBars:GetAllFactions() do
-									local fi = ReputationBars:GetFactionInfo(factionIndex)
-									if not fi.isHeader or fi.hasRep then allFactions[fi.name] = fi.name end
-								end
-								return allFactions
-							end,
-					get =	function(info, key)
-								return mod.db.char.watchedFactions[key]
-							end,
-					set =	function(info, key, val)
-								mod.db.char.watchedFactions[key] = val
-								mod:UpdateBar(true)
-								StaticBarsGroup:SortBars()
-							end,
-				},
-				]]
-
-				selectFactions2 = {
-					type = "multiselect",
-					order = 10,
-					name = L["Factions"],
-					desc = L["Select the factions that you wish to monitor."],
-					width = "full",
-					dialogControl = "ReputationTreeView",
-					values = function(info)
-								local allFactions = {}
-								for factionIndex = 1, #ReputationBars:GetAllFactions() do
-									local fi = ReputationBars:GetFactionInfo(factionIndex)
-									if not fi.isHeader or fi.hasRep then allFactions[fi.name] = fi.name end
-								end
-								return allFactions
-							end,
-					get =	function(info, key)
-								return mod.db.char.watchedFactions[key]
-							end,
-					set =	function(info, key, val)
-								mod.db.char.watchedFactions[key] = val
-								mod:UpdateBar(true)
-								StaticBarsGroup:SortBars()
-							end,
-				}
 			},
 		},
 		
