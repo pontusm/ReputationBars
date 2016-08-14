@@ -297,19 +297,20 @@ function mod:ApplySettings()
 		WatchBarGroup:SetScale(1)
 		WatchBarGroup:SetLength(ReputationWatchBar:GetWidth())
 		WatchBarGroup:SetThickness(ReputationWatchBar:GetHeight())
-		WatchBarGroup:SetFrameStrata(ReputationWatchBar:GetFrameStrata())
-		WatchBarGroup:SetFrameLevel(ReputationWatchBar:GetFrameLevel())
+		WatchBarGroup:SetFrameStrata(ReputationWatchBar.StatusBar:GetFrameStrata())
+		WatchBarGroup:SetFrameLevel(ReputationWatchBar.StatusBar:GetFrameLevel())
 		
-		ReputationWatchStatusBar:Hide()
-		ReputationWatchBarOverlayFrame:Hide()
+		-- Hide Blizzard frames
+		ReputationWatchBar.StatusBar:Hide()
+		ReputationWatchBar.OverlayFrame:Hide()
 	else
 		WatchBarGroup:SetParent(UIParent)
 		WatchBarGroup:SetScale(db.barScale)
 		WatchBarGroup:SetLength(db.barLength)
 		WatchBarGroup:SetThickness(db.barThickness)
 		
-		ReputationWatchStatusBar:Show()
-		ReputationWatchBarOverlayFrame:Show()
+		ReputationWatchBar.StatusBar:Show()
+		ReputationWatchBar.OverlayFrame:Show()
 	end
 	
 end
