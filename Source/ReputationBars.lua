@@ -110,8 +110,8 @@ function mod:RefreshAllFactions()
 	local i = 1
 	local lastName
 	local factions = {}
-	ExpandAllFactionHeaders()
-	for i = 1, GetNumFactions() do
+	--ExpandAllFactionHeaders()
+	repeat
 		-- name, description, standingId, bottomValue, topValue, earnedValue, atWarWith,
 		--  canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID,
 		--  hasBonusRepGain, canBeLFGBonus = GetFactionInfo(factionIndex)
@@ -140,8 +140,9 @@ function mod:RefreshAllFactions()
 			factionID = factionID,
 			friendID = friendID
 		})
-		--if isCollapsed then ExpandFactionHeader(i) end
-	end
+		if isCollapsed then ExpandFactionHeader(i) end
+		i = i + 1
+	until i > 200
 
 	allFactions = factions
 end
