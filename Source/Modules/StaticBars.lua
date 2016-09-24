@@ -149,6 +149,10 @@ local function CompareBarSortOrder(a, b)
 	if not faction2 then return false end
 	if db.sortBy == "rep" then
 		return faction2.value < faction1.value
+	elseif db.sortBy == "rep_rev" then
+		return faction2.value > faction1.value
+	elseif db.sortBy == "alpha_rev" then
+		return faction1.name > faction2.name
 	else
 		return faction1.name < faction2.name
 	end
@@ -598,7 +602,9 @@ mod.options = {
 					width = "full",
 					values = {
 						alpha = L["Alphabetically (A-Z)"],
+						alpha_rev = L["Alphabetically reversed (Z-A)"],
 						rep = L["By reputation (high to low)"],
+						rep_rev = L["By reputation (low to high)"],
 					},
 				},
 
