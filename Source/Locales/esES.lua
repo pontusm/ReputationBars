@@ -1,4 +1,4 @@
-﻿local L = LibStub("AceLocale-3.0"):NewLocale("ReputationBars", "esES", false)
+local L = LibStub("AceLocale-3.0"):NewLocale("ReputationBars", "esES", false)
 if not L then return end
 
 L["A faction will be removed from the list of bars after this many seconds of inactivity."] = "Una facción será removida de la lista de barras después de estar cierta cantidad de segundos en inactividad."

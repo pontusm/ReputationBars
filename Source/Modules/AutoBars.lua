@@ -1,4 +1,4 @@
-﻿-- ReputationBars: AutoBars
+-- ReputationBars: AutoBars
 local appName = "ReputationBars"
 local modName = "AutoBars"
 

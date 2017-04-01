@@ -1,4 +1,4 @@
-﻿-- ReputationBars: WatchBar
+-- ReputationBars: WatchBar
 local appName = "ReputationBars"
 local modName = "WatchBar"
 
