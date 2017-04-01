@@ -1,4 +1,4 @@
-﻿-- ReputationBars: StaticBars
+-- ReputationBars: StaticBars
 local appName = "ReputationBars"
 local modName = "StaticBars"
 
@@ -230,6 +230,8 @@ local function UpdateBarVisual()
 							barLabel = string.format("%s", standingText)
 						end
 					end
+				elseif displayVal == 0 and displayMax == 0 then
+					barLabel = string.format("%s", name)
 				else
 					barLabel = string.format("%s (%d / %d)%s", name, displayVal, displayMax, recentGainText)
 				end
