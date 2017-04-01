@@ -22,6 +22,7 @@ local defaults = {
 local timer
 local reputationChanges = {}
 local allFactions = {}
+local factionAmounts = {}
 
 ------------------------------------------------------------------------------
 -- Initialize
@@ -64,6 +65,7 @@ end
 function mod:OnEnable()
 	self:ScheduleTimer("EnsureFactionsLoaded", 0.5)	
 	self:RegisterEvent("COMBAT_TEXT_UPDATE")
+	self:RegisterEvent("UPDATE_FACTION")
 end
 
 function mod:OnDisable()
@@ -95,6 +97,7 @@ function mod:GetFactionIndex(factionName)
 		local name, _, _, _, _, _, _, _, _, _, _, _, _ = GetFactionInfo(i); --added 2 or 3 _, to the end
 		if name == factionName then return i end
 	end
+	return 0
 end
 
 function mod:GetFactionInfo(factionIndex)
@@ -103,6 +106,16 @@ end
 
 function mod:GetAllFactions()
 	return allFactions
+end
+
+local function UpdateFactionAmount(name, amount)
+	local oldAmount = factionAmounts[name]
+	if oldAmount ~= nil and oldAmount ~= amount then
+		-- Collect all gained reputation before notifying modules
+		reputationChanges[name] = amount - oldAmount
+--		print("Faction "..name.." changed from "..oldAmount.." to "..amount)
+	end
+	factionAmounts[name] = amount
 end
 
 -- Refresh the list of known factions
@@ -118,6 +131,7 @@ function mod:RefreshAllFactions()
 		local name, _, standingId, bottomValue, topValue, earnedValue, _,
 			_, isHeader, isCollapsed, hasRep, _, isChild, factionID = GetFactionInfo(i)
 		if not name or name == lastName and name ~= GUILD then break end
+		local isParagon = false
 		local friendID, friendRep, friendMaxRep, _, _, _, friendTextLevel, friendThresh = GetFriendshipReputation(factionID)
 		if friendID ~= nil then
 			bottomValue = friendThresh
@@ -125,6 +139,12 @@ function mod:RefreshAllFactions()
 				topValue = friendThresh + min( friendMaxRep - friendThresh, 8400 ) -- Magic number! Yay!
 			end
 			earnedValue = friendRep
+		elseif factionID and C_Reputation.IsFactionParagon(factionID) then
+			isParagon = true
+			local currentValue, threshold, rewardQuestID, hasRewardPending = C_Reputation.GetFactionParagonInfo(factionID)
+			earnedValue = currentValue
+			bottomValue = 0
+			topValue = threshold
 		end
 		lastName = name
 		tinsert(factions, {
@@ -136,10 +156,12 @@ function mod:RefreshAllFactions()
 			isHeader = isHeader,
 			isChild = isChild,
 			hasRep = hasRep,
+			isParagon = isParagon,
 			isActive = not IsFactionInactive(i),
 			factionID = factionID,
 			friendID = friendID
 		})
+		UpdateFactionAmount(name, earnedValue)
 		if isCollapsed then ExpandFactionHeader(i) end
 		i = i + 1
 	until i > 200
@@ -199,9 +221,16 @@ function mod:UpdateReputation()
 			end
 		end
 	end
-	
+
 	timer = nil
 	reputationChanges = {}
+end
+
+function mod:ScheduleUpdate()
+	if timer then
+		self:CancelTimer(timer, true)
+	end
+	timer = self:ScheduleTimer("UpdateReputation", 0.1)
 end
 
 ------------------------------------------------------------------------------
@@ -224,13 +253,14 @@ function mod:COMBAT_TEXT_UPDATE(event, type, name, amount)
 			reputationChanges[name] = reputationChanges[name] + amount
 		end
 
-		if timer then
-			self:CancelTimer(timer, true)
-		end
-		timer = self:ScheduleTimer("UpdateReputation", 0.1)
+		self:ScheduleUpdate()
 
 		--self:Print("Gained "..amount.." with "..name)
 	end
+end
+
+function mod:UPDATE_FACTION()
+	self:ScheduleUpdate()
 end
 
 ------------------------------------------------------------------------------
