@@ -16,7 +16,7 @@ end
 task :default => :deploy
 
 desc "Update files and deploy addon to the WoW folder"
-task :deploy => [:updatelocale, :maketoc, :copyaddon, :cleanup]
+task :deploy => [:updatelocale, :maketoc, :validate, :copyaddon, :cleanup]
 
 desc "Perform a deploy and package a release version"
 task :release => [:newversion, :deploy, :package]
@@ -26,6 +26,21 @@ task :updatelocale do
 	Dir.chdir(File.join(BASE_PATH, "Source/Locales")) do
 		sh "lua Babelfish.lua" do |ok, res|
 			raise "Failed to update locale files. Error #{res.exitstatus}" unless ok
+		end
+	end
+end
+
+desc "Validate lua file syntax"
+task :validate do
+	Dir.chdir(File.join(BASE_PATH, "Source")) do
+		Rake::FileList.new("**/*.lua") do |fl|
+			fl.exclude(/\Libs/)
+			fl.each do |f|
+				puts "Validating #{f}..."
+				sh "luac -p #{f}", verbose:false do |ok, res|
+					abort "*** ERROR *** Syntax validation failed for #{f}." unless ok
+				end
+			end
 		end
 	end
 end
