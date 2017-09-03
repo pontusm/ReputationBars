@@ -82,9 +82,12 @@ end
 -- Show config
 ------------------------------------------------------------------------------
 function mod:ShowConfig(moduleName)
+	-- We call Blizzard api multiple times to workaround bug
 	if moduleName and #moduleName > 0 then
 		InterfaceOptionsFrame_OpenToCategory(self.optionFrames.plugins[moduleName])
+		InterfaceOptionsFrame_OpenToCategory(self.optionFrames.plugins[moduleName])
 	else
+		InterfaceOptionsFrame_OpenToCategory(self.optionFrames.general)
 		InterfaceOptionsFrame_OpenToCategory(self.optionFrames.general)
 	end
 end
@@ -142,7 +145,7 @@ function mod:RefreshAllFactions()
 		elseif factionID and C_Reputation.IsFactionParagon(factionID) then
 			isParagon = true
 			local currentValue, threshold, rewardQuestID, hasRewardPending = C_Reputation.GetFactionParagonInfo(factionID)
-			earnedValue = currentValue
+			earnedValue = currentValue % threshold
 			bottomValue = 0
 			topValue = threshold
 		end
