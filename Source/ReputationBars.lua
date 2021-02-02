@@ -250,10 +250,12 @@ function mod:COMBAT_TEXT_UPDATE(event, type, name, amount)
 		end
 	
 		-- Collect all gained reputation before notifying modules
-		if not reputationChanges[name] then
-			reputationChanges[name] = amount
-		else
-			reputationChanges[name] = reputationChanges[name] + amount
+		if name then
+			if not reputationChanges[name] then
+				reputationChanges[name] = amount
+			else
+				reputationChanges[name] = reputationChanges[name] + amount
+			end
 		end
 
 		self:ScheduleUpdate()
@@ -288,13 +290,25 @@ function mod:SetupOptions()
 	self.optionFrames = {}
 	local ACD = LibStub("AceConfigDialog-3.0")
 	self.optionFrames.general = ACD:AddToBlizOptions(appName, nil, nil, "general")
-	
 	self.optionFrames.plugins = {}
+	
+	-- Pull all the paenels into an array/collection, because we want them listed in Alphabetical Sequence
+	local panels = {}	
 	for name, module in self:IterateModules() do
+		tinsert(panels,name)
+	end
+
+	-- Sort the Array, using the built in Sorting Algorithm
+	sort(panels)
+
+	--Cycle through the array and push them into the BlizOptions
+	for i = 1, #panels do
+		local name = panels[i]
 		local sectionName = mod.options.args[name].name
 		self.optionFrames.plugins[name] = ACD:AddToBlizOptions(appName, sectionName, appName, name)
 	end
 
+	--Add profiles last
 	self.optionFrames.profiles = ACD:AddToBlizOptions(appName, "Profiles", appName, "profiles")
 end
 
@@ -372,7 +386,21 @@ mod.options = {
 					name = "Credits go to the Ace3 team for an excellent framework.\n",
 					order = 102,
 				},
-				
+				Attributions_000 = {
+					type = 'description',
+					name = "\n",
+					order = 103,
+				},
+				Attributions_001 = {
+					type = 'description',
+					name = "Shadowlands stabilization fixes by Karpana of Arygos (US).\n",
+					order = 103,
+				},
+				Attributions_002 = {
+					type = 'description',
+					name = "Inclusion of secondary StaticBars by Karpana of Arygos (US).\n",
+					order = 105,
+				},
 			},
 		},
 		

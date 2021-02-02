@@ -1,0 +1,45 @@
+## Interface: 90002
+## Title: Reputation Bars 
+## Notes: Tracks reputation using some glorious bars!
+
+###### ORIGINAL AUTHOR & SOURCE
+## Version: 8.0.0
+## Original Author: Pontus Munck
+## Original Co-Author Mjumnito
+## Special thanks to trent2 for his fixes while I had RL issues happening
+## Revision: bfa76502528a850aae27f2f8fb4576d4fc0e2d1b
+## https://www.curseforge.com/wow/addons/reputation-bars/source
+
+###### UPDATED FOR 9.0.2 SHADOWLANDS
+## Version: 9.0.2
+## Author: Karpana @ Arygos-US
+## https://github.com/karpana/ReputationBars_redux.git  
+######
+## CHANGE LOG
+## Oct 15 2020 - Changes made to support Shadowlands 9.X 'CreateFrame' changes made by Blizzard
+##                   - hack made to LibBars library
+##                   - hack made to ReputationTreeView widget
+## Jan 25 2021 - Duplicated a second "StaticBar".  Can't figure out how to sort the option tables though but it works.
+## Jan 30 2021 - Sorted the Options SubPanes (Since the new StaticBar2 wasn't showing up in an appropriate sequence)
+##
+
+## OptionalDeps: Ace3
+## X-Embeds: Ace3
+## SavedVariables: ReputationBarsDB
+
+embeds.xml
+
+## Widgets
+Widgets\AceGUIContainer-ReputationTreeView.lua
+
+## Load locales
+Locales\Locales.xml
+
+## Load core
+ReputationBars.lua
+
+## Load submodules
+Modules\WatchBar.lua
+Modules\AutoBars.lua
+Modules\StaticBars.lua
+Modules\StaticBars2.lua

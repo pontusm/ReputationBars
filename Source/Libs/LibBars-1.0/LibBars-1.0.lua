@@ -1,3 +1,10 @@
+--****************************************************
+--** NOTE: THIS LIBRARY WAS MANUALLY 
+--**       EDITED BY KARPANA TO CORRECT 
+--**       ISSUES INTRODUCED BY BLIZZ API 
+--**       CHANGES WITH THE RELEASE OF SHADOWLANDS
+--****************************************************
+
 local MAJOR = "LibBars-1.0"
 local MINOR = 90000 + tonumber(("$Revision: 22 $"):match("%d+"))
 
@@ -358,7 +365,7 @@ do
 			-- tile = true
 		-- })
 
-		list.button = CreateFrame("Button", nil, list)
+		list.button = CreateFrame("Button", nil, list,"BackdropTemplate")
 		list.button:SetBackdrop(frame_defaults)
 
 		list.button:SetNormalFontObject(ChatFontSmall)

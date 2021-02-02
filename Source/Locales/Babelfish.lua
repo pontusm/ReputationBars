@@ -21,6 +21,7 @@ local files = {
 	"Modules/WatchBar.lua",
 	"Modules/AutoBars.lua",
 	"Modules/StaticBars.lua",
+	"Modules/StaticBars2.lua",
 }
 
 --[[
