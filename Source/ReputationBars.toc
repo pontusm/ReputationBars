@@ -10,18 +10,21 @@
 ## Revision: bfa76502528a850aae27f2f8fb4576d4fc0e2d1b
 ## https://www.curseforge.com/wow/addons/reputation-bars/source
 
-###### UPDATED FOR 9.0.2 SHADOWLANDS
+###### UPDATED SHADOWLANDS
 ## Version: 9.0.2
 ## Author: Karpana @ Arygos-US
 ## https://github.com/karpana/ReputationBars_redux.git  
 ######
 ## CHANGE LOG
+######
 ## Oct 15 2020 - Changes made to support Shadowlands 9.X 'CreateFrame' changes made by Blizzard
 ##                   - hack made to LibBars library
 ##                   - hack made to ReputationTreeView widget
 ## Jan 25 2021 - Duplicated a second "StaticBar".  Can't figure out how to sort the option tables though but it works.
 ## Jan 30 2021 - Sorted the Options SubPanes (Since the new StaticBar2 wasn't showing up in an appropriate sequence)
-##
+######
+## Version: 9.0.2
+## Mar 07 2021 - Internal updates for 9.0.5 (Interface version in this file, and Config screen in ReputationsBars.lua)
 
 ## OptionalDeps: Ace3
 ## X-Embeds: Ace3
