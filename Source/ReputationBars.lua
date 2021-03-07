@@ -394,12 +394,22 @@ mod.options = {
 				Attributions_001 = {
 					type = 'description',
 					name = "Shadowlands stabilization fixes by Karpana of Arygos (US).\n",
-					order = 103,
+					order = 104,
 				},
 				Attributions_002 = {
 					type = 'description',
 					name = "Inclusion of secondary StaticBars by Karpana of Arygos (US).\n",
 					order = 105,
+				},
+				Attributions_003 = {
+					type = 'description',
+					name = "\n",
+					order = 106,
+				},
+				Attributions_004 = {
+					type = 'description',
+					name = "Updated for 9.0.5 on March 7th 2021 by Karpana of Arygos (US).\n",
+					order = 107,
 				},
 			},
 		},
