@@ -1,4 +1,4 @@
-## Interface: 90005
+## Interface: 90100
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
 
@@ -25,6 +25,7 @@
 ######
 ## Version: 9.0.2
 ## Mar 07 2021 - Internal updates for 9.0.5 (Interface version in this file, and Config screen in ReputationsBars.lua)
+## Jun 29 2021 - Internal updates for 9.1.5 (Interface version in this file, and Config screen in ReputationsBars.lua)
 
 ## OptionalDeps: Ace3
 ## X-Embeds: Ace3
