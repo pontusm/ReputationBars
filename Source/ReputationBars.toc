@@ -26,6 +26,7 @@
 ## Version: 9.0.2
 ## Mar 07 2021 - Internal updates for 9.0.5 (Interface version in this file, and Config screen in ReputationsBars.lua)
 ## Jun 29 2021 - Internal updates for 9.1.5 (Interface version in this file, and Config screen in ReputationsBars.lua)
+## Jul 26 2021 - Fix for Ve'nari, which is now a Paragon Reputation.  Need to consider whether to "flip" the functionality of the if/elseif statement at lines 139/145.
 
 ## OptionalDeps: Ace3
 ## X-Embeds: Ace3

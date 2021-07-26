@@ -136,7 +136,7 @@ function mod:RefreshAllFactions()
 		if not name or name == lastName and name ~= GUILD then break end
 		local isParagon = false
 		local friendID, friendRep, friendMaxRep, _, _, _, friendTextLevel, friendThresh = GetFriendshipReputation(factionID)
-		if friendID ~= nil then
+		if friendID ~= nil and factionID ~=2432 then  --added Ve'nari (2432) as an exception.
 			bottomValue = friendThresh
 			if nextThresh then
 				topValue = friendThresh + min( friendMaxRep - friendThresh, 8400 ) -- Magic number! Yay!
@@ -415,6 +415,11 @@ mod.options = {
 					type = 'description',
 					name = "Updated for 9.1.0 on June 29th 2021 by Karpana of Arygos (US).\n",
 					order = 108,
+				},
+				Attributions_006 = {
+					type = 'description',
+					name = "Ve'nari Paragon Reputation updates on July 25th 2021 by Karpana of Arygos (US).\n",
+					order = 109,
 				},
 			},
 		},
