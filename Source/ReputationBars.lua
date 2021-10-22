@@ -424,12 +424,12 @@ mod.options = {
 				Attributions_007 = {
 					type = 'description',
 					name = "Archivist's Codex Paragaon Reputation updates on July 25th 2021 by Karpana of Arygos (US).   Many Thanks to Mithrasangel!!!\n",
-					order = 109,
+					order = 110,
 				},
 				Attributions_008 = {
 					type = 'description',
 					name = "Second fix for Archivist's Codex Paragon Reputation updates on October 22nd, 2021 by Karpana of Arygos (US)\n",
-					order = 110,
+					order = 111,
 				},
 			},
 		},
