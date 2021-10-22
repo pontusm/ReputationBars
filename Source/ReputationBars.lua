@@ -428,8 +428,13 @@ mod.options = {
 				},
 				Attributions_008 = {
 					type = 'description',
-					name = "Second fix for Archivist's Codex Paragon Reputation updates on October 22nd, 2021 by Karpana of Arygos (US)\n",
+					name = "Second fix for Archivist's Codex Paragon Reputation on October 22nd, 2021 by Karpana of Arygos (US)\n",
 					order = 111,
+				},
+				Attributions_009 = {
+					type = 'description',
+					name = "Updated for 9.1.5 on October 22nd, 2021 by Karpana of Arygos (US).\n",
+					order = 112,
 				},
 			},
 		},
