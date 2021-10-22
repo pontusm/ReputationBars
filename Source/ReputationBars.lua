@@ -136,7 +136,7 @@ function mod:RefreshAllFactions()
 		if not name or name == lastName and name ~= GUILD then break end
 		local isParagon = false
 		local friendID, friendRep, friendMaxRep, _, _, _, friendTextLevel, friendThresh = GetFriendshipReputation(factionID)
-		if friendID ~= nil and factionID ~=2432 and factionID ~= 24702 then  --added Ve'nari (2432) and Archivist's Codex (2472) as exceptions.
+		if friendID ~= nil and factionID ~=2432 and factionID ~= 2472 then  --added Ve'nari (2432) and Archivist's Codex (2472) as exceptions.
 			bottomValue = friendThresh
 			if nextThresh then
 				topValue = friendThresh + min( friendMaxRep - friendThresh, 8400 ) -- Magic number! Yay!
@@ -423,8 +423,13 @@ mod.options = {
 				},
 				Attributions_007 = {
 					type = 'description',
-					name = "Archivist's COdex, Reputation updates on July 25th 2021 by Karpana of Arygos (US).   Many Thanks to Mithrasangel!!!\n",
+					name = "Archivist's Codex Paragaon Reputation updates on July 25th 2021 by Karpana of Arygos (US).   Many Thanks to Mithrasangel!!!\n",
 					order = 109,
+				},
+				Attributions_008 = {
+					type = 'description',
+					name = "Second fix for Archivist's Codex Paragon Reputation updates on October 22nd, 2021 by Karpana of Arygos (US)\n",
+					order = 110,
 				},
 			},
 		},
