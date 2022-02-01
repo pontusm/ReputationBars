@@ -1,4 +1,4 @@
-## Interface: 90105
+## Interface: 90200
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
 
@@ -32,6 +32,7 @@
 ## Oct 22 2021 - Second Fix for Fix for Achivist's Codex
 ## Version: 9.1.5
 ## OCt 22 2021 - Preparations for 9.1.5 (Interface version in this file, and Config screen in ReputationsBars.lua)
+## Feb 01 2022 - Preparations for 9.2.0 (Interface version in this file, and Config screen in ReputattionBars.lua)
 
 ## OptionalDeps: Ace3
 ## X-Embeds: Ace3

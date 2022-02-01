@@ -436,6 +436,11 @@ mod.options = {
 					name = "Updated for 9.1.5 on October 22nd, 2021 by Karpana of Arygos (US).\n",
 					order = 112,
 				},
+				Attributions_010 = {
+					type = 'description',
+					name = "Updated for 9.2.0 on February 1st, 2022 by Karpana of Arygos (US).\n",
+					order = 113,
+				},
 			},
 		},
 		
