@@ -61,3 +61,4 @@ L["This option will automatically switch to the most recent faction you gain rep
 L["This will display a bar when you lose reputation with a faction."] = "Esto mostrará una barra cuando se pierda reputación con una facción."
 L["Time (seconds)"] = "Tiempo (segundos)"
 L["WatchBar settings"] = "Configurar WatchBar"
+L["Paragon"] = "Paragón"

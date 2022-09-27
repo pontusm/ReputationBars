@@ -77,3 +77,4 @@ L["Visible"] = true
 L["WatchBar settings"] = true
 L["|cffeda55fDrag|r to move the frame"] = true
 L["|cffeda55fRight Click|r to open the configuration window"] = true
+L["Paragon"] = true
