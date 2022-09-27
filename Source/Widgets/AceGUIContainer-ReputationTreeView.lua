@@ -37,7 +37,7 @@ do
 	function del(t)
 		for k in pairs(t) do
 			t[k] = nil
-		end	
+		end
 		pool[t] = true
 	end
 end
@@ -68,7 +68,7 @@ local function UpdateButton(button, treeline, selected, canExpand, isExpanded)
 	local value = treeline.value
 	local uniquevalue = treeline.uniquevalue
 	local disabled = treeline.disabled
-	
+
 	button.treeline = treeline
 	button.value = value
 	button.uniquevalue = uniquevalue
@@ -91,7 +91,7 @@ local function UpdateButton(button, treeline, selected, canExpand, isExpanded)
 		button:SetHighlightFontObject("GameFontHighlightSmall")
 		button.text:SetPoint("LEFT", (icon and 16 or 0) + 8 * level, 2)
 	end
-	
+
 	if disabled then
 		button:EnableMouse(false)
 		button.text:SetText("|cff808080"..text..FONT_COLOR_CODE_CLOSE)
@@ -99,20 +99,20 @@ local function UpdateButton(button, treeline, selected, canExpand, isExpanded)
 		button.text:SetText(text)
 		button:EnableMouse(true)
 	end
-	
+
 	if icon then
 		button.icon:SetTexture(icon)
 		button.icon:SetPoint("LEFT", 8 * level, (level == 1) and 0 or 1)
 	else
 		button.icon:SetTexture(nil)
 	end
-	
+
 	if iconCoords then
 		button.icon:SetTexCoord(unpack(iconCoords))
 	else
 		button.icon:SetTexCoord(0, 1, 0, 1)
 	end
-	
+
 	if canExpand then
 		if not isExpanded then
 			toggle:SetNormalTexture("Interface\\Buttons\\UI-PlusButton-UP")
@@ -287,10 +287,10 @@ local function Dragger_OnMouseUp(frame)
 	treeframe:SetHeight(0)
 	treeframe:SetPoint("TOPLEFT", frame, "TOPLEFT",0,0)
 	treeframe:SetPoint("BOTTOMLEFT", frame, "BOTTOMLEFT",0,0)
-	
+
 	local status = self.status or self.localstatus
 	status.treewidth = treeframe:GetWidth()
-	
+
 	treeframe.obj:Fire("OnTreeResize",treeframe:GetWidth())
 	-- recalculate the content width
 	treeframe.obj:OnWidthSet(status.fullwidth)
@@ -300,7 +300,7 @@ end
 
 local function CheckBox_ValueChanged(widget, event, value)
 	faction = widget:GetUserData("faction")
-	widget.parent:Fire("OnValueChanged", faction, value)
+	widget.parent.parent:Fire("OnValueChanged", faction, value) --first parent is the scrollframe, second parent is the actual frame
 end
 
 local function GetFactionTree()
@@ -416,8 +416,8 @@ local methods = {
 	--sets the tree to be displayed
 	["SetTree"] = function(self, tree, filter)
 		self.filter = filter
-		if tree then 
-			assert(type(tree) == "table") 
+		if tree then
+			assert(type(tree) == "table")
 		end
 		self.tree = tree
 		self:RefreshTree()
@@ -442,7 +442,7 @@ local methods = {
 	end,
 
 	["RefreshTree"] = function(self,scrollToSelection)
-		local buttons = self.buttons 
+		local buttons = self.buttons
 		local lines = self.lines
 
 		for i, v in ipairs(buttons) do
@@ -463,7 +463,7 @@ local methods = {
 		local tree = self.tree
 
 		local treeframe = self.treeframe
-		
+
 		status.scrollToSelection = status.scrollToSelection or scrollToSelection	-- needs to be cached in case the control hasn't been drawn yet (code bails out below)
 
 		self:BuildLevel(tree, 1)
@@ -575,8 +575,16 @@ local methods = {
 			status.selected = value
 			self:Fire("OnGroupSelected", value)
 
-			--local group = AceGUI:Create("SimpleGroup")
 			self:ReleaseChildren()
+
+			--wrap the checkboxes below in a scroll frame
+			local scroll = AceGUI:Create("ScrollFrame")
+			scroll:SetFullHeight(false)
+			scroll:SetPoint("TOPLEFT", 10, -10)
+			scroll:SetPoint("BOTTOMRIGHT", -10, 10)
+			scroll:SetFullWidth(true)
+			scroll:SetHeight(400)
+			scroll:SetLayout("Flow")
 
 			local line = findLine(self, value)
 			local factions = factionLookup[line.value]
@@ -587,9 +595,11 @@ local methods = {
 					cb:SetUserData("faction", fi.name)
 					if watchedFactions[fi.name] then cb:SetValue(true) end
 					cb:SetCallback("OnValueChanged", CheckBox_ValueChanged)
-					self:AddChild(cb)
+					cb:SetWidth(400) -- widen the checkbox so that we only have 1 checkbox per row
+					scroll:AddChild(cb) -- add the checkbox to the scrollframe
 				end
 			end
+			self:AddChild(scroll) -- add the scrollframe to the master frame
 		end
 	end,
 
@@ -647,7 +657,13 @@ local methods = {
 		if maxtreewidth > 100 and status.treewidth > maxtreewidth then
 			self:SetTreeWidth(maxtreewidth, status.treesizable)
 		end
-		treeframe:SetMaxResize(maxtreewidth, 1600)
+
+		if treeframe.SetResizeBounds then -- WoW 10.0
+			treeframe:SetResizeBounds(100, 1, 400, 1600)
+		else
+			treeframe:SetMinResize(100, 1)
+			treeframe:SetMaxResize(400, 1600)
+		end
 	end,
 
 	["OnHeightSet"] = function(self, height)
@@ -693,9 +709,8 @@ local methods = {
 	["LayoutFinished"] = function(self, width, height)
 		--print("LayoutFinished", width, height)
 		if self.noAutoHeight then return end
-		if not height or height < 300 then height = 300 end
+		height = 400	--if not height or height < 300 then height = 300 end
 		self:SetHeight((height or 0) + 20)
-		--self:SetHeight(300)
 	end
 }
 
@@ -729,8 +744,12 @@ local function Constructor()
 	treeframe:SetBackdropColor(0.1, 0.1, 0.1, 0.5)
 	treeframe:SetBackdropBorderColor(0.4, 0.4, 0.4)
 	treeframe:SetResizable(true)
-	treeframe:SetMinResize(100, 1)
-	treeframe:SetMaxResize(400, 1600)
+	if treeframe.SetResizeBounds then -- WoW 10.0
+		treeframe:SetResizeBounds(100, 1, 400, 1600)
+	else
+		treeframe:SetMinResize(100, 1)
+		treeframe:SetMaxResize(400, 1600)
+	end
 	treeframe:SetScript("OnUpdate", FirstFrameUpdate)
 	treeframe:SetScript("OnSizeChanged", Tree_OnSizeChanged)
 	treeframe:SetScript("OnMouseWheel", Tree_OnMouseWheel)
@@ -767,8 +786,8 @@ local function Constructor()
 	border:SetBackdropColor(0.1, 0.1, 0.1, 0.5)
 	border:SetBackdropBorderColor(0.4, 0.4, 0.4)
 
-	--Container Support
-	local content = CreateFrame("Frame", nil, border,"BackdropTemplate")
+	--Container Support (this is the frame the faction check boxes go into)
+	local content = CreateFrame("Frame", nil, border,"BackdropTemplate") 
 	content:SetPoint("TOPLEFT", 10, -10)
 	content:SetPoint("BOTTOMRIGHT", -10, 10)
 
