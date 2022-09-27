@@ -1,4 +1,4 @@
-## Interface: 90200
+## Interface: 90207
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
 
@@ -10,10 +10,9 @@
 ## Revision: bfa76502528a850aae27f2f8fb4576d4fc0e2d1b
 ## https://www.curseforge.com/wow/addons/reputation-bars/source
 
-###### UPDATED SHADOWLANDS
-## Version: 9.0.2
+###### UPDATES FOR SHADOWLANDS
 ## Author: Karpana @ Arygos-US
-## https://github.com/karpana/ReputationBars_redux.git  
+## https://github.com/pontusm/ReputationBars  
 ######
 ## CHANGE LOG
 ######
@@ -22,17 +21,29 @@
 ##                   - hack made to ReputationTreeView widget
 ## Jan 25 2021 - Duplicated a second "StaticBar".  Can't figure out how to sort the option tables though but it works.
 ## Jan 30 2021 - Sorted the Options SubPanes (Since the new StaticBar2 wasn't showing up in an appropriate sequence)
-######
-## Version: 9.0.2
 ## Mar 07 2021 - Internal updates for 9.0.5 (Interface version in this file, and Config screen in ReputationsBars.lua)
-## Version: 9.1.0
 ## Jun 29 2021 - Internal updates for 9.1.5 (Interface version in this file, and Config screen in ReputationsBars.lua)
 ## Jul 26 2021 - Fix for Ve'nari, which is now a Paragon Reputation.  Need to consider whether to "flip" the functionality of the if/elseif statement at lines 139/145.
 ## Aug 21 2021 - Fix for Achivist's Codex, which is a Paragon Reputation, similart to Ven'ari.   Many THanks to Mithrasangel.
 ## Oct 22 2021 - Second Fix for Fix for Achivist's Codex
-## Version: 9.1.5
-## OCt 22 2021 - Preparations for 9.1.5 (Interface version in this file, and Config screen in ReputationsBars.lua)
+## Oct 22 2021 - Preparations for 9.1.5 (Interface version in this file, and Config screen in ReputationsBars.lua)
 ## Feb 01 2022 - Preparations for 9.2.0 (Interface version in this file, and Config screen in ReputattionBars.lua)
+## Sep 25 2022 - Update ToC for 9.2.7
+
+###### UPDATES FOR DRAGONFLIGHT
+## Author: Karpana @ Arygos-US
+## https://github.com/pontusm/ReputationBars  
+######
+## CHANGE LOG
+######
+## Sep 25 2022 - Changes to support Friendship data being sourced from GetFriendshipReputation in Shadowlandsand and seamlessly switching over to C_GossipInfo.GetFriendshipReputation in Dragonflight
+##             - Permanently(?) fix issues with Shadowlands (and future) factions that aren't standard, and aren't friends (e.g. Venari and Archivist's Codex)
+##             - QoL improvement for Paragon reputations (shows Paragon instead of Exalted)
+## Sep 26 2022 - Faction checkboxes have a scrollbar (for those long lists, including Inactive)
+##             - Upate of ACE3 libs to r1281
+
+
+
 
 ## OptionalDeps: Ace3
 ## X-Embeds: Ace3

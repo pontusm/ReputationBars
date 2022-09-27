@@ -123,51 +123,158 @@ end
 
 -- Refresh the list of known factions
 function mod:RefreshAllFactions()
+
+	local expansionLevel = GetClientDisplayExpansionLevel()
+	--if DLAPI then DLAPI.DebugLog("ReputationBars", "expansionLevel: %s", tostring(expansionLevel)) end
+
 	local i = 1
 	local lastName
 	local factions = {}
 	--ExpandAllFactionHeaders()
-	repeat
-		-- name, description, standingId, bottomValue, topValue, earnedValue, atWarWith,
-		--  canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID,
-		--  hasBonusRepGain, canBeLFGBonus = GetFactionInfo(factionIndex)
-		local name, _, standingId, bottomValue, topValue, earnedValue, _,
-			_, isHeader, isCollapsed, hasRep, _, isChild, factionID = GetFactionInfo(i)
+	for i = 1, GetNumFactions() do
+		local name, description, standingId, bottomValue, topValue, earnedValue, atWarWith,
+			canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus = GetFactionInfo(i)
+
 		if not name or name == lastName and name ~= GUILD then break end
-		local isParagon = false
-		local friendID, friendRep, friendMaxRep, _, _, _, friendTextLevel, friendThresh = GetFriendshipReputation(factionID)
-		if friendID ~= nil and factionID ~=2432 and factionID ~= 2472 then  --added Ve'nari (2432) and Archivist's Codex (2472) as exceptions.
-			bottomValue = friendThresh
-			if nextThresh then
-				topValue = friendThresh + min( friendMaxRep - friendThresh, 8400 ) -- Magic number! Yay!
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "ReputationBars.lua @ 139") end
+	    --if DLAPI then DLAPI.DebugLog("ReputationBars", "          factionIndex: %s",tostring(i)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          name: %s", tostring(name)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          description: %s", tostring(description)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          standingID: %s", tostring(standingId)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          bottomValue: %s", tostring(bottomValue)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          topValue: %s", tostring(topValue)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          earnedValue: %s", tostring(earnedValue)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          atWarWith: %s", tostring(atWarWith)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          canToggleAtWar: %s", tostring(canToggleAtWar)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          isHeader: %s", tostring(isHeader)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          isCollapsed: %s", tostring(isCollapsed)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          hasRep: %s", tostring(hasRep)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          isWatched: %s", tostring(isWatched)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          isChild: %s", tostring(isChild)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          factionID: %s", tostring(factionID)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          hasBonusRepGain: %s", tostring(hasBonusRepGain)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          canBeLFGBonus: %s", tostring(canBeLFGBonus)) end
+
+			
+		--define and populate (with faction data) all our "insert variables" for our internal table
+        local nsrt_name       = name
+		local nsrt_standingId = standingId
+		local nsrt_min        = bottomValue
+		local nsrt_max        = topValue
+		local nsrt_value      = earnedValue
+		local nsrt_isHeader   = isHeader
+		local nsrt_isChild    = isChild
+		local nsrt_hasRep     = hasRep
+		local nsrt_isParagon = false
+		local nsrt_isActive   = not IsFactionInactive(i)
+		local nsrt_factionID  = factionID
+		local nsrt_friendID
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          isActive (dervied): %s", tostring(nsrt_isActive)) end
+
+        if nsrt_isheader == true then
+			--figure out if this is a friend (rather than a faction), and if so, override some of our base faction values.
+			if expansionLevel >= 9 then -- DragonFlight
+				--***************************************--
+				--*       D R A G O N F L I G H T       *--
+				--***************************************--
+				local FriendshipInfo= C_GossipInfo.GetFriendshipReputation(factionID)
+
+				if FriendshipInfo.friendshipFactionID ~= 0 then
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> friendshipFactionID: %s", tostring(FriendshipInfo.friendshipFactionID)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> standing: %s", tostring(FriendshipInfo.standing)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> maxRep: %s", tostring(FriendshipInfo.maxRep)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> name: %s", tostring(FriendshipInfo.name)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> text: %s", tostring(FriendshipInfo.text)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> texture: %s", tostring(FriendshipInfo.texture)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> reaction: %s", tostring(FriendshipInfo.reaction)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> reactionThreshold: %s", tostring(FriendshipInfo.reactionThreshold)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> nextThreshold: %s", tostring(FriendshipInfo.nextThreshold)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> reversedColor: %s", tostring(FriendshipInfo.reversedColor)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> overrideColor: %s", tostring(FriendshipInfo.overrideColor)) end
+					if FriendshipInfo.nextThreshold ~= nil then --handle a weird scenario where the faction is a friend, but has no thresholds...
+						nsrt_min = FriendshipInfo.reactionThreshold
+						nsrt_max = FriendshipInfo.nextThreshold
+						nsrt_value = FriendshipInfo.standing
+						nsrt_friendID = FriendshipInfo.friendshipFactionID
+					end
+				end
+			else --Shadowlands
+				--***************************************--
+				--*        S H A D O W L A N D S        *--
+				--***************************************--
+				local x_friendID, x_friendRep, x_friendMaxRep, x_friendName, x_friendText, x_friendTexture, x_friendTextLevel, x_friendThreshhold , x_nextFriendThreshold = GetFriendshipReputation(factionID)
+				if x_friendID then 
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> friendshipFactionID: %s", tostring(FriendshipInfo.friendshipFactionID)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> standing: %s", tostring(FriendshipInfo.standing)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> maxRep: %s", tostring(FriendshipInfo.maxRep)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> name: %s", tostring(FriendshipInfo.name)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> text: %s", tostring(FriendshipInfo.text)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> texture: %s", tostring(FriendshipInfo.texture)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> reaction: %s", tostring(FriendshipInfo.reaction)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> reactionThreshold: %s", tostring(FriendshipInfo.reactionThreshold)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> nextThreshold: %s", tostring(FriendshipInfo.nextThreshold)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> reversedColor: %s", tostring(FriendshipInfo.reversedColor)) end
+					--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> overrideColor: %s", tostring(FriendshipInfo.overrideColor)) end
+					if x_nextFriendThreshold ~= nil then --handle a weird scenario where the faction is a friend, but has no thresholds...
+						nsrt_min = x_friendThreshold
+						nsrt_max = x_nextFriendThreshold-- ????FriendshipInfo.nextThreshold
+						nsrt_value = x_friendRep
+						nsrt_friendID = x_fiendID
+					end
+				end
 			end
-			earnedValue = friendRep
-		elseif factionID and C_Reputation.IsFactionParagon(factionID) then
-			isParagon = true
+		end
+
+
+        --figure out if this is a paragon faction (extra rep beyond exalted), and if so, override some of our base faction values
+		if factionID and C_Reputation.IsFactionParagon(factionID) then
+			nsrt_isParagon = true
 			local currentValue, threshold, rewardQuestID, hasRewardPending = C_Reputation.GetFactionParagonInfo(factionID)
-			earnedValue = currentValue % threshold
-			bottomValue = 0
-			topValue = threshold
+			--if DLAPI then DLAPI.DebugLog("ReputationBars", "          ==> currentValue: %s", tostring(currentValue)) end
+			--if DLAPI then DLAPI.DebugLog("ReputationBars", "          ==> threshold: %s", tostring(threshold)) end
+			--if DLAPI then DLAPI.DebugLog("ReputationBars", "          ==> rewardQuestID: %s", tostring(rewardQuestID)) end
+			--if DLAPI then DLAPI.DebugLog("ReputationBars", "          ==> hasRewardPending: %s", tostring(hasRewardPending)) end
+			nsrt_value = currentValue % threshold
+			nsrt_min = 0
+			nsrt_max = threshold
 		end
 		lastName = name
+
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> -----------------------------") end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> nsrt_name: %s", tostring(nsrt_name)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> nsrt_standingId: %s", tostring(nsrt_standingId)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> nsrt_min: %s", tostring(nsrt_min)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> nsrt_max: %s", tostring(nsrt_max)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> nsrt_value: %s", tostring(nsrt_value)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> nsrt_isHeader: %s", tostring(nsrt_isHeader)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> nsrt_isChild: %s", tostring(nsrt_isChild)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> nsrt_hasRep: %s", tostring(nsrt_hasRep)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> nsrt_isParagon: %s", tostring(nsrt_isParagon)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> nsrt_isActive: %s", tostring(nsrt_isActive)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> nsrt_factionID: %s", tostring(nsrt_factionID)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> nsrt_friendID: %s", tostring(nsrt_friendID)) end
+		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          --> -----------------------------") end
+
+
 		tinsert(factions, {
-			name = name,
-			standingId = standingId,
-			min = bottomValue,
-			max = topValue,
-			value = earnedValue,
-			isHeader = isHeader,
-			isChild = isChild,
-			hasRep = hasRep,
-			isParagon = isParagon,
-			isActive = not IsFactionInactive(i),
-			factionID = factionID,
-			friendID = friendID
-		})
+			name       = nsrt_name,
+			standingId = nsrt_standingId,
+			min        = nsrt_min,
+			max        = nsrt_max,
+			value      = nsrt_value,
+			isHeader   = nsrt_isHeader,
+			isChild    = nsrt_isChild,
+			hasRep     = nsrt_hasRep,
+			isParagon  = nsrt_isParagon,
+			isActive   = nsrt_isActive,
+			factionID  = nsrt_factionID,
+			friendID   = nsrt_friendID
+		})	
+
+		
 		UpdateFactionAmount(name, earnedValue)
 		if isCollapsed then ExpandFactionHeader(i) end
-		i = i + 1
-	until i > 200
+	end
 
 	allFactions = factions
 end
@@ -368,13 +475,8 @@ mod.options = {
 
 				spacer = {
 					type = 'description',
-					order = 99,
-					name = "\n\n\n\n\n\n\n",
-				},
-				hdr2 = {
-					type = 'header',
-					name = "",
 					order = 100,
+					name = "\n",
 				},
 				author = {
 					type = 'description',
@@ -388,58 +490,105 @@ mod.options = {
 				},
 				Attributions_000 = {
 					type = 'description',
-					name = "\n",
+					name = "Continued support in Shadowlands and beyond by Karpana of Arygos (US)\n",
 					order = 103,
 				},
+
 				Attributions_001 = {
 					type = 'description',
-					name = "Shadowlands stabilization fixes by Karpana of Arygos (US).\n",
+					name = "\n\n****** SHADOWLANDS ******\n",
 					order = 104,
 				},
 				Attributions_002 = {
 					type = 'description',
-					name = "Inclusion of secondary StaticBars by Karpana of Arygos (US).\n",
+					name = "Oct-18-2020: Shadowlands stabilization fixes\n",
 					order = 105,
 				},
 				Attributions_003 = {
 					type = 'description',
-					name = "\n",
+					name = "Feb-01-2021: Inclusion of secondary StaticBars\n",
 					order = 106,
 				},
 				Attributions_004 = {
 					type = 'description',
-					name = "Updated for 9.0.5 on March 7th 2021 by Karpana of Arygos (US).\n",
+					name = "Mar-07-2021: Updated for 9.0.5\n",
 					order = 107,
 				},
 				Attributions_005 = {
 					type = 'description',
-					name = "Updated for 9.1.0 on June 29th 2021 by Karpana of Arygos (US).\n",
+					name = "Jun-29-2021: Updated for 9.1.0\n",
 					order = 108,
 				},
 				Attributions_006 = {
 					type = 'description',
-					name = "Ve'nari Paragon Reputation updates on July 25th 2021 by Karpana of Arygos (US).\n",
+					name = "Jul-25-2021: Ve'nari Paragon Reputation updates\n",
 					order = 109,
 				},
 				Attributions_007 = {
 					type = 'description',
-					name = "Archivist's Codex Paragaon Reputation updates on July 25th 2021 by Karpana of Arygos (US).   Many Thanks to Mithrasangel!!!\n",
+					name = "Jul-25-2021: Archivist's Codex Paragaon Reputation updates.   Many Thanks to Mithrasangel!!!\n",
 					order = 110,
 				},
 				Attributions_008 = {
 					type = 'description',
-					name = "Second fix for Archivist's Codex Paragon Reputation on October 22nd, 2021 by Karpana of Arygos (US)\n",
+					name = "Oct-22-2021: Second fix for Archivist's Codex Paragon Reputation\n",
 					order = 111,
 				},
 				Attributions_009 = {
 					type = 'description',
-					name = "Updated for 9.1.5 on October 22nd, 2021 by Karpana of Arygos (US).\n",
+					name = "Oct-22-2021: Updated for 9.1.5\n",
 					order = 112,
 				},
 				Attributions_010 = {
 					type = 'description',
-					name = "Updated for 9.2.0 on February 1st, 2022 by Karpana of Arygos (US).\n",
+					name = "Feb-01-2022: Updated for 9.2.0\n",
 					order = 113,
+				},
+				Attributions_011 = {
+					type = 'description',
+					name = "Sep-25-2022: Updated for 9.2.7\n",
+					order = 114,
+				},
+				Attributions_012 = {
+					type = 'description',
+					name = "\n****** DRAGONFLIGHT ******\n",
+					order = 115,
+				},
+				Attributions_013 = {
+					type = 'description',
+					name = "Sep-25-2022: Dragonflight API updates\n",
+					order = 116,
+				},
+				Attributions_014 = {
+					type = 'description',
+					name = "Sep-25-2022: Proper and Final (hopefully?) fix for non-standard reputations (friends, NatPagle, Venari, Achivists, etc...)\n",
+					order = 117,
+				},
+				Attributions_015 = {
+					type = 'description',
+					name = "Sep-26-2022: Quality of Life Updates to show 'Paragon' instead of exalted for those factions that have a paragon mode\n",
+					order = 118,
+				},
+				Attributions_016 = {
+					type = 'description',
+					name = "Sep-26-2022: Addition of Scrollbars for faction checkboxes\n",
+					order = 119,
+				},
+				Attributions_017 = {
+					type = 'description',
+					name = "Sep-26-2022: Update of ACE3 libs to r1281\n",
+					order = 120,
+				},
+
+				Attributions_998 = {
+					type = 'description',
+					name = "\n****** KNOWN ISSUES ******\n",
+					order = 998,
+				},
+				Attributions_999 = {
+					type = 'description',
+					name = "Watch Bars throw LUA errors and fail to properly function\n",
+					order = 999,
 				},
 			},
 		},
