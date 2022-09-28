@@ -451,7 +451,7 @@ local function GenerateTestData()
 end
 
 mod.options = {
-	name = L["StaticBars settings"],
+	name = L[modName .. " settings"],
 	type = "group",
 	childGroups = "tab",
 	get = function(info)

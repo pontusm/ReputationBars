@@ -579,6 +579,13 @@ mod.options = {
 					name = "Sep-26-2022: Update of ACE3 libs to r1281\n",
 					order = 120,
 				},
+				Attributions_018 = {
+					type = 'description',
+					name = "Sep-28-2022: Pre-preparations for multiple/additional StaticBars\n",
+					order = 121,
+				},
+
+				
 
 				Attributions_998 = {
 					type = 'description',
