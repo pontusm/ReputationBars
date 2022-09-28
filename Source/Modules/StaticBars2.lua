@@ -11,7 +11,7 @@ local L = LibStub("AceLocale-3.0"):GetLocale(appName)
 
 local LSM = LibStub("LibSharedMedia-3.0")
 
-local StatcBarsGroup
+local StaticBarsGroup
 
 local db
 local fadeTimer
@@ -67,14 +67,14 @@ end
 -------------------------------------------------------------------------------
 local function FadeOutCompleted()
 	if not db.locked then
-		StatcBarsGroup:Lock()
-		StatcBarsGroup:HideAnchor()
+		StaticBarsGroup:Lock()
+		StaticBarsGroup:HideAnchor()
 	end
 end
 
 local function FadeOut(time)
 	if hidden then return end
-	UIFrameFadeOut(StatcBarsGroup, time, StatcBarsGroup:GetAlpha(), 0)
+	UIFrameFadeOut(StaticBarsGroup, time, StaticBarsGroup:GetAlpha(), 0)
 	hidden = true
 	if fadeTimer then ReputationBars:CancelTimer(fadeTimer, true) end
 	fadeTimer = ReputationBars:ScheduleTimer(FadeOutCompleted, time)
@@ -94,12 +94,12 @@ local function FadeIn(time)
 	end
 
 	if not db.locked then
-		StatcBarsGroup:Unlock()
-		StatcBarsGroup:ShowAnchor()
+		StaticBarsGroup:Unlock()
+		StaticBarsGroup:ShowAnchor()
 	end
 
 	if not hidden then return end
-	UIFrameFadeIn(StatcBarsGroup, time, StatcBarsGroup:GetAlpha(), db.barAlpha)
+	UIFrameFadeIn(StaticBarsGroup, time, StaticBarsGroup:GetAlpha(), db.barAlpha)
 	hidden = false
 end
 
@@ -111,15 +111,15 @@ function mod:OnEnable()
 	db = self.db.profile
 
 	-- Initial load?
-	if not StatcBarsGroup then
+	if not StaticBarsGroup then
 		hidden = true
 		self:InitializeBar()
 		self:UpdateBar(false)
-		StatcBarsGroup:SetAlpha(0)
+		StaticBarsGroup:SetAlpha(0)
 		FadeIn(5)
 	else
 		self:UpdateBar(true)
-		StatcBarsGroup:Show()
+		StaticBarsGroup:Show()
 	end
 
 	self:RegisterEvent("UPDATE_FACTION")
@@ -128,8 +128,8 @@ function mod:OnEnable()
 end
 
 function mod:OnDisable()
-	if StatcBarsGroup then
-		StatcBarsGroup:Hide()
+	if StaticBarsGroup then
+		StaticBarsGroup:Hide()
 	end
 	if cleanupTimer then
 		ReputationBars:CancelTimer(cleanupTimer, true)
@@ -172,7 +172,7 @@ local function UpdateBarVisual()
 			local bar = faction.bar
 			if not bar then
 				-- Create new bar
-				bar = StatcBarsGroup:NewCounterBar(modName..factionIndex, nil, 0, 100)
+				bar = StaticBarsGroup:NewCounterBar(modName..factionIndex, nil, 0, 100)
 				bar.label:ClearAllPoints()
 				bar.label:SetPoint("CENTER", bar, "CENTER", 0, 0)
 
@@ -197,7 +197,7 @@ local function UpdateBarVisual()
 
 			bar.sortOrder = { name = fi.name, value = fi.value }
 
-			StatcBarsGroup:SortBars()
+			StaticBarsGroup:SortBars()
 
 			local colorIndex
 			if fi.friendID ~= nil then colorIndex = 5 else colorIndex = fi.standingId end
@@ -246,7 +246,7 @@ local function UpdateBarVisual()
 		else
 			-- Ensure faction is not shown
 			if factions[name] and factions[name].bar then
-				StatcBarsGroup:RemoveBar(factions[name].bar)
+				StaticBarsGroup:RemoveBar(factions[name].bar)
 				factions[name] = nil
 			end
 		end
@@ -288,16 +288,16 @@ end
 -- Initialize
 -------------------------------------------------------------------------------
 function mod:InitializeBar()
-	if not StatcBarsGroup then
-		StatcBarsGroup = ReputationBars:NewBarGroup("Reputation : " .. modName, nil, 200, 12, appName .. "_"..modName)
+	if not StaticBarsGroup then
+		StaticBarsGroup = ReputationBars:NewBarGroup("Reputation : " .. modName, nil, 200, 12, appName .. "_"..modName)
 
-		StatcBarsGroup.RegisterCallback(self, "AnchorClicked")
-		StatcBarsGroup.RegisterCallback(self, "AnchorMoved")
-		StatcBarsGroup:HideIcon()
-		StatcBarsGroup.button:SetScript("OnEnter", OnEnterAnchor)
-		StatcBarsGroup.button:SetScript("OnLeave", OnLeaveAnchor)
+		StaticBarsGroup.RegisterCallback(self, "AnchorClicked")
+		StaticBarsGroup.RegisterCallback(self, "AnchorMoved")
+		StaticBarsGroup:HideIcon()
+		StaticBarsGroup.button:SetScript("OnEnter", OnEnterAnchor)
+		StaticBarsGroup.button:SetScript("OnLeave", OnLeaveAnchor)
 
-		StatcBarsGroup:SetSortFunction(CompareBarSortOrder)
+		StaticBarsGroup:SetSortFunction(CompareBarSortOrder)
 	end
 
 	self:ApplySettings()
@@ -317,24 +317,24 @@ end
 
 function mod:ApplySettings()
 	if db.locked then
-		StatcBarsGroup:Lock()
-		StatcBarsGroup:HideAnchor()
+		StaticBarsGroup:Lock()
+		StaticBarsGroup:HideAnchor()
 	else
-		StatcBarsGroup:Unlock()
-		StatcBarsGroup:ShowAnchor()
+		StaticBarsGroup:Unlock()
+		StaticBarsGroup:ShowAnchor()
 	end
 
 	local font = LSM:Fetch("font", db.barFont)
-	StatcBarsGroup:SetFont(font, db.barFontSize, db.barFontOutline)
+	StaticBarsGroup:SetFont(font, db.barFontSize, db.barFontOutline)
 
 	local texture = LSM:Fetch("statusbar", db.barTexture)
-	StatcBarsGroup:SetTexture(texture)
+	StaticBarsGroup:SetTexture(texture)
 
-	StatcBarsGroup:ReverseGrowth(db.growUp)
-	StatcBarsGroup:SetAlpha(db.barAlpha)
-	StatcBarsGroup:SetScale(db.barScale)
-	StatcBarsGroup:SetLength(db.barLength)
-	StatcBarsGroup:SetThickness(db.barThickness)
+	StaticBarsGroup:ReverseGrowth(db.growUp)
+	StaticBarsGroup:SetAlpha(db.barAlpha)
+	StaticBarsGroup:SetScale(db.barScale)
+	StaticBarsGroup:SetLength(db.barLength)
+	StaticBarsGroup:SetThickness(db.barThickness)
 
 	if db.visible == false then
 		FadeOut(0.5)
@@ -375,14 +375,14 @@ function mod:UPDATE_FACTION()
 end
 
 function mod:PET_BATTLE_OPENING_START()
-	if StatcBarsGroup then
-		StatcBarsGroup:Hide()
+	if StaticBarsGroup then
+		StaticBarsGroup:Hide()
 	end
 end
 
 function mod:PET_BATTLE_CLOSE()
-	if StatcBarsGroup then
-		StatcBarsGroup:Show()
+	if StaticBarsGroup then
+		StaticBarsGroup:Show()
 	end
 end
 
@@ -396,7 +396,7 @@ function mod:LoadPosition()
 		y = -300
 	end
 
-	local f = StatcBarsGroup
+	local f = StaticBarsGroup
 	local s = f:GetEffectiveScale()
 	f:ClearAllPoints()
 	f:SetPoint("TOPLEFT", x/s, y/s)
@@ -404,7 +404,7 @@ end
 
 function mod:SavePosition()
 	local x, y
-	local f = StatcBarsGroup
+	local f = StaticBarsGroup
 	local s = f:GetEffectiveScale()
 	local shown = f:IsShown()
 	local l = f:GetLeft()
@@ -508,7 +508,7 @@ mod.options = {
 					set =	function(info, key, val)
 								mod.db.char.watchedFactions[key] = val
 								mod:UpdateBar(true)
-								StatcBarsGroup:SortBars()
+								StaticBarsGroup:SortBars()
 							end,
 				},
 				]]
@@ -534,7 +534,7 @@ mod.options = {
 					set =	function(info, key, val)
 								mod.db.char.watchedFactions[key] = val
 								mod:UpdateBar(true)
-								StatcBarsGroup:SortBars()
+								StaticBarsGroup:SortBars()
 							end,
 				}
 			},
@@ -561,7 +561,7 @@ mod.options = {
 					func = function(info)
 						mod.db.profile.posx = nil
 						mod.db.profile.posy = nil
-						StatcBarsGroup:Show()
+						StaticBarsGroup:Show()
 						mod:ApplySettings()
 						mod:LoadPosition()
 						mod:UpdateBar(true)
