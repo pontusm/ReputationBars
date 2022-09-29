@@ -136,6 +136,9 @@ function mod:RefreshAllFactions()
 			canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus = GetFactionInfo(i)
 
 		if not name or name == lastName and name ~= GUILD then break end
+		
+		--[call common debug logger]--StaticBarsCommon:DebugLog ("ReputationBars.lua @ 142 --- " .. tostring(name))
+
 		--if DLAPI then DLAPI.DebugLog("ReputationBars", "ReputationBars.lua @ 139") end
 	    --if DLAPI then DLAPI.DebugLog("ReputationBars", "          factionIndex: %s",tostring(i)) end
 		--if DLAPI then DLAPI.DebugLog("ReputationBars", "          name: %s", tostring(name)) end
@@ -581,10 +584,19 @@ mod.options = {
 				},
 				Attributions_018 = {
 					type = 'description',
-					name = "Sep-28-2022: Pre-preparations for multiple/additional StaticBars\n",
+					name = "Sep-27-2022: Pre-preparations for multiple/additional StaticBars\n",
 					order = 121,
 				},
-
+				Attributions_019 = {
+					type = 'description',
+					name = "Sep-28-2022: Creation of StaticBars 3 thru 9\n",
+					order = 122,
+				},
+				Attributions_020 = {
+					type = 'description',
+					name = "Sep-28-2022: First steps towards refactoring StaticBars\n",
+					order = 123,
+				},
 				
 
 				Attributions_998 = {

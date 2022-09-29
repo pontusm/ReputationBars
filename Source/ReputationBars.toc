@@ -41,6 +41,9 @@
 ##             - QoL improvement for Paragon reputations (shows Paragon instead of Exalted)
 ## Sep 26 2022 - Faction checkboxes have a scrollbar (for those long lists, including Inactive)
 ##             - Upate of ACE3 libs to r1281
+## Sep 27 2022 - Cleanup of StaticBars module internal variable naming to account for more bars
+## Sep 28 2022 - duplication of StaticBars2 into StaticBars 3 thru 9 (for a total of 10)
+## Sep 28 2022 - first steps towards refactoring StaticBars.
 
 
 
@@ -60,8 +63,18 @@ Locales\Locales.xml
 ## Load core
 ReputationBars.lua
 
+## Load Shared Modules  
+Modules\StaticBarsCommon.lua
+
 ## Load submodules
 Modules\WatchBar.lua
 Modules\AutoBars.lua
 Modules\StaticBars.lua
 Modules\StaticBars2.lua
+Modules\StaticBars3.lua
+Modules\StaticBars4.lua
+Modules\StaticBars5.lua
+Modules\StaticBars6.lua
+Modules\StaticBars7.lua
+Modules\StaticBars8.lua
+Modules\StaticBars9.lua

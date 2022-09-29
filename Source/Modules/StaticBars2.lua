@@ -45,7 +45,7 @@ local defaults = {
 
 		sortBy = "alpha",
 
-		visible = false, --this is intentionaly changed from the main bars to be defaulted to false for StaticBars2 and beyond
+		visible = (modName == "StaticBars"),--true
 	},
 
 	char = {

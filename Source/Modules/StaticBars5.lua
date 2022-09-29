@@ -1,15 +1,17 @@
 -- ReputationBars: StaticBars
 local appName = "ReputationBars"
-local modName = "StaticBars"
+local modName = "StaticBars5"      --this is the only value that needs to change to support the duplicating of additional bars
+                                   --be sure to duplicate the necessary entry in the various language files.
 
 local ReputationBars = LibStub("AceAddon-3.0"):GetAddon(appName)
 ReputationBars_StaticBars = ReputationBars:NewModule(modName, "AceEvent-3.0")
 local mod = ReputationBars_StaticBars
 
 local L = LibStub("AceLocale-3.0"):GetLocale(appName)
+
 local LSM = LibStub("LibSharedMedia-3.0")
 
-local StaticBarsGroup  --this is a reference for all our common StaticBar functions and capabilities...
+local StaticBarsGroup
 
 local db
 local fadeTimer
@@ -43,7 +45,7 @@ local defaults = {
 
 		sortBy = "alpha",
 
-		visible = (modName == "StaticBars"), --causes just the first bars to be visible by default.
+		visible = (modName == "StaticBars"),--true
 	},
 
 	char = {
@@ -444,7 +446,7 @@ local function GenerateTestData()
 		[4] = {
 			name = "Orgrimmar",
 			amount = 50,
-			factionIndex = ReputationBars:GetFactionIndex("Orgrimmar")
+			factionIndex = ReputationBars:GetFaconIndex("Orgrimmar")
 		},
 	}
 end
