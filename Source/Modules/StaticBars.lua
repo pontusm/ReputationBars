@@ -9,7 +9,7 @@ local mod = ReputationBars_StaticBars
 local L = LibStub("AceLocale-3.0"):GetLocale(appName)
 local LSM = LibStub("LibSharedMedia-3.0")
 
-local StaticBarsGroup  --this is a reference for all our common StaticBar functions and capabilities...
+local StaticBarsGroup  --this is a reference for *this* StaticBar functions and capabilities...
 
 local db
 local fadeTimer
@@ -43,7 +43,7 @@ local defaults = {
 
 		sortBy = "alpha",
 
-		visible = (modName == "StaticBars"), --causes just the first bars to be visible by default.
+		visible = (modName == "StaticBars"), --causes just the first bars to be visible by default
 	},
 
 	char = {
