@@ -21,10 +21,7 @@ function StaticBarsCommon:generateModName (addon)
       searchName = baseName .. tostring(searchIndx)
     end
 
-    print ("Searching for : " .. searchName)
-    
     for name, _ in pairs(addon.modules) do
-      print ("StaticBars --- " .. name)
       if (name == searchName) then
         found = true
       end
@@ -32,8 +29,6 @@ function StaticBarsCommon:generateModName (addon)
 
     searchIndx = searchIndx + 1
   end
-
-  print ("Unused Name Located: " .. searchName)
 
   return searchName
 
