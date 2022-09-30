@@ -1,15 +1,15 @@
 -- ReputationBars: StaticBars
 local appName = "ReputationBars"
-local modName = "StaticBars"
 
 local ReputationBars = LibStub("AceAddon-3.0"):GetAddon(appName)
+local modName = StaticBarsCommon:generateModName(ReputationBars)
 ReputationBars_StaticBars = ReputationBars:NewModule(modName, "AceEvent-3.0")
 local mod = ReputationBars_StaticBars
 
 local L = LibStub("AceLocale-3.0"):GetLocale(appName)
 local LSM = LibStub("LibSharedMedia-3.0")
 
-local StaticBarsGroup  --this is a reference for *this* StaticBar functions and capabilities...
+local StaticBarsGroup  
 
 local db
 local fadeTimer
@@ -734,3 +734,5 @@ mod.options = {
 		},
 	}
 }
+
+

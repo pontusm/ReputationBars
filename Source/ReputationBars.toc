@@ -1,4 +1,4 @@
-## Interface: 90207
+## Interface: 100000
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
 
@@ -29,6 +29,7 @@
 ## Oct 22 2021 - Preparations for 9.1.5 (Interface version in this file, and Config screen in ReputationsBars.lua)
 ## Feb 01 2022 - Preparations for 9.2.0 (Interface version in this file, and Config screen in ReputattionBars.lua)
 ## Sep 25 2022 - Update ToC for 9.2.7
+## Sep 30 2022 - Update ToC for 10.0.0 (will likely need to update during pre-patch at some point...)
 
 ###### UPDATES FOR DRAGONFLIGHT
 ## Author: Karpana @ Arygos-US
@@ -43,7 +44,7 @@
 ##             - Upate of ACE3 libs to r1281
 ## Sep 27 2022 - Cleanup of StaticBars module internal variable naming to account for more bars
 ## Sep 28 2022 - duplication of StaticBars2 into StaticBars 3 thru 9 (for a total of 10)
-## Sep 28 2022 - first steps towards refactoring StaticBars.
+## Sep 30 2022 - Refactored StaticBars
 
 
 
@@ -63,18 +64,19 @@ Locales\Locales.xml
 ## Load core
 ReputationBars.lua
 
-## Load Shared Modules  
+## Load Shared Module
 Modules\StaticBarsCommon.lua
 
 ## Load submodules
 Modules\WatchBar.lua
 Modules\AutoBars.lua
+## Note: We can "load" multiple of these, by repeating the load command; the module handles unique naming; here we create/load 9.
 Modules\StaticBars.lua
-Modules\StaticBars2.lua
-Modules\StaticBars3.lua
-Modules\StaticBars4.lua
-#Modules\StaticBars5.lua
-#Modules\StaticBars6.lua
-#Modules\StaticBars7.lua
-#Modules\StaticBars8.lua
-#Modules\StaticBars9.lua
+Modules\StaticBars.lua
+Modules\StaticBars.lua
+Modules\StaticBars.lua
+Modules\StaticBars.lua
+Modules\StaticBars.lua
+Modules\StaticBars.lua
+Modules\StaticBars.lua
+Modules\StaticBars.lua
