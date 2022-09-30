@@ -73,8 +73,8 @@ Modules\StaticBars.lua
 Modules\StaticBars2.lua
 Modules\StaticBars3.lua
 Modules\StaticBars4.lua
-Modules\StaticBars5.lua
-Modules\StaticBars6.lua
-Modules\StaticBars7.lua
-Modules\StaticBars8.lua
-Modules\StaticBars9.lua
+#Modules\StaticBars5.lua
+#Modules\StaticBars6.lua
+#Modules\StaticBars7.lua
+#Modules\StaticBars8.lua
+#Modules\StaticBars9.lua
