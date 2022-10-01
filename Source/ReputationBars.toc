@@ -3,7 +3,7 @@
 ## Notes: Tracks reputation using some glorious bars!
 
 ###### ORIGINAL AUTHOR & SOURCE
-## Version: 8.0.0
+## Version: 10.0.0.2
 ## Original Author: Pontus Munck
 ## Original Co-Author Mjumnito
 ## Special thanks to trent2 for his fixes while I had RL issues happening
@@ -26,10 +26,10 @@
 ## Jul 26 2021 - Fix for Ve'nari, which is now a Paragon Reputation.  Need to consider whether to "flip" the functionality of the if/elseif statement at lines 139/145.
 ## Aug 21 2021 - Fix for Achivist's Codex, which is a Paragon Reputation, similart to Ven'ari.   Many THanks to Mithrasangel.
 ## Oct 22 2021 - Second Fix for Fix for Achivist's Codex
-## Oct 22 2021 - Preparations for 9.1.5 (Interface version in this file, and Config screen in ReputationsBars.lua)
-## Feb 01 2022 - Preparations for 9.2.0 (Interface version in this file, and Config screen in ReputattionBars.lua)
+## Oct 22 2021 - Preparations for 9.1.5 (Interface version in this file, and Config screen in ReputationBars.lua)
+## Feb 01 2022 - Preparations for 9.2.0 (Interface version in this file, and Config screen in ReputationBars.lua)
 ## Sep 25 2022 - Update ToC for 9.2.7
-## Sep 30 2022 - Update ToC for 10.0.0 (will likely need to update during pre-patch at some point...)
+
 
 ###### UPDATES FOR DRAGONFLIGHT
 ## Author: Karpana @ Arygos-US
@@ -45,7 +45,9 @@
 ## Sep 27 2022 - Cleanup of StaticBars module internal variable naming to account for more bars
 ## Sep 28 2022 - duplication of StaticBars2 into StaticBars 3 thru 9 (for a total of 10)
 ## Sep 30 2022 - Refactored StaticBars
-
+##             - Update ToC for 10.0.0 (will likely need to update during pre-patch at some point...) 
+##             - DragonFlight PTR Readiness confirmed
+## Oct 01 2002 - Fix paragon reputation change updates
 
 
 

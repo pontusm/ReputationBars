@@ -123,7 +123,6 @@ end
 
 -- Refresh the list of known factions
 function mod:RefreshAllFactions()
-
 	local expansionLevel = GetClientDisplayExpansionLevel()
 
 	local i
@@ -209,7 +208,7 @@ function mod:RefreshAllFactions()
 			friendID   = nsrt_friendID
 		})	
 		
-		UpdateFactionAmount(name, earnedValue)
+		UpdateFactionAmount(name, nsrt_value)
 		if isCollapsed then ExpandFactionHeader(i) end
 	end
 
