@@ -1,9 +1,9 @@
 ## Interface: 100000
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
+## Version: 10.0.0
 
 ###### ORIGINAL AUTHOR & SOURCE
-## Version: 10.0.0.2
 ## Original Author: Pontus Munck
 ## Original Co-Author Mjumnito
 ## Special thanks to trent2 for his fixes while I had RL issues happening
@@ -43,7 +43,7 @@
 ## Sep 26 2022 - Faction checkboxes have a scrollbar (for those long lists, including Inactive)
 ##             - Upate of ACE3 libs to r1281
 ## Sep 27 2022 - Cleanup of StaticBars module internal variable naming to account for more bars
-## Sep 28 2022 - duplication of StaticBars2 into StaticBars 3 thru 9 (for a total of 10)
+## Sep 28 2022 - duplication of StaticBars2 into StaticBars 3 thru 9 (for a total of 9)
 ## Sep 30 2022 - Refactored StaticBars
 ##             - Update ToC for 10.0.0 (will likely need to update during pre-patch at some point...) 
 ##             - DragonFlight PTR Readiness confirmed
