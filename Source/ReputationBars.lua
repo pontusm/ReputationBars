@@ -97,7 +97,7 @@ end
 ------------------------------------------------------------------------------
 function mod:GetFactionIndex(factionName)
 	for i = 1, #allFactions do
-		local name, _, _, _, _, _, _, _, _, _, _, _, _ = GetFactionInfo(i); --added 2 or 3 _, to the end
+		local name, _, _, _, _, _, _, _, _, _, _, _, _ = GetFactionInfo(i); 
 		if name == factionName then return i end
 	end
 	return 0
@@ -112,17 +112,27 @@ function mod:GetAllFactions()
 end
 
 local function UpdateFactionAmount(name, amount)
+	ReputationBarsCommon:DebugLog("OK","UpdateFactionAmount",4,"Function Call Started...")	
+	ReputationBarsCommon:DebugLog("","UpdateFaction",5,"Name  : "..tostring(name))
+	ReputationBarsCommon:DebugLog("","UpdateFaction",6,"Amount: "..tostring(amount))
+
 	local oldAmount = factionAmounts[name]
 	if oldAmount ~= nil and oldAmount ~= amount then
 		-- Collect all gained reputation before notifying modules
+		
+		ReputationBarsCommon:DebugLog("WARN","UpdateFaction",6,"Name     : "..tostring(name))
+		ReputationBarsCommon:DebugLog("WARN","UpdateFaction",6,"Amount   : "..tostring(amount))
+		ReputationBarsCommon:DebugLog("WARN","UpdateFaction",6,"oldAmount: "..tostring(oldAmount))
+
 		reputationChanges[name] = amount - oldAmount
---		print("Faction "..name.." changed from "..oldAmount.." to "..amount)
 	end
 	factionAmounts[name] = amount
+	ReputationBarsCommon:DebugLog("OK","UpdateFactionAmount",4,"Function Call Finished")	
 end
 
 -- Refresh the list of known factions
 function mod:RefreshAllFactions()
+	ReputationBarsCommon:DebugLog("OK","RefreshAllFactions",4,"Function Call Started...")
 	local expansionLevel = GetClientDisplayExpansionLevel()
 
 	local i
@@ -148,6 +158,20 @@ function mod:RefreshAllFactions()
 		local nsrt_isActive   = not IsFactionInactive(i)
 		local nsrt_factionID  = factionID
 		local nsrt_friendID
+
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",5,"Loading/Updating '"..tostring(nsrt_name).."' into internal table")
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"Step1: nsrt_name      : "..tostring(nsrt_name))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_standingId: "..tostring(nsrt_standingId))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_min       : "..tostring(nsrt_min))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_max       : "..tostring(nsrt_max))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value     : "..tostring(nsrt_value))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isHeader  : "..tostring(nsrt_isHeader))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isChild   : "..tostring(nsrt_isChild))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_hasRep    : "..tostring(nsrt_hasRep))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isParagon : "..tostring(nsrt_isParagon))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isActive  : "..tostring(nsrt_isActive))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_factionID : "..tostring(nsrt_factionID))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_friendID  : "..tostring(nsrt_friendID))
 
         --Step 2) figure out if this is a friend (rather than a faction), and if so, override some of our base faction values.
 		if nsrt_isheader == true then
@@ -182,6 +206,11 @@ function mod:RefreshAllFactions()
 			end
 		end
 
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"Step2: nsrt_min     : "..tostring(nsrt_min))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_max     : "..tostring(nsrt_max))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value   : "..tostring(nsrt_value))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_friendID: "..tostring(nsrt_friendID))
+
         --Step 3) figure out if this is a paragon faction (extra rep beyond exalted), and if so, override some of our base faction values
 		if factionID and C_Reputation.IsFactionParagon(factionID) then
 			nsrt_isParagon = true
@@ -191,6 +220,11 @@ function mod:RefreshAllFactions()
 			nsrt_max = threshold
 		end
 		lastName = name
+
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"Step3: nsrt_isParagon: "..tostring(nsrt_isParagon))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value    : "..tostring(nsrt_value))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_min      : "..tostring(nsrt_min))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_max      : "..tostring(nsrt_max))
 
 		--Step 4) *phew* that was a lot of work, save it before it's too late...
 		tinsert(factions, {
@@ -213,6 +247,7 @@ function mod:RefreshAllFactions()
 	end
 
 	allFactions = factions
+	ReputationBarsCommon:DebugLog("OK","RefreshAllFactions",4,"Function Call Finished...")
 end
 
 ------------------------------------------------------------------------------

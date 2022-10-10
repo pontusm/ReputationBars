@@ -1,9 +1,4 @@
-
 StaticBarsCommon = {}
-
-function StaticBarsCommon:DebugLog (msg)
-  if DLAPI then DLAPI.DebugLog("ReputationBars", msg) end
-end
 
 function StaticBarsCommon:generateModName (addon)
   local baseName = "StaticBars"

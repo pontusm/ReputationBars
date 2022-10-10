@@ -67,6 +67,7 @@ Locales\Locales.xml
 ReputationBars.lua
 
 ## Load Shared Module
+Modules\ReputationBarsCommon.lua
 Modules\StaticBarsCommon.lua
 
 ## Load submodules
