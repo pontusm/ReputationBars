@@ -276,12 +276,15 @@ end
 function mod:UpdateReputation()
 	self:RefreshAllFactions()
 
+	local presentGainsForInactiveReputations = ReputationBars_AutoBars:overrideInactiveReputations()
+	ReputationBarsCommon:DebugLog("ERR","UpdateReputation",6,"presentGainsForInactiveReputations: "..tostring(presentGainsForInactiveReputations))
+
 	-- Build sorted change table
 	local changes = {}
 	for name, amount in pairs(reputationChanges) do
 		-- Skip inactive factions
 		local factionIndex = self:GetFactionIndex(name)
-		if factionIndex and not IsFactionInactive(factionIndex) then
+		if factionIndex and (not IsFactionInactive(factionIndex) or presentGainsForInactiveReputations) then
 			tinsert(changes, {
 				name = name,
 				amount = amount,

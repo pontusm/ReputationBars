@@ -32,6 +32,7 @@ local defaults = {
 		autoHideSeconds = 30,
 		removeInactiveFactions = true,
 		removeFactionSeconds = 180,
+		presentGainsForInactiveReputations = false,
 
 		barFont = "Bazooka",
 		barFontSize = 11,
@@ -325,6 +326,10 @@ function mod:UpdateReputation(changes)
 	end
 
 	self:UpdateBar(true)
+end
+
+function ReputationBars_AutoBars:overrideInactiveReputations()
+	return db.presentGainsForInactiveReputations
 end
 
 -------------------------------------------------------------------------------
@@ -636,6 +641,14 @@ mod.options = {
 					min = 5,
 					max = 600,
 					step = 1,
+				},
+
+				presentGainsForInactiveReputations = {
+					type = "toggle",
+					order = 42,
+					name = L["Show reputation changes for inactive factions"],
+					desc = L["Override the default behaviour whereby factions marked as inactive will not show in AutoBars"],
+					width = "full",
 				},
 
 				hdr2 = {

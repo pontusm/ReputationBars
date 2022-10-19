@@ -83,3 +83,5 @@ L["WatchBar settings"] = true
 L["|cffeda55fDrag|r to move the frame"] = true
 L["|cffeda55fRight Click|r to open the configuration window"] = true
 L["Paragon"] = true
+L["Show reputation changes for inactive factions"] = true
+L["Override the default behaviour whereby factions marked as inactive will not show in AutoBars"] = true

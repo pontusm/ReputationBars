@@ -68,3 +68,5 @@ L["WatchBar settings"] = "WatchBar設置"
 L["|cffeda55fDrag|r to move the frame"] = "|cffeda55f拖曳|r移動框架"
 L["|cffeda55fRight Click|r to open the configuration window"] = "|cffeda55f右鍵點擊|r開啟設置視窗"
 L["Paragon"] = "巅峰"
+--L["Show reputation changes for inactive factions"]
+--L["Override the default behaviour whereby factions marked as inactive will not show in AutoBars"]

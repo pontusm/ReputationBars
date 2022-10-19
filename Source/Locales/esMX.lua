@@ -68,3 +68,5 @@ L["This will display a bar when you lose reputation with a faction."] = "Esto mo
 L["Time (seconds)"] = "Tiempo (segundos)"
 L["WatchBar settings"] = "Configurar WatchBar"
 L["Paragon"] = "Paragón"
+L["Show reputation changes for inactive factions"] = "Show reputation changes for inactive factions"
+L["Override the default behaviour whereby factions marked as inactive will not show in AutoBars"] = "Show reputation changes for inactive factions"
