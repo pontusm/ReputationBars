@@ -47,7 +47,9 @@
 ## Sep 30 2022 - Refactored StaticBars
 ##             - Update ToC for 10.0.0 (will likely need to update during pre-patch at some point...) 
 ##             - DragonFlight PTR Readiness confirmed
-## Oct 01 2002 - Fix paragon reputation change updates
+## Oct 01 2022 - Fix paragon reputation change updates
+## Oct 18 2022 - Updates to DLAPI logging behaviour
+##             - Override option in Autobars to change default ignore behaviour
 
 
 

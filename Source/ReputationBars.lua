@@ -568,6 +568,11 @@ mod.options = {
 					name = "Sep-30-2022: Refactored StaticBars code\n",
 					order = 124,
 				},
+				Attributions_022 = {
+					type = 'description',
+					name = "Oct-18-2022: Override option in Autobars to change default ignore behaviour\n",
+					order = 125,
+				},
 				
 
 				Attributions_998 = {
