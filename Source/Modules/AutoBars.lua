@@ -182,9 +182,9 @@ local function UpdateBarVisual()
 			bar:SetColorAt(0, colors.r, colors.g, colors.b, 1)
 
 			local recentGainText = ""
-			if (now - faction.lastUpdate) < 60 then
-				recentGainText = string.format(" |cffedf55f(%+d)", faction.amount)
-			end
+			--if (now - faction.lastUpdate) < 60 then                          --Karp removed this on Oct 24 2022 to prevent recent gains from disappearing on mouse hover
+			recentGainText = string.format(" |cffedf55f(%+d)", faction.amount)
+			--end                                                              --Karp removed this on Oct 24 2022 to prevent recent gains from disappearing on mouse hover
 
 			local displayMax = fi.max - fi.min
 			local displayVal = fi.value - fi.min
