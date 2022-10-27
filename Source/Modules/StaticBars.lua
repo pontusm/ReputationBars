@@ -158,6 +158,8 @@ local function CompareBarSortOrder(a, b)
 end
 
 local function UpdateBarVisual()
+	ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"Function Call Started...")
+
 	local now = time()
 	local allFactions = ReputationBars:GetAllFactions()
 	for factionIndex = 1, #allFactions do
@@ -213,6 +215,13 @@ local function UpdateBarVisual()
 			bar:SetValue(displayVal, displayMax)
 			local barLabel
 
+			ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"--------> " .. tostring(fi.name))
+			ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"fi.isParagon " .. tostring(fi.isParagon))
+			ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"fi.friendID " .. tostring(fi.friendID))
+			ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"fi.standingId " .. tostring(fi.standingId))
+			ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"displayVal " .. tostring(displayVal))
+			ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"displayMax " .. tostring(displayMax))			
+
 			if db.showText == "never" or (db.showText == "mouseover" and hovering ~= bar) then
 				barLabel = ""
 			else
@@ -221,13 +230,33 @@ local function UpdateBarVisual()
 						barLabel = string.format("%s",L["Paragon"])
 					elseif fi.friendID ~= nil then
 						local FriendshipInfo = C_GossipInfo.GetFriendshipReputation(fi.factionID)
+						ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"FriendshipInfo.reaction " .. tostring(FriendshipInfo.reaction))					
 						friendTextLevel = FriendshipInfo.reaction
+						ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"friendTextLevel " .. tostring(friendTextLevel))
 						barLabel = string.format("%s", friendTextLevel)
+
+						local rankInfo = C_GossipInfo.GetFriendshipReputationRanks(fi.friendID)
+						local currentRank = rankInfo.currentLevel
+						local maxRank = rankInfo.maxLevel
+						ReputationBarsCommon:DebugLog("WRN","UpdateBarVisual",6,"==> currentRank " .. tostring(currentRank))
+						ReputationBarsCommon:DebugLog("WRN","UpdateBarVisual",6,"==> maxRank " .. tostring(maxRank))
+						
+						--Adjust the hover text for friends to indicate whether we're in the final rank grind or not...
+						if currentRank < maxRank then
+							local nextFriendshipTextLevel = "<next rank>"
+							if currentRank +1 == maxRank then
+								nextFriendshipTextLevel = "<final rank>"
+							end
+							barLabel = string.format("%s |cffedf55f(%d to %s)", friendTextLevel, displayMax-displayVal, nextFriendshipTextLevel)
+						else
+							barLabel = string.format("%s", friendTextLevel)
+						end					
 					else
 						local gender = UnitSex("player")
 						local standingText = GetText("FACTION_STANDING_LABEL"..fi.standingId, gender)
 						if fi.standingId < 8 then
 							local nextStandingText = GetText("FACTION_STANDING_LABEL"..fi.standingId+1, gender);
+							ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"nextStandingText " .. tostring(nextStandingText))
 							barLabel = string.format("%s |cffedf55f(%d to %s)", standingText, displayMax-displayVal, nextStandingText)
 						else
 							barLabel = string.format("%s", standingText)

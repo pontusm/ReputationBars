@@ -183,26 +183,27 @@ function mod:RefreshAllFactions()
 				local FriendshipInfo= C_GossipInfo.GetFriendshipReputation(factionID)
 
 				if FriendshipInfo.friendshipFactionID ~= 0 then
+					nsrt_value = FriendshipInfo.standing
+					nsrt_friendID = FriendshipInfo.friendshipFactionID
+  					
 					if FriendshipInfo.nextThreshold ~= nil then --handle a weird scenario where the faction is a friend, but has no thresholds...
 						nsrt_min = FriendshipInfo.reactionThreshold
 						nsrt_max = FriendshipInfo.nextThreshold
-						nsrt_value = FriendshipInfo.standing
-						nsrt_friendID = FriendshipInfo.friendshipFactionID
 					end
 				end
-			else 
-				--***************************************--
-				--*        S H A D O W L A N D S        *--
-				--***************************************--
-				local x_friendID, x_friendRep, x_friendMaxRep, x_friendName, x_friendText, x_friendTexture, x_friendTextLevel, x_friendThreshhold , x_nextFriendThreshold = GetFriendshipReputation(factionID)
-				if x_friendID then 
-					if x_nextFriendThreshold ~= nil then --handle a weird scenario where the faction is a friend, but has no thresholds...
-						nsrt_min = x_friendThreshold
-						nsrt_max = x_nextFriendThreshold
-						nsrt_value = x_friendRep
-						nsrt_friendID = x_fiendID
-					end
-				end
+--			else 
+--				--***************************************--
+--				--*        S H A D O W L A N D S        *--
+--				--***************************************--
+--				local x_friendID, x_friendRep, x_friendMaxRep, x_friendName, x_friendText, x_friendTexture, x_friendTextLevel, x_friendThreshhold , x_nextFriendThreshold = GetFriendshipReputation(factionID)
+--				if x_friendID then 
+--					if x_nextFriendThreshold ~= nil then --handle a weird scenario where the faction is a friend, but has no thresholds...
+--						nsrt_min = x_friendThreshold
+--						nsrt_max = x_nextFriendThreshold
+--						nsrt_value = x_friendRep
+--						nsrt_friendID = x_fiendID
+--					end
+--				end
 			end
 		end
 
@@ -587,6 +588,11 @@ mod.options = {
 					type = 'description',
 					name = "Oct-26-2022: Update of ACE3 libs to r1294\n",
 					order = 128,
+				},
+				Attributions_026 = {
+					type = 'description',
+					name = "Oct-26-2022: QOL updates for friend reputations\n",
+					order = 129,
 				},
 
 				Attributions_998 = {
