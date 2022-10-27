@@ -583,7 +583,11 @@ mod.options = {
 					name = "Oct-26-2022: Fix incorrect friend logic\n",
 					order = 127,
 				},
-				
+				Attributions_025 = {
+					type = 'description',
+					name = "Oct-26-2022: Update of ACE3 libs to r1294\n",
+					order = 128,
+				},
 
 				Attributions_998 = {
 					type = 'description',
