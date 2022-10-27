@@ -174,7 +174,7 @@ function mod:RefreshAllFactions()
 		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_friendID  : "..tostring(nsrt_friendID))
 
         --Step 2) figure out if this is a friend (rather than a faction), and if so, override some of our base faction values.
-		if nsrt_isheader == true then
+		if nsrt_isheader ~= true then
 			--we need to do this different ways for Dragonflight vs Shadowlands
 			if expansionLevel >= 9 then -- DragonFlight
 				--***************************************--
@@ -577,6 +577,11 @@ mod.options = {
 					type = 'description',
 					name = "Oct-24-2022: Prevent recent gains from disappearing in Autobars after hovering mouse on bar\n",
 					order = 126,
+				},
+				Attributions_024 = {
+					type = 'description',
+					name = "Oct-26-2022: Fix incorrect friend logic\n",
+					order = 127,
 				},
 				
 

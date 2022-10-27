@@ -51,6 +51,7 @@
 ## Oct 18 2022 - Updates to DLAPI logging behaviour
 ##             - Override option in Autobars to change default ignore behaviour
 ## Oct 24 2022 - Prevent recent gains from disappearing on from Autobars on hovering mouse on bar
+## Oct 26 2022 - Fixed incorrect friend logic
 
 
 
