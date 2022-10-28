@@ -247,9 +247,9 @@ local function UpdateBarVisual()
 							if currentRank +1 == maxRank then
 								nextFriendshipTextLevel = "<final rank>"
 							end
-							barLabel = string.format("%s |cffedf55f(%d to %s)", friendTextLevel, displayMax-displayVal, nextFriendshipTextLevel)
+							barLabel = string.format("%s |cff1E90FF(%s/%s) |cffedf55f(%d to %s)", friendTextLevel, currentRank, maxRank, displayMax-displayVal, nextFriendshipTextLevel)
 						else
-							barLabel = string.format("%s", friendTextLevel)
+							barLabel = string.format("%s |cff1E90FF(%s/%s)", friendTextLevel, currentRank, maxRank)
 						end					
 					else
 						local gender = UnitSex("player")

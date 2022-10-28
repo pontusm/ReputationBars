@@ -54,6 +54,8 @@
 ## Oct 26 2022 - Fixed incorrect friend logic
 ##             - Update ACE3 libs to r1294
 ##             - QOL updates for friend reputations
+## Oct 27 2022 - More QOL updates for friend reputations
+##             - Error Trapping/Handling for call to C_GossipInfo.GetFriendshipReputation
 
 
 

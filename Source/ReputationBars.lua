@@ -174,22 +174,33 @@ function mod:RefreshAllFactions()
 		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_friendID  : "..tostring(nsrt_friendID))
 
         --Step 2) figure out if this is a friend (rather than a faction), and if so, override some of our base faction values.
-		if nsrt_isheader ~= true then
+		if nsrt_isHeader ~= true then
 			--we need to do this different ways for Dragonflight vs Shadowlands
 			if expansionLevel >= 9 then -- DragonFlight
 				--***************************************--
 				--*       D R A G O N F L I G H T       *--
 				--***************************************--
-				local FriendshipInfo= C_GossipInfo.GetFriendshipReputation(factionID)
+                --wrap in pcall instead--local FriendshipInfo= C_GossipInfo.GetFriendshipReputation(factionID)
+				local retOK, FriendshipInfo = pcall(C_GossipInfo.GetFriendshipReputation, factionID)
 
-				if FriendshipInfo.friendshipFactionID ~= 0 then
-					nsrt_value = FriendshipInfo.standing
-					nsrt_friendID = FriendshipInfo.friendshipFactionID
+				if retOK then --make sure pcall worked
+					ReputationBarsCommon:DebugLog("WARN","RefreshAllFactions",6,"       ***C_GossipInfo.GetFriendshipReputation call successful")
+					ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       FriendshipInfo: " .. tostring(FriendshipInfo))
+
+					if FriendshipInfo ~= nil then --make sure that we actually got a value from the API call
+					  ReputationBarsCommon:DebugLog("WARN","RefreshAllFactions",6,"       FriendshipInfo.friendshipFactionID: " .. tostring(FriendshipInfo.friendshipFactionID))					
+					  if FriendshipInfo.friendshipFactionID ~= 0 then --this is a friend .. handle them differently
+					  		nsrt_value = FriendshipInfo.standing
+					  		nsrt_friendID = FriendshipInfo.friendshipFactionID
   					
-					if FriendshipInfo.nextThreshold ~= nil then --handle a weird scenario where the faction is a friend, but has no thresholds...
-						nsrt_min = FriendshipInfo.reactionThreshold
-						nsrt_max = FriendshipInfo.nextThreshold
+							if FriendshipInfo.nextThreshold ~= nil then --this friend still has progress
+								nsrt_min = FriendshipInfo.reactionThreshold
+								nsrt_max = FriendshipInfo.nextThreshold
+							end
+						end
 					end
+				else
+					ReputationBarsCommon:DebugLog("ERR","RefreshAllFactions",6,"       ***C_GossipInfo.GetFriendshipReputation call FAILED")
 				end
 --			else 
 --				--***************************************--
@@ -593,6 +604,16 @@ mod.options = {
 					type = 'description',
 					name = "Oct-26-2022: QOL updates for friend reputations\n",
 					order = 129,
+				},
+				Attributions_027 = {
+					type = 'description',
+					name = "Oct-27-2022: More QOL updates for friend reputations\n",
+					order = 130,
+				},
+				Attributions_028 = {
+					type = 'description',
+					name = "Oct-27-2022: Error Trapping/Handling for call to C_GossipInfo.GetFriendshipReputation\n",
+					order = 131,
 				},
 
 				Attributions_998 = {
