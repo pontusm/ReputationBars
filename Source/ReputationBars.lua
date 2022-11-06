@@ -480,7 +480,7 @@ mod.options = {
 					order = 103,
 				},
 
-				Attributions_001 = {
+				--[[Attributions_001 = {
 					type = 'description',
 					name = "\n\n****** SHADOWLANDS ******\n",
 					order = 104,
@@ -534,7 +534,7 @@ mod.options = {
 					type = 'description',
 					name = "Sep-25-2022: Updated for 9.2.7\n",
 					order = 114,
-				},
+				},]]
 				Attributions_012 = {
 					type = 'description',
 					name = "\n****** DRAGONFLIGHT ******\n",
@@ -614,6 +614,21 @@ mod.options = {
 					type = 'description',
 					name = "Oct-27-2022: Error Trapping/Handling for call to C_GossipInfo.GetFriendshipReputation\n",
 					order = 131,
+				},
+				Attributions_029 = {
+					type = 'description',
+					name = "===> 10.0.2-0007 released\n",
+					order = 132,
+				},
+				Attributions_030 = {
+					type = 'description',
+					name = "Nov-06-2022: TOC update for 10.0.2\n",
+					order = 133,
+				},
+				Attributions_031 = {
+					type = 'description',
+					name = "===> 10.0.2-0008 released\n",
+					order = 138,
 				},
 
 				Attributions_998 = {
