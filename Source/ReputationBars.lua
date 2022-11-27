@@ -628,7 +628,17 @@ mod.options = {
 				Attributions_031 = {
 					type = 'description',
 					name = "===> 10.0.2-0008 released\n",
-					order = 138,
+					order = 134,
+				},
+				Attributions_032 = {
+					type = 'description',
+					name = "Nov-27-2022: Attempt to fix/address 'upvalue bug'\n",
+					order = 135,
+				},
+				Attributions_033 = {
+					type = 'description',
+					name = "===> 10.0.2-0009 released\n",
+					order = 136,
 				},
 
 				Attributions_998 = {

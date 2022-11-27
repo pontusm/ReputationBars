@@ -329,9 +329,25 @@ function mod:UpdateReputation(changes)
 end
 
 function ReputationBars_AutoBars:overrideInactiveReputations()
-	return db.presentGainsForInactiveReputations
-end
+	ReputationBarsCommon:DebugLog("","ReputationBars_AutoBars:overrideInactiveReputations",6,"===> Function Started")
 
+	local retVal = false
+
+	if db ~= nil then
+		ReputationBarsCommon:DebugLog("OK","ReputationBars_AutoBars:overrideInactiveReputations",6,"db is not nil")
+		if db.presentGainsForInactiveReputations ~= nil then
+			ReputationBarsCommon:DebugLog("OK","ReputationBars_AutoBars:overrideInactiveReputations",6,"db.presentGainsForInactiveReputations is not nil")
+			retVal = db.presentGainsForInactiveReputations
+		else
+			ReputationBarsCommon:DebugLog("ERR","ReputationBars_AutoBars:overrideInactiveReputations",6,"db.presentGainsForInactiveReputations is nil")
+		end
+	else
+		ReputationBarsCommon:DebugLog("ERR","ReputationBars_AutoBars:overrideInactiveReputations",6,"db is nil")
+	end
+	
+	ReputationBarsCommon:DebugLog("","ReputationBars_AutoBars:overrideInactiveReputations",6,"<=== Function Complete.  RetVal = " .. tostring(retVal))
+	return retVal
+end
 -------------------------------------------------------------------------------
 -- Cleanup
 -------------------------------------------------------------------------------

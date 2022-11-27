@@ -8,6 +8,7 @@ function ReputationBarsCommon:DebugLog (type,category,level,message)
   if isLoggingEnabled then
     local debugMsg = ""
     if type ~= nil and type ~= "" then
+      --Supported Values for type are:  <blank>, "OK", "WARN", "ERR"
       debugMsg = debugMsg .. type .. "~"
     end
     

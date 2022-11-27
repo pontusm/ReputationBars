@@ -1,7 +1,7 @@
 ## Interface: 100002
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
-## Version: 10.0.2-0008
+## Version: 10.0.2-0009
 
 ###### ORIGINAL AUTHOR & SOURCE
 ## Original Author: Pontus Munck
@@ -57,6 +57,8 @@
 ###### 10.0.2 CHANGE LOG
 ## Nov 06 2022 - ToC Update for 10.0.2
 ##             - v10.0.2-0008 released
+## Nov 27 2022 - attempt to address/fix the upvalue bug
+##             - v10.0.2-0009 released
 
 
 
