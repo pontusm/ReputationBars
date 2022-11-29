@@ -197,6 +197,9 @@ local function UpdateBarVisual()
 				if hovering == bar and db.showText ~= "mouseover" then
 					if fi.isParagon then
 						barLabel = string.format("%s",L["Paragon"])
+					elseif fi.isMajorFaction then
+						local majorFactionInfo = C_MajorFactions.GetMajorFactionData(fi.factionID);
+						barLabel = string.format("%s%s |cffedf55f(%d to go)", RENOWN_LEVEL_LABEL, majorFactionInfo.renownLevel, displayMax-displayVal)
 					elseif fi.friendID ~= nil then
 						local FriendshipInfo = C_GossipInfo.GetFriendshipReputation(fi.factionID)
 						friendTextLevel = FriendshipInfo.reaction
@@ -549,6 +552,11 @@ local function GenerateTestData()
 			amount = 50,
 			factionIndex = ReputationBars:GetFactionIndex("Orgrimmar")
 		},
+		[5] = {
+			name = "Dragonscale Expedition",
+			amount = 50,
+			factionIndex = ReputationBars:GetFactionIndex("Dragonscale Expedition")
+		},		
 	}
 end
 

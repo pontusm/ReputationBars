@@ -59,6 +59,11 @@
 ##             - v10.0.2-0008 released
 ## Nov 27 2022 - attempt to address/fix the upvalue bug
 ##             - v10.0.2-0009 released
+## Nov 29 2022 - Enhancements for "major factions" (factions with renown) introduced with Dragonflight
+##             - Cleanup of Friendship Code
+##             - Removal of deprecated Shadowlands code
+##             - v10.0.2-0010 released
+
 
 
 

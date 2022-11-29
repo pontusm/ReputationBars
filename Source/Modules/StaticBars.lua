@@ -226,9 +226,29 @@ local function UpdateBarVisual()
 				barLabel = ""
 			else
 				if hovering == bar and db.showText ~= "mouseover" then
+					--We're hovering over the reputation bar... let's show some specific information about the faction
 					if fi.isParagon then
+						--override the default "exalted" with "paragon"
 						barLabel = string.format("%s",L["Paragon"])
+					elseif fi.isMajorFaction then
+						--Major factions (added in dragonflight) work different than default factions, they need special handling
+						local majorFactionInfo = C_MajorFactions.GetMajorFactionData(fi.factionID);
+
+						local renownLevelsInfo = C_MajorFactions.GetRenownLevels(fi.factionID)
+						local maxRenownLevel = 0
+						for index, value in ipairs(renownLevelsInfo) do
+							ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"          index => "..tostring(index))
+							ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"          value => "..tostring(value))
+							ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"          value.level       => "..tostring(value.level))
+							if value.level > maxRenownLevel then
+								maxRenownLevel = value.level
+								ReputationBarsCommon:DebugLog("WARN","UpdateBarVisual",6,"          maxRenownLevel set to: "..tostring(maxRenownLevel))
+							end
+						end
+
+						barLabel = string.format("%s%s|cff1E90FF (of %s) |cffedf55f(%d to go)", RENOWN_LEVEL_LABEL, majorFactionInfo.renownLevel, maxRenownLevel, displayMax-displayVal)
 					elseif fi.friendID ~= nil then
+						--Friends are another oddball pattern, and need special handling
 						local FriendshipInfo = C_GossipInfo.GetFriendshipReputation(fi.factionID)
 						ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"FriendshipInfo.reaction " .. tostring(FriendshipInfo.reaction))					
 						friendTextLevel = FriendshipInfo.reaction
@@ -243,15 +263,12 @@ local function UpdateBarVisual()
 						
 						--Adjust the hover text for friends to indicate whether we're in the final rank grind or not...
 						if currentRank < maxRank then
-							local nextFriendshipTextLevel = "<next rank>"
-							if currentRank +1 == maxRank then
-								nextFriendshipTextLevel = "<final rank>"
-							end
-							barLabel = string.format("%s |cff1E90FF(%s/%s) |cffedf55f(%d to %s)", friendTextLevel, currentRank, maxRank, displayMax-displayVal, nextFriendshipTextLevel)
+							barLabel = string.format("%s |cff1E90FF(%s/%s) |cffedf55f(%d to go)", friendTextLevel, currentRank, maxRank, displayMax-displayVal)
 						else
 							barLabel = string.format("%s |cff1E90FF(%s/%s)", friendTextLevel, currentRank, maxRank)
 						end					
 					else
+						--this is the default fall-back hover text for not-special factions
 						local gender = UnitSex("player")
 						local standingText = GetText("FACTION_STANDING_LABEL"..fi.standingId, gender)
 						if fi.standingId < 8 then
@@ -265,6 +282,7 @@ local function UpdateBarVisual()
 				elseif displayVal == 0 and displayMax == 0 then
 					barLabel = string.format("%s", name)
 				else
+					--This is the default "non-hovering" bar text
 					barLabel = string.format("%s (%d / %d)%s", name, displayVal, displayMax, recentGainText)
 				end
 			end
@@ -475,6 +493,11 @@ local function GenerateTestData()
 			amount = 50,
 			factionIndex = ReputationBars:GetFactionIndex("Orgrimmar")
 		},
+		[5] = {
+			name = "Dragonscale Expedition",
+			amount = 50,
+			factionIndex = ReputationBars:GetFactionIndex("Dragonscale Expedition")
+		},	
 	}
 end
 

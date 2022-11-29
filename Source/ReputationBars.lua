@@ -140,38 +140,41 @@ function mod:RefreshAllFactions()
 	local factions = {}
 	--ExpandAllFactionHeaders()
 	for i = 1, GetNumFactions() do
-		local name, description, standingId, bottomValue, topValue, earnedValue, atWarWith,
-			canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus = GetFactionInfo(i)
-
+		local name, description, standingId, bottomValue, topValue, earnedValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus = GetFactionInfo(i)
+		local isParagon = factionID and C_Reputation.IsFactionParagon(factionID);
+		local isMajorFaction = factionID and C_Reputation.IsMajorFaction(factionID);
+		
 		if not name or name == lastName and name ~= GUILD then break end
 		
 		--Step 1) define and populate (with faction data) all our "insert variables" for our internal table
-        local nsrt_name       = name
-		local nsrt_standingId = standingId
-		local nsrt_min        = bottomValue
-		local nsrt_max        = topValue
-		local nsrt_value      = earnedValue
-		local nsrt_isHeader   = isHeader
-		local nsrt_isChild    = isChild
-		local nsrt_hasRep     = hasRep
-		local nsrt_isParagon = false
-		local nsrt_isActive   = not IsFactionInactive(i)
-		local nsrt_factionID  = factionID
+        local nsrt_name           = name
+		local nsrt_standingId     = standingId
+		local nsrt_min            = bottomValue
+		local nsrt_max            = topValue
+		local nsrt_value          = earnedValue
+		local nsrt_isHeader       = isHeader
+		local nsrt_isChild        = isChild
+		local nsrt_hasRep         = hasRep
+		local nsrt_isParagon      = isParagon
+		local nsrt_isActive       = not IsFactionInactive(i)
+		local nsrt_factionID      = factionID
 		local nsrt_friendID
+		local nsrt_isMajorFaction = isMajorFaction
 
 		ReputationBarsCommon:DebugLog("","RefreshAllFactions",5,"Loading/Updating '"..tostring(nsrt_name).."' into internal table")
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"Step1: nsrt_name      : "..tostring(nsrt_name))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_standingId: "..tostring(nsrt_standingId))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_min       : "..tostring(nsrt_min))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_max       : "..tostring(nsrt_max))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value     : "..tostring(nsrt_value))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isHeader  : "..tostring(nsrt_isHeader))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isChild   : "..tostring(nsrt_isChild))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_hasRep    : "..tostring(nsrt_hasRep))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isParagon : "..tostring(nsrt_isParagon))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isActive  : "..tostring(nsrt_isActive))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_factionID : "..tostring(nsrt_factionID))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_friendID  : "..tostring(nsrt_friendID))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"Step1: nsrt_name           : "..tostring(nsrt_name))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_standingId     : "..tostring(nsrt_standingId))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_min            : "..tostring(nsrt_min))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_max            : "..tostring(nsrt_max))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value          : "..tostring(nsrt_value))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isHeader       : "..tostring(nsrt_isHeader))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isChild        : "..tostring(nsrt_isChild))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_hasRep         : "..tostring(nsrt_hasRep))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isParagon      : "..tostring(nsrt_isParagon))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isActive       : "..tostring(nsrt_isActive))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_factionID      : "..tostring(nsrt_factionID))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_friendID       : "..tostring(nsrt_friendID))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isMajorFaction : "..tostring(nsrt_isMajorFaction))
 
         --Step 2) figure out if this is a friend (rather than a faction), and if so, override some of our base faction values.
 		if nsrt_isHeader ~= true then
@@ -180,7 +183,6 @@ function mod:RefreshAllFactions()
 				--***************************************--
 				--*       D R A G O N F L I G H T       *--
 				--***************************************--
-                --wrap in pcall instead--local FriendshipInfo= C_GossipInfo.GetFriendshipReputation(factionID)
 				local retOK, FriendshipInfo = pcall(C_GossipInfo.GetFriendshipReputation, factionID)
 
 				if retOK then --make sure pcall worked
@@ -202,30 +204,16 @@ function mod:RefreshAllFactions()
 				else
 					ReputationBarsCommon:DebugLog("ERR","RefreshAllFactions",6,"       ***C_GossipInfo.GetFriendshipReputation call FAILED")
 				end
---			else 
---				--***************************************--
---				--*        S H A D O W L A N D S        *--
---				--***************************************--
---				local x_friendID, x_friendRep, x_friendMaxRep, x_friendName, x_friendText, x_friendTexture, x_friendTextLevel, x_friendThreshhold , x_nextFriendThreshold = GetFriendshipReputation(factionID)
---				if x_friendID then 
---					if x_nextFriendThreshold ~= nil then --handle a weird scenario where the faction is a friend, but has no thresholds...
---						nsrt_min = x_friendThreshold
---						nsrt_max = x_nextFriendThreshold
---						nsrt_value = x_friendRep
---						nsrt_friendID = x_fiendID
---					end
---				end
 			end
 		end
 
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"Step2: nsrt_min     : "..tostring(nsrt_min))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_max     : "..tostring(nsrt_max))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value   : "..tostring(nsrt_value))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_friendID: "..tostring(nsrt_friendID))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"Step2: nsrt_min          : "..tostring(nsrt_min))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_max          : "..tostring(nsrt_max))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value        : "..tostring(nsrt_value))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_friendID     : "..tostring(nsrt_friendID))
 
         --Step 3) figure out if this is a paragon faction (extra rep beyond exalted), and if so, override some of our base faction values
-		if factionID and C_Reputation.IsFactionParagon(factionID) then
-			nsrt_isParagon = true
+		if isParagon then
 			local currentValue, threshold, rewardQuestID, hasRewardPending = C_Reputation.GetFactionParagonInfo(factionID)
 			nsrt_value = currentValue % threshold
 			nsrt_min = 0
@@ -233,25 +221,42 @@ function mod:RefreshAllFactions()
 		end
 		lastName = name
 
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"Step3: nsrt_isParagon: "..tostring(nsrt_isParagon))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value    : "..tostring(nsrt_value))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_min      : "..tostring(nsrt_min))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_max      : "..tostring(nsrt_max))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"Step3: nsrt_isParagon     : "..tostring(nsrt_isParagon))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value         : "..tostring(nsrt_value))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_min           : "..tostring(nsrt_min))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_max           : "..tostring(nsrt_max))
 
-		--Step 4) *phew* that was a lot of work, save it before it's too late...
+        --Step 4) figure out if this is a major faction (new for Shadowlands)
+		if isMajorFaction then
+			local majorFactionInfo = C_MajorFactions.GetMajorFactionData(factionID);
+			nsrt_value = majorFactionInfo.renownReputationEarned
+			nsrt_min = 0
+			nsrt_max = majorFactionInfo.renownLevelThreshold
+		end
+
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"Step4: nsrt_isMajorFaction: "..tostring(nsrt_isMajorFaction))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value         : "..tostring(nsrt_value))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_min           : "..tostring(nsrt_min))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_max           : "..tostring(nsrt_max))
+
+		lastName = name
+
+
+		--Step 5) *phew* that was a lot of work, save it before it's too late...
 		tinsert(factions, {
-			name       = nsrt_name,
-			standingId = nsrt_standingId,
-			min        = nsrt_min,
-			max        = nsrt_max,
-			value      = nsrt_value,
-			isHeader   = nsrt_isHeader,
-			isChild    = nsrt_isChild,
-			hasRep     = nsrt_hasRep,
-			isParagon  = nsrt_isParagon,
-			isActive   = nsrt_isActive,
-			factionID  = nsrt_factionID,
-			friendID   = nsrt_friendID
+			name           = nsrt_name,
+			standingId     = nsrt_standingId,
+			min            = nsrt_min,
+			max            = nsrt_max,
+			value          = nsrt_value,
+			isHeader       = nsrt_isHeader,
+			isChild        = nsrt_isChild,
+			hasRep         = nsrt_hasRep,
+			isParagon      = nsrt_isParagon,
+			isActive       = nsrt_isActive,
+			factionID      = nsrt_factionID,
+			friendID       = nsrt_friendID,
+			isMajorFaction = nsrt_isMajorFaction
 		})	
 		
 		UpdateFactionAmount(name, nsrt_value)
@@ -640,6 +645,27 @@ mod.options = {
 					name = "===> 10.0.2-0009 released\n",
 					order = 136,
 				},
+				Attributions_034 = {
+					type = 'description',
+					name = "Nov-27-2022: Enhancements for 'Major Factions' (factions with renown) introduced in Dragonflight\n",
+					order = 137,
+				},
+				Attributions_035 = {
+					type = 'description',
+					name = "Nov-27-2022: Cleanup of Friendship Code\n",
+					order = 138,
+				},
+				Attributions_036 = {
+					type = 'description',
+					name = "Nov-27-2022: Removal of deprecated Shadowlands code\n",
+					order = 139,
+				},
+				Attributions_037 = {
+					type = 'description',
+					name = "===> 10.0.2-0010 released\n",
+					order = 140,
+				},
+
 
 				Attributions_998 = {
 					type = 'description',
