@@ -1,7 +1,7 @@
-## Interface: 100002
+## Interface: 100005
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
-## Version: 10.0.2-0009
+## Version: 10.0.5-0012
 
 ###### ORIGINAL AUTHOR & SOURCE
 ## Original Author: Pontus Munck
@@ -63,8 +63,11 @@
 ##             - Cleanup of Friendship Code
 ##             - Removal of deprecated Shadowlands code
 ##             - v10.0.2-0010 released
-
-
+## Jan 18 2023 - Reprioritized processing sequence for faction attributes to fix Major Factions as Paragons
+##             - v10.0.2-0011 released
+###### 10.0.5 CHANGE LOG
+## Jan 24 2023 - ToC Updates for 10.0.5
+##             - v10.0.5-0012 released
 
 
 ## OptionalDeps: Ace3

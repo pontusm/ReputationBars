@@ -212,7 +212,20 @@ function mod:RefreshAllFactions()
 		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value        : "..tostring(nsrt_value))
 		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_friendID     : "..tostring(nsrt_friendID))
 
-        --Step 3) figure out if this is a paragon faction (extra rep beyond exalted), and if so, override some of our base faction values
+        --Step 3) figure out if this is a major faction (new for Shadowlands)
+		if isMajorFaction then
+			local majorFactionInfo = C_MajorFactions.GetMajorFactionData(factionID);
+			nsrt_value = majorFactionInfo.renownReputationEarned
+			nsrt_min = 0
+			nsrt_max = majorFactionInfo.renownLevelThreshold
+		end
+
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"Step3: nsrt_isMajorFaction: "..tostring(nsrt_isMajorFaction))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value         : "..tostring(nsrt_value))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_min           : "..tostring(nsrt_min))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_max           : "..tostring(nsrt_max))
+
+        --Step 4) figure out if this is a paragon faction (extra rep beyond exalted), and if so, override some of our base faction values
 		if isParagon then
 			local currentValue, threshold, rewardQuestID, hasRewardPending = C_Reputation.GetFactionParagonInfo(factionID)
 			nsrt_value = currentValue % threshold
@@ -221,20 +234,7 @@ function mod:RefreshAllFactions()
 		end
 		lastName = name
 
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"Step3: nsrt_isParagon     : "..tostring(nsrt_isParagon))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value         : "..tostring(nsrt_value))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_min           : "..tostring(nsrt_min))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_max           : "..tostring(nsrt_max))
-
-        --Step 4) figure out if this is a major faction (new for Shadowlands)
-		if isMajorFaction then
-			local majorFactionInfo = C_MajorFactions.GetMajorFactionData(factionID);
-			nsrt_value = majorFactionInfo.renownReputationEarned
-			nsrt_min = 0
-			nsrt_max = majorFactionInfo.renownLevelThreshold
-		end
-
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"Step4: nsrt_isMajorFaction: "..tostring(nsrt_isMajorFaction))
+		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"Step4: nsrt_isParagon     : "..tostring(nsrt_isParagon))
 		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value         : "..tostring(nsrt_value))
 		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_min           : "..tostring(nsrt_min))
 		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_max           : "..tostring(nsrt_max))
@@ -479,191 +479,155 @@ mod.options = {
 					name = "Credits go to the Ace3 team for an excellent framework.\n",
 					order = 102,
 				},
-				Attributions_000 = {
+				Attributions_103 = {
 					type = 'description',
 					name = "Continued support in Shadowlands and beyond by Karpana of Arygos (US)\n",
 					order = 103,
 				},
-
-				--[[Attributions_001 = {
-					type = 'description',
-					name = "\n\n****** SHADOWLANDS ******\n",
-					order = 104,
-				},
-				Attributions_002 = {
-					type = 'description',
-					name = "Oct-18-2020: Shadowlands stabilization fixes\n",
-					order = 105,
-				},
-				Attributions_003 = {
-					type = 'description',
-					name = "Feb-01-2021: Inclusion of secondary StaticBars\n",
-					order = 106,
-				},
-				Attributions_004 = {
-					type = 'description',
-					name = "Mar-07-2021: Updated for 9.0.5\n",
-					order = 107,
-				},
-				Attributions_005 = {
-					type = 'description',
-					name = "Jun-29-2021: Updated for 9.1.0\n",
-					order = 108,
-				},
-				Attributions_006 = {
-					type = 'description',
-					name = "Jul-25-2021: Ve'nari Paragon Reputation updates\n",
-					order = 109,
-				},
-				Attributions_007 = {
-					type = 'description',
-					name = "Jul-25-2021: Archivist's Codex Paragaon Reputation updates.   Many Thanks to Mithrasangel!!!\n",
-					order = 110,
-				},
-				Attributions_008 = {
-					type = 'description',
-					name = "Oct-22-2021: Second fix for Archivist's Codex Paragon Reputation\n",
-					order = 111,
-				},
-				Attributions_009 = {
-					type = 'description',
-					name = "Oct-22-2021: Updated for 9.1.5\n",
-					order = 112,
-				},
-				Attributions_010 = {
-					type = 'description',
-					name = "Feb-01-2022: Updated for 9.2.0\n",
-					order = 113,
-				},
-				Attributions_011 = {
-					type = 'description',
-					name = "Sep-25-2022: Updated for 9.2.7\n",
-					order = 114,
-				},]]
-				Attributions_012 = {
+				Attributions_115 = {
 					type = 'description',
 					name = "\n****** DRAGONFLIGHT ******\n",
 					order = 115,
 				},
-				Attributions_013 = {
+				Attributions_116 = {
 					type = 'description',
 					name = "Sep-25-2022: Dragonflight API updates\n",
 					order = 116,
 				},
-				Attributions_014 = {
+				Attributions_117 = {
 					type = 'description',
 					name = "Sep-25-2022: Proper and Final (hopefully?) fix for non-standard reputations (friends, NatPagle, Venari, Achivists, etc...)\n",
 					order = 117,
 				},
-				Attributions_015 = {
+				Attributions_118 = {
 					type = 'description',
 					name = "Sep-26-2022: Quality of Life Updates to show 'Paragon' instead of exalted for those factions that have a paragon mode\n",
 					order = 118,
 				},
-				Attributions_016 = {
+				Attributions_119 = {
 					type = 'description',
 					name = "Sep-26-2022: Addition of Scrollbars for faction checkboxes\n",
 					order = 119,
 				},
-				Attributions_017 = {
+				Attributions_120 = {
 					type = 'description',
 					name = "Sep-26-2022: Update of ACE3 libs to r1281\n",
 					order = 120,
 				},
-				Attributions_018 = {
+				Attributions_121 = {
 					type = 'description',
 					name = "Sep-27-2022: Pre-preparations for multiple/additional StaticBars\n",
 					order = 121,
 				},
-				Attributions_019 = {
+				Attributions_0122 = {
 					type = 'description',
 					name = "Sep-28-2022: Creation of StaticBars 3 thru 9\n",
 					order = 122,
 				},
-				Attributions_021 = {
+				Attributions_124 = {
 					type = 'description',
 					name = "Sep-30-2022: Refactored StaticBars code\n",
 					order = 124,
 				},
-				Attributions_022 = {
+				Attributions_125 = {
 					type = 'description',
 					name = "Oct-18-2022: Override option in Autobars to change default ignore behaviour\n",
 					order = 125,
 				},
-				Attributions_023 = {
+				Attributions_126 = {
 					type = 'description',
 					name = "Oct-24-2022: Prevent recent gains from disappearing in Autobars after hovering mouse on bar\n",
 					order = 126,
 				},
-				Attributions_024 = {
+				Attributions_127 = {
 					type = 'description',
 					name = "Oct-26-2022: Fix incorrect friend logic\n",
 					order = 127,
 				},
-				Attributions_025 = {
+				Attributions_128 = {
 					type = 'description',
 					name = "Oct-26-2022: Update of ACE3 libs to r1294\n",
 					order = 128,
 				},
-				Attributions_026 = {
+				Attributions_129 = {
 					type = 'description',
 					name = "Oct-26-2022: QOL updates for friend reputations\n",
 					order = 129,
 				},
-				Attributions_027 = {
+				Attributions_130 = {
 					type = 'description',
 					name = "Oct-27-2022: More QOL updates for friend reputations\n",
 					order = 130,
 				},
-				Attributions_028 = {
+				Attributions_0131 = {
 					type = 'description',
 					name = "Oct-27-2022: Error Trapping/Handling for call to C_GossipInfo.GetFriendshipReputation\n",
 					order = 131,
 				},
-				Attributions_029 = {
+				Attributions_132 = {
 					type = 'description',
 					name = "===> 10.0.2-0007 released\n",
 					order = 132,
 				},
-				Attributions_030 = {
+				Attributions_133 = {
 					type = 'description',
 					name = "Nov-06-2022: TOC update for 10.0.2\n",
 					order = 133,
 				},
-				Attributions_031 = {
+				Attributions_134 = {
 					type = 'description',
 					name = "===> 10.0.2-0008 released\n",
 					order = 134,
 				},
-				Attributions_032 = {
+				Attributions_135 = {
 					type = 'description',
 					name = "Nov-27-2022: Attempt to fix/address 'upvalue bug'\n",
 					order = 135,
 				},
-				Attributions_033 = {
+				Attributions_136 = {
 					type = 'description',
 					name = "===> 10.0.2-0009 released\n",
 					order = 136,
 				},
-				Attributions_034 = {
+				Attributions_137 = {
 					type = 'description',
 					name = "Nov-27-2022: Enhancements for 'Major Factions' (factions with renown) introduced in Dragonflight\n",
 					order = 137,
 				},
-				Attributions_035 = {
+				Attributions_138 = {
 					type = 'description',
 					name = "Nov-27-2022: Cleanup of Friendship Code\n",
 					order = 138,
 				},
-				Attributions_036 = {
+				Attributions_139 = {
 					type = 'description',
 					name = "Nov-27-2022: Removal of deprecated Shadowlands code\n",
 					order = 139,
 				},
-				Attributions_037 = {
+				Attributions_140 = {
 					type = 'description',
 					name = "===> 10.0.2-0010 released\n",
 					order = 140,
+				},
+				Attributions_141 = {
+					type = 'description',
+					name = "Jan-18-2023: Reprioritized processing sequence for faction attributes to fix Major Factions as Paragons\n",
+					order = 141,
+				},
+				Attributions_142 = {
+					type = 'description',
+					name = "===> 10.0.2-0011 released\n",
+					order = 142,
+				},
+				Attributions_143 = {
+					type = 'description',
+					name = "Jan-24-2023: ToC Updates for 10.0.5\n",
+					order = 143,
+				},
+				Attributions_144 = {
+					type = 'description',
+					name = "===> 10.0.5-0012 released\n",
+					order = 144,
 				},
 
 
