@@ -221,6 +221,7 @@ local function UpdateBarVisual()
 			ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"fi.standingId " .. tostring(fi.standingId))
 			ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"displayVal " .. tostring(displayVal))
 			ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"displayMax " .. tostring(displayMax))			
+			ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"fi.hasRewardPending " .. tostring(fi.hasRewardPending))			
 
 			if db.showText == "never" or (db.showText == "mouseover" and hovering ~= bar) then
 				barLabel = ""
@@ -229,7 +230,12 @@ local function UpdateBarVisual()
 					--We're hovering over the reputation bar... let's show some specific information about the faction
 					if fi.isParagon then
 						--override the default "exalted" with "paragon"
-						barLabel = string.format("%s",L["Paragon"])
+						ReputationBarsCommon:DebugLog("","ReputationBars_AutoBars:UpdateBarVisual",6,"===> hasRewardPending "..tostring(fi.hasRewardPending))
+						if fi.hasRewardPending then 
+						    barLabel = string.format("%s",L["Paragon"] .. " *** Reward Pending ***")	
+						else
+						    barLabel = string.format("%s",L["Paragon"])
+						end
 					elseif fi.isMajorFaction then
 						--Major factions (added in dragonflight) work different than default factions, they need special handling
 						local majorFactionInfo = C_MajorFactions.GetMajorFactionData(fi.factionID);
@@ -283,7 +289,11 @@ local function UpdateBarVisual()
 					barLabel = string.format("%s", name)
 				else
 					--This is the default "non-hovering" bar text
-					barLabel = string.format("%s (%d / %d)%s", name, displayVal, displayMax, recentGainText)
+					if fi.hasRewardPending then 
+						barLabel = string.format("%s (%d / %d)%s", name, displayVal, displayMax, recentGainText) .. " !!! "
+					else
+						barLabel = string.format("%s (%d / %d)%s", name, displayVal, displayMax, recentGainText)
+					end					
 				end
 			end
 			
