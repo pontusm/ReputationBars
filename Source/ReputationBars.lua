@@ -635,6 +635,11 @@ mod.options = {
 					name = "===> 10.0.5-0012 released\n",
 					order = 144,
 				},
+				Attributions_145 = {
+					type = 'description',
+					name = "Jan-28-2023: minor QoL for Paragon Rewards\n",
+					order = 145,
+				},
 
 
 				Attributions_998 = {

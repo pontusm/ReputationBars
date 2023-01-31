@@ -68,6 +68,8 @@
 ###### 10.0.5 CHANGE LOG
 ## Jan 24 2023 - ToC Updates for 10.0.5
 ##             - v10.0.5-0012 released
+## Jan 27 2023 - Minor QoL for Paragon rewards
+##
 
 
 ## OptionalDeps: Ace3
