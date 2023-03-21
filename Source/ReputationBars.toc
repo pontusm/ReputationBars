@@ -1,7 +1,7 @@
-## Interface: 100005
+## Interface: 100007
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
-## Version: 10.0.5-0012
+## Version: 10.0.7-0013
 
 ###### ORIGINAL AUTHOR & SOURCE
 ## Original Author: Pontus Munck
@@ -69,7 +69,9 @@
 ## Jan 24 2023 - ToC Updates for 10.0.5
 ##             - v10.0.5-0012 released
 ## Jan 27 2023 - Minor QoL for Paragon rewards
-##
+###### 10.0.7 CHANGE LOG
+## Jan 24 2023 - ToC Updates for 10.0.7
+##             - v10.0.7-0013 released
 
 
 ## OptionalDeps: Ace3

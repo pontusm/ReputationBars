@@ -640,7 +640,16 @@ mod.options = {
 					name = "Jan-28-2023: minor QoL for Paragon Rewards\n",
 					order = 145,
 				},
-
+				Attributions_146 = {
+					type = 'description',
+					name = "Mar-21-2023: ToC Updates for 10.0.7\n",
+					order = 146,
+				},
+				Attributions_147 = {
+					type = 'description',
+					name = "===> 10.0.7-0013 released\n",
+					order = 147,
+				},
 
 				Attributions_998 = {
 					type = 'description',
