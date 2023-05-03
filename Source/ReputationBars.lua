@@ -650,6 +650,16 @@ mod.options = {
 					name = "===> 10.0.7-0013 released\n",
 					order = 147,
 				},
+				Attributions_148 = {
+					type = 'description',
+					name = "May-03-2023: ToC Updates for 10.1.0\n",
+					order = 148,
+				},
+				Attributions_149 = {
+					type = 'description',
+					name = "===> 10.1.0-0014 released\n",
+					order = 149,
+				},
 
 				Attributions_998 = {
 					type = 'description',

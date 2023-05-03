@@ -1,7 +1,7 @@
-## Interface: 100007
+## Interface: 100100
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
-## Version: 10.0.7-0013
+## Version: 10.1.0-0014
 
 ###### ORIGINAL AUTHOR & SOURCE
 ## Original Author: Pontus Munck
@@ -72,7 +72,9 @@
 ###### 10.0.7 CHANGE LOG
 ## Jan 24 2023 - ToC Updates for 10.0.7
 ##             - v10.0.7-0013 released
-
+###### 10.1.0 CHANGE LOG
+## May 03 2023 - Update ToC for 10.1.0
+##             - v10.1.0-0014 released
 
 ## OptionalDeps: Ace3
 ## X-Embeds: Ace3
