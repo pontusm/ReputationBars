@@ -660,6 +660,11 @@ mod.options = {
 					name = "===> 10.1.0-0014 released\n",
 					order = 149,
 				},
+				Attributions_150 = {
+					type = 'description',
+					name = "May-05-2023: Icon for Reputation Bars\n",
+					order = 150,
+				},
 
 				Attributions_998 = {
 					type = 'description',

@@ -2,6 +2,7 @@
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
 ## Version: 10.1.0-0014
+## IconTexture: Interface\AddOns\ReputationBars\textures\reputation-bars
 
 ###### ORIGINAL AUTHOR & SOURCE
 ## Original Author: Pontus Munck
@@ -9,6 +10,9 @@
 ## Special thanks to trent2 for his fixes while I had RL issues happening
 ## Revision: bfa76502528a850aae27f2f8fb4576d4fc0e2d1b
 ## https://www.curseforge.com/wow/addons/reputation-bars/source
+
+###### OTHER ATTRIBUTIONS
+## A warm thank  you goes out to Delapouite for their wonderful network-bars icon which was distributed under CC BY 3.0 and mildly modified for this addon.
 
 ###### SHADOWLANDS
 ## Author: Karpana @ Arygos-US
@@ -75,6 +79,8 @@
 ###### 10.1.0 CHANGE LOG
 ## May 03 2023 - Update ToC for 10.1.0
 ##             - v10.1.0-0014 released
+## May 04 2023 - Fiddling around with the addon icon inside of the addons and options screens
+
 
 ## OptionalDeps: Ace3
 ## X-Embeds: Ace3
