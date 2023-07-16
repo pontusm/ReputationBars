@@ -665,6 +665,16 @@ mod.options = {
 					name = "May-05-2023: Icon for Reputation Bars\n",
 					order = 150,
 				},
+				Attributions_151 = {
+					type = 'description',
+					name = "Jul-11-2023: ToC Updates for 10.1.5\n",
+					order = 151,
+				},
+				Attributions_152 = {
+					type = 'description',
+					name = "===> 10.1.5-0015 released\n",
+					order = 152,
+				},
 
 				Attributions_998 = {
 					type = 'description',

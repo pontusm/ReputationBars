@@ -1,7 +1,7 @@
-## Interface: 100100
+## Interface: 100105
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
-## Version: 10.1.0-0014
+## Version: 10.1.5-0015
 ## IconTexture: Interface\AddOns\ReputationBars\textures\reputation-bars
 
 ###### ORIGINAL AUTHOR & SOURCE
@@ -80,6 +80,10 @@
 ## May 03 2023 - Update ToC for 10.1.0
 ##             - v10.1.0-0014 released
 ## May 04 2023 - Fiddling around with the addon icon inside of the addons and options screens
+###### 10.1.5 CHANGE LOG
+## Jul 11 2023 - Update ToC for 10.1.5
+##             - v10.1.0-0015 released
+
 
 
 ## OptionalDeps: Ace3
