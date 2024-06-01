@@ -675,6 +675,21 @@ mod.options = {
 					name = "===> 10.1.5-0015 released\n",
 					order = 152,
 				},
+				Attributions_153 = {
+					type = 'description',
+					name = "Jun-01-2024: ToC Updates for 10.2.7\n",
+					order = 153,
+				},
+				Attributions_154 = {
+					type = 'description',
+					name = "Jun-01-2024: Undo code refactoring from Oct-2022 due to a blizz chnage with 10.2.7 that causes errors and warning on ui load duet duplicate file load\n",
+					order = 154,
+				},
+				Attributions_155 = {
+					type = 'description',
+					name = "===> 10.2.7-0016 released\n",
+					order = 155,
+				},
 
 				Attributions_998 = {
 					type = 'description',

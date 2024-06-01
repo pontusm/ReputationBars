@@ -1,7 +1,7 @@
-## Interface: 100105
+## Interface: 100207
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
-## Version: 10.1.5-0015
+## Version: 10.2.7-0017
 ## IconTexture: Interface\AddOns\ReputationBars\textures\reputation-bars
 
 ###### ORIGINAL AUTHOR & SOURCE
@@ -83,7 +83,11 @@
 ###### 10.1.5 CHANGE LOG
 ## Jul 11 2023 - Update ToC for 10.1.5
 ##             - v10.1.0-0015 released
+## Jun 01 2024 - Update ToC for 10.2.7
+##             - Undo code refactoring from Sept-2022 due to a blizz chnage with 10.2.7 that causes errors and warning on ui load duet duplicate file load
+##             - v10.2.7-0016 released
 
+##TODO: Figure out how to refactor static bars this properly.
 
 
 ## OptionalDeps: Ace3
@@ -108,13 +112,12 @@ Modules\StaticBarsCommon.lua
 ## Load submodules
 Modules\WatchBar.lua
 Modules\AutoBars.lua
-## Note: We can "load" multiple of these, by repeating the load command; the module handles unique naming; here we create/load 9.
-Modules\StaticBars.lua
-Modules\StaticBars.lua
-Modules\StaticBars.lua
-Modules\StaticBars.lua
-Modules\StaticBars.lua
-Modules\StaticBars.lua
-Modules\StaticBars.lua
-Modules\StaticBars.lua
-Modules\StaticBars.lua
+Modules\StaticBars01.lua
+Modules\StaticBars02.lua
+Modules\StaticBars03.lua
+Modules\StaticBars04.lua
+Modules\StaticBars05.lua
+Modules\StaticBars06.lua
+Modules\StaticBars07.lua
+Modules\StaticBars08.lua
+Modules\StaticBars09.lua
