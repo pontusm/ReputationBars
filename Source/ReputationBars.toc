@@ -91,16 +91,16 @@
 ## Jun 06 2024 - Updated ACE3 to r1341
 ##             - Updated ACE3-SharedMedia to r65
 ##             - Official Deprecation and removal of WatchBars
+## Jun 07 2024 - v10.2.7-0019 released
 
 
 ###### THE WAR WITHIN
 ## Author: Karpana @ Ysera-US
 ## https://github.com/pontusm/ReputationBars  
 ###### BETA CHANGE LOG 
-## Jun 05 2024 - Updated ACE3 to r1341
-##             - Official Deprecation and removal of WatchBars
-##             - Prepare for API changes in TWW
-## Jun 06 2024 - Updated ACE-SharedMedia to r65
+## Jun 05 2024 - Prepare for API changes in TWW
+## Jun 07 2024 - v10.2.7-0019 released
+
 
 
 ## TODO: Figure out how to refactor static bars this properly.

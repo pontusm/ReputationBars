@@ -760,6 +760,11 @@ mod.options = {
 					name = "Jun-06-2024: Update of AceGui-3.0-SharedMediaWidgets libs to r65\n",
 					order = 158,
 				},
+				Attributions_159 = {
+					type = 'description',
+					name = "===> 10.2.7-0019 released\n",
+					order = 159
+				},
 				Attributions_201 = {
 					type = 'description',
 					name = "\n****** THE WAR WITHIN ******\n",
@@ -769,6 +774,11 @@ mod.options = {
 					type = 'description',
 					name = "Jun-05-2024: The War Within API updates with reverse compatibility for 10.2.7\n",
 					order = 202,
+				},
+				Attributions_203 = {
+					type = 'description',
+					name = "===> 10.2.7-0019 released\n",
+					order = 203
 				},
 			},
 		},
