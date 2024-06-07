@@ -96,8 +96,16 @@ end
 -- Faction methods
 ------------------------------------------------------------------------------
 function mod:GetFactionIndex(factionName)
+	local expansionLevel = GetClientDisplayExpansionLevel()
 	for i = 1, #allFactions do
-		local name, _, _, _, _, _, _, _, _, _, _, _, _ = GetFactionInfo(i); 
+		local name = ""
+		
+		if expansionLevel < 10 then
+			name, _, _, _, _, _, _, _, _, _, _, _, _ = GetFactionInfo(i); 
+		else
+			local factionData=C_Reputation.GetFactionDataByIndex(i);
+			name = factionData.name
+		end
 		if name == factionName then return i end
 	end
 	return 0
@@ -139,15 +147,47 @@ function mod:RefreshAllFactions()
 	local lastName
 	local factions = {}
 	--ExpandAllFactionHeaders()
-	for i = 1, GetNumFactions() do
-		local name, description, standingId, bottomValue, topValue, earnedValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus = GetFactionInfo(i)
+	
+	local factionCount = 0
+	if expansionLevel < 10 then
+		factionCount = GetNumFactions()
+	else
+		factionCount = C_Reputation.GetNumFactions()
+	end
+
+	for i = 1, factionCount do
+		local name, description, standingId, bottomValue, topValue, earnedValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus
+
+		if expansionLevel < 10 then 
+			name, description, standingId, bottomValue, topValue, earnedValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus = GetFactionInfo(i)
+		else
+			local factionData=C_Reputation.GetFactionDataByIndex(i);
+			name           = factionData.name
+			description	 = factionData.description
+			standingId	 = factionData.reaction
+			bottomValue 	 = factionData.currentReactionThreshold
+			topValue	 = factionData.nextReactionThreshold
+			earnedValue    = factionData.currentStanding
+			atWarWith	 = factionData.atWarWith
+			canToggleAtWar = factionData.canToggleAtWar
+			isHeader	 = factionData.isHeader
+			isCollapsed    = factionData.isCollapsed
+			hasRep         = factionData.isHeaderWithRep
+			isWatched      = factionData.isWatched
+			isChild	 = factionData.isChild
+			factionID	 = factionData.factionID
+			canBeLFGBonus  = factionData.hasBonusRepGain
+			canSetInactive = factionData.canSetInactive
+			isAccountWide  = nil
+		end
+		
 		local isParagon = factionID and C_Reputation.IsFactionParagon(factionID);
 		local isMajorFaction = factionID and C_Reputation.IsMajorFaction(factionID);
 		
 		if not name or name == lastName and name ~= GUILD then break end
-		
+	
 		--Step 1) define and populate (with faction data) all our "insert variables" for our internal table
-        local nsrt_name             = name
+		local nsrt_name             = name
 		local nsrt_standingId       = standingId
 		local nsrt_min              = bottomValue
 		local nsrt_max              = topValue
@@ -156,7 +196,11 @@ function mod:RefreshAllFactions()
 		local nsrt_isChild          = isChild
 		local nsrt_hasRep           = hasRep
 		local nsrt_isParagon        = isParagon
-		local nsrt_isActive         = not IsFactionInactive(i)
+		if expansionLevel < 10 then
+			local nsrt_isActive         = not IsFactionInactive(i)
+		else
+			local nsrt_isActive         = C_Reputation.IsFactionActive(i)
+		end
 		local nsrt_factionID        = factionID
 		local nsrt_friendID
 		local nsrt_isMajorFaction   = isMajorFaction
@@ -179,13 +223,10 @@ function mod:RefreshAllFactions()
 		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isMajorFaction  : "..tostring(nsrt_isMajorFaction))
 		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_hasRewardPending : "..tostring(nsrt_hasRewardPending))
 
-        --Step 2) figure out if this is a friend (rather than a faction), and if so, override some of our base faction values.
+		--Step 2) figure out if this is a friend (rather than a faction), and if so, override some of our base faction values.
 		if nsrt_isHeader ~= true then
 			--we need to do this different ways for Dragonflight vs Shadowlands
-			if expansionLevel >= 9 then -- DragonFlight
-				--***************************************--
-				--*       D R A G O N F L I G H T       *--
-				--***************************************--
+			if expansionLevel >= 9 then -- DragonFlight, The War Within, and beyond
 				local retOK, FriendshipInfo = pcall(C_GossipInfo.GetFriendshipReputation, factionID)
 
 				if retOK then --make sure pcall worked
@@ -193,11 +234,11 @@ function mod:RefreshAllFactions()
 					ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       FriendshipInfo: " .. tostring(FriendshipInfo))
 
 					if FriendshipInfo ~= nil then --make sure that we actually got a value from the API call
-					  ReputationBarsCommon:DebugLog("WARN","RefreshAllFactions",6,"       FriendshipInfo.friendshipFactionID: " .. tostring(FriendshipInfo.friendshipFactionID))					
-					  if FriendshipInfo.friendshipFactionID ~= 0 then --this is a friend .. handle them differently
-					  		nsrt_value = FriendshipInfo.standing
-					  		nsrt_friendID = FriendshipInfo.friendshipFactionID
-  					
+					ReputationBarsCommon:DebugLog("WARN","RefreshAllFactions",6,"       FriendshipInfo.friendshipFactionID: " .. tostring(FriendshipInfo.friendshipFactionID))					
+					if FriendshipInfo.friendshipFactionID ~= 0 then --this is a friend .. handle them differently
+							nsrt_value = FriendshipInfo.standing
+							nsrt_friendID = FriendshipInfo.friendshipFactionID
+					
 							if FriendshipInfo.nextThreshold ~= nil then --this friend still has progress
 								nsrt_min = FriendshipInfo.reactionThreshold
 								nsrt_max = FriendshipInfo.nextThreshold
@@ -215,7 +256,7 @@ function mod:RefreshAllFactions()
 		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value        : "..tostring(nsrt_value))
 		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_friendID     : "..tostring(nsrt_friendID))
 
-        --Step 3) figure out if this is a major faction (new for Shadowlands)
+		--Step 3) figure out if this is a major faction (new for Shadowlands)
 		if isMajorFaction then
 			local majorFactionInfo = C_MajorFactions.GetMajorFactionData(factionID);
 			nsrt_value = majorFactionInfo.renownReputationEarned
@@ -228,7 +269,7 @@ function mod:RefreshAllFactions()
 		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_min           : "..tostring(nsrt_min))
 		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_max           : "..tostring(nsrt_max))
 
-        --Step 4) figure out if this is a paragon faction (extra rep beyond exalted), and if so, override some of our base faction values
+		--Step 4) figure out if this is a paragon faction (extra rep beyond exalted), and if so, override some of our base faction values
 		if isParagon then
 			local currentValue, threshold, rewardQuestID, hasRewardPending, tooLowLevelForParagon = C_Reputation.GetFactionParagonInfo(factionID)
 			nsrt_value = currentValue % threshold
@@ -245,7 +286,6 @@ function mod:RefreshAllFactions()
 		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_hasRewardPending : "..tostring(nsrt_RewardPending))
 
 		lastName = name
-
 
 		--Step 5) *phew* that was a lot of work, save it before it's too late...
 		tinsert(factions, {
@@ -266,7 +306,14 @@ function mod:RefreshAllFactions()
 		})	
 		
 		UpdateFactionAmount(name, nsrt_value)
-		if isCollapsed then ExpandFactionHeader(i) end
+
+		if isCollapsed then
+			if expansionLevel < 10 then
+				ExpandFactionHeader(i)
+			else
+				C_Reputation.ExpandFactionHeader(i)
+			end
+		end
 	end
 
 	allFactions = factions
@@ -280,7 +327,15 @@ function mod:EnsureFactionsLoaded()
 	-- Sometimes it takes a while for faction and guild info
 	-- to load when the game boots up so we need to periodically
 	-- check whether its loaded before we can display it
-	if GetFactionInfo(1) == nil or (IsInGuild() and GetGuildInfo("player") == nil) then
+
+	local expansionLevel = GetClientDisplayExpansionLevel()
+	if expansionLevel < 10 then
+	   factionData = GetFactionInfo(1)
+	else 
+	   factionData = C_Reputation.GetFactionDataByID(1)
+	end
+	
+	if factionData == nil or (IsInGuild() and GetGuildInfo("player") == nil) then
 		self:ScheduleTimer("EnsureFactionsLoaded", 0.5)	
 	else
 		-- Refresh all factions and notify modules
@@ -487,7 +542,7 @@ mod.options = {
 				},
 				Attributions_103 = {
 					type = 'description',
-					name = "Continued support in Shadowlands and beyond by Karpana of Arygos (US)\n",
+					name = "Continued support in Shadowlands and beyond by Karpana of Ysera (US)\n",
 					order = 103,
 				},
 				Attributions_115 = {
@@ -690,16 +745,30 @@ mod.options = {
 					name = "===> 10.2.7-0016 released\n",
 					order = 155,
 				},
-
-				Attributions_998 = {
+				Attributions_156 = {
 					type = 'description',
-					name = "\n****** KNOWN ISSUES ******\n",
-					order = 998,
+					name = "Jun-05-2024: Formal retirement of WatchBars\n",
+					order = 156,
 				},
-				Attributions_999 = {
+				Attributions_157 = {
 					type = 'description',
-					name = "Watch Bars throw LUA errors and fail to properly function\n",
-					order = 999,
+					name = "Jun-05-2024: Update of ACE3 libs to r1341\n",
+					order = 157,
+				},
+				Attributions_158 = {
+					type = 'description',
+					name = "Jun-06-2024: Update of AceGui-3.0-SharedMediaWidgets libs to r65\n",
+					order = 158,
+				},
+				Attributions_201 = {
+					type = 'description',
+					name = "\n****** THE WAR WITHIN ******\n",
+					order = 201,
+				},
+				Attributions_202 = {
+					type = 'description',
+					name = "Jun-05-2024: The War Within API updates with reverse compatibility for 10.2.7\n",
+					order = 202,
 				},
 			},
 		},

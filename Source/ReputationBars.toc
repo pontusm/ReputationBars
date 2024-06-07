@@ -1,7 +1,7 @@
 ## Interface: 100207
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
-## Version: 10.2.7-0017
+## Version: 10.2.7-0019
 ## IconTexture: Interface\AddOns\ReputationBars\textures\reputation-bars
 
 ###### ORIGINAL AUTHOR & SOURCE
@@ -15,7 +15,7 @@
 ## A warm thank  you goes out to Delapouite for their wonderful network-bars icon which was distributed under CC BY 3.0 and mildly modified for this addon.
 
 ###### SHADOWLANDS
-## Author: Karpana @ Arygos-US
+## Author: Karpana @ Ysera-US
 ## https://github.com/pontusm/ReputationBars  
 ##
 ###### CHANGE LOG
@@ -35,7 +35,7 @@
 
 
 ###### DRAGONFLIGHT
-## Author: Karpana @ Arygos-US
+## Author: Karpana @ Ysera-US
 ## https://github.com/pontusm/ReputationBars  
 ###### PREPATCH CHANGE LOG 
 ## Sep 25 2022 - Changes to support Friendship data being sourced from GetFriendshipReputation in Shadowlandsand and seamlessly switching over to C_GossipInfo.GetFriendshipReputation in Dragonflight
@@ -86,8 +86,25 @@
 ## Jun 01 2024 - Update ToC for 10.2.7
 ##             - Undo code refactoring from Sept-2022 due to a blizz chnage with 10.2.7 that causes errors and warning on ui load duet duplicate file load
 ##             - v10.2.7-0016 released
+## Jun 04 2024 - internal version inconsistency correction
+##             - v10.2.7-0018 released
+## Jun 06 2024 - Updated ACE3 to r1341
+##             - Updated ACE3-SharedMedia to r65
+##             - Official Deprecation and removal of WatchBars
 
-##TODO: Figure out how to refactor static bars this properly.
+
+###### THE WAR WITHIN
+## Author: Karpana @ Ysera-US
+## https://github.com/pontusm/ReputationBars  
+###### BETA CHANGE LOG 
+## Jun 05 2024 - Updated ACE3 to r1341
+##             - Official Deprecation and removal of WatchBars
+##             - Prepare for API changes in TWW
+## Jun 06 2024 - Updated ACE-SharedMedia to r65
+
+
+## TODO: Figure out how to refactor static bars this properly.
+
 
 
 ## OptionalDeps: Ace3
@@ -110,7 +127,6 @@ Modules\ReputationBarsCommon.lua
 Modules\StaticBarsCommon.lua
 
 ## Load submodules
-Modules\WatchBar.lua
 Modules\AutoBars.lua
 Modules\StaticBars01.lua
 Modules\StaticBars02.lua
