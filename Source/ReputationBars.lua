@@ -780,6 +780,21 @@ mod.options = {
 					name = "===> 10.2.7-0019 released\n",
 					order = 203
 				},
+				Attributions_204 = {
+					type = 'description',
+					name = "Jun-26-2024: Update ToC for 11.0.0\n",
+					order = 204,
+				},
+				Attributions_205 = {
+					type = 'description',
+					name = "Jun-26-2024: update internal version for 11.0.0\n",
+					order = 205,
+				},
+				Attributions_206 = {
+					type = 'description',
+					name = "===> 11.0.0-001 released\n",
+					order = 206
+				},
 			},
 		},
 		

@@ -1,7 +1,7 @@
-## Interface: 100207
+## Interface: 110000
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
-## Version: 10.2.7-0019
+## Version: 11.0.0-0001
 ## IconTexture: Interface\AddOns\ReputationBars\textures\reputation-bars
 
 ###### ORIGINAL AUTHOR & SOURCE
@@ -13,6 +13,7 @@
 
 ###### OTHER ATTRIBUTIONS
 ## A warm thank  you goes out to Delapouite for their wonderful network-bars icon which was distributed under CC BY 3.0 and mildly modified for this addon.
+
 
 ###### SHADOWLANDS
 ## Author: Karpana @ Ysera-US
@@ -100,6 +101,9 @@
 ###### BETA CHANGE LOG 
 ## Jun 05 2024 - Prepare for API changes in TWW
 ## Jun 07 2024 - v10.2.7-0019 released
+## Jun 26 2024 - Update TOC for 11.0.0
+##             - Update internal version for 11.0.0
+## Jul 02 2024 - v11.0.0-0001 released
 
 
 
