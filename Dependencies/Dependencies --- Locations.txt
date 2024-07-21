@@ -1,0 +1,14 @@
+Ace3
+    https://www.curseforge.com/wow/addons/ace3/files/all?page=1&pageSize=20
+
+AceGui
+    https://www.curseforge.com/wow/addons/ace-gui-3-0-shared-media-widgets/files/all?page=1&pageSize=20
+
+LibBars
+    https://www.curseforge.com/wow/addons/libbars-1-0/files/all?page=1&pageSize=20
+
+LibSharedMedia
+    https://www.curseforge.com/wow/addons/libsharedmedia-3-0/files/all?page=1&pageSize=20
+    
+    Note: r98 version in this addon (from Oct 25, 2016), has a current version as of July 2024)
+

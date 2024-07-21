@@ -1,7 +1,7 @@
-## Interface: 110000
+## Interface: 110002
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
-## Version: 11.0.0-0001
+## Version: 11.0.2-0002
 ## IconTexture: Interface\AddOns\ReputationBars\textures\reputation-bars
 
 ###### ORIGINAL AUTHOR & SOURCE
@@ -104,6 +104,8 @@
 ## Jun 26 2024 - Update TOC for 11.0.0
 ##             - Update internal version for 11.0.0
 ## Jul 02 2024 - v11.0.0-0001 released
+## Jul 21 2024 - Update TOC for 11.0.2
+##             - v11.0.2-0002 released
 
 
 
