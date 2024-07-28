@@ -1,7 +1,7 @@
 ## Interface: 110002
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
-## Version: 11.0.2-0002
+## Version: 11.0.2-0003
 ## IconTexture: Interface\AddOns\ReputationBars\textures\reputation-bars
 
 ###### ORIGINAL AUTHOR & SOURCE
@@ -106,6 +106,8 @@
 ## Jul 02 2024 - v11.0.0-0001 released
 ## Jul 21 2024 - Update TOC for 11.0.2
 ##             - v11.0.2-0002 released
+## Jul 28 2024 - Update api call for inactive reputations (resulting from TWW api warband changes)
+##             - v11.0.2-0003 released
 
 
 

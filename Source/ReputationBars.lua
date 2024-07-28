@@ -362,7 +362,16 @@ function mod:UpdateReputation()
 	for name, amount in pairs(reputationChanges) do
 		-- Skip inactive factions
 		local factionIndex = self:GetFactionIndex(name)
-		if factionIndex and (not IsFactionInactive(factionIndex) or presentGainsForInactiveReputations) then
+
+		local expansionLevel = GetClientDisplayExpansionLevel()
+
+		if expansionLevel < 10 then
+			local isFactionActive         = not IsFactionInactive(factionIndex)
+		else
+			local isFactionActive         = C_Reputation.IsFactionActive(factionIndex)
+		end
+
+		if factionIndex and (isFactionActive or presentGainsForInactiveReputations) then
 			tinsert(changes, {
 				name = name,
 				amount = amount,
@@ -399,6 +408,7 @@ end
 -- Events
 ------------------------------------------------------------------------------
 function mod:COMBAT_TEXT_UPDATE(event, type, name, amount)
+	ReputationBarsCommon:DebugLog("OK","mod:COMBAT_TEXT_UPDATE",4,"Event Trapped...")	
 	if (type == "FACTION") then
 		if IsInGuild() then
 			-- Check name for guild reputation
@@ -424,6 +434,7 @@ function mod:COMBAT_TEXT_UPDATE(event, type, name, amount)
 end
 
 function mod:UPDATE_FACTION()
+	ReputationBarsCommon:DebugLog("OK","mod:UPDATE_FACTION",4,"Event Trapped...")	
 	self:ScheduleUpdate()
 end
 
@@ -584,6 +595,16 @@ mod.options = {
 					type = 'description',
 					name = "===> 11.0.2-002 released\n",
 					order = 208
+				},
+				Attributions_209 = {
+					type = 'description',
+					name = "Jul-28-2024: Update api call for inactive reputations (resulting from TWW api warband changes\n",
+					order = 209,
+				},
+				Attributions_210 = {
+					type = 'description',
+					name = "===> 11.0.2-003 released\n",
+					order = 210
 				},
 			},
 		},
