@@ -583,7 +583,7 @@ mod.options = {
 				},
 				Attributions_206 = {
 					type = 'description',
-					name = "===> 11.0.0-001 released\n",
+					name = "===> 11.0.0-0001 released\n",
 					order = 206
 				},
 				Attributions_207 = {
@@ -593,7 +593,7 @@ mod.options = {
 				},
 				Attributions_208 = {
 					type = 'description',
-					name = "===> 11.0.2-002 released\n",
+					name = "===> 11.0.2-0002 released\n",
 					order = 208
 				},
 				Attributions_209 = {
@@ -603,8 +603,18 @@ mod.options = {
 				},
 				Attributions_210 = {
 					type = 'description',
-					name = "===> 11.0.2-003 released\n",
+					name = "===> 11.0.2-0003 released\n",
 					order = 210
+				},
+				Attributions_211 = {
+					type = 'description',
+					name = "Jul-28-2024: Updated ACE3 to r1349\n",
+					order = 211,
+				},
+				Attributions_212 = {
+					type = 'description',
+					name = "===> 11.0.2-0004 released\n",
+					order = 212
 				},
 			},
 		},
