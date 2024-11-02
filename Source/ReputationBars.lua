@@ -652,22 +652,27 @@ mod.options = {
 				Attributions_214 = {
 					type = 'description',
 					name = "Nov-01-2024: Update COMBAT_TEXT_UPDATE event handler to properly capture faction name and recent earnings (thank you to modnarwave)\n",
-					order = 214,
+					order = 214
 				},
 				Attributions_215 = {
 					type = 'description',
-					name = "Nov-01-2024: Update for inconsistent behaviour from isFactionActive API Call.\n",
-					order = 215
+					name = "Nov-01-2024: Update ToC for 11.0.5\n",
+					order = 215,
 				},
 				Attributions_216 = {
 					type = 'description',
-					name = "Nov-01-2024: Update ToC for 11.0.5\n",
-					order = 216,
+					name = "===> 11.0.2-0005 released\n",
+					order = 216
 				},
 				Attributions_217 = {
 					type = 'description',
-					name = "===> 11.0.2-0005 released\n",
-					order = 217
+					name = "Nov-02-2024: Adjusted the way TestBars work so they don't error out on fresh characters\n",
+					order = 217,
+				},
+				Attributions_218 = {
+					type = 'description',
+					name = "===> 11.0.2-0006 released\n",
+					order = 218
 				},
 			},
 		},
@@ -682,4 +687,4 @@ mod.options = {
 	},
 }
 
-
+Adjsuted the way TestBars work so they don't error out on fresh characters

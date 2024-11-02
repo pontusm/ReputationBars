@@ -531,36 +531,41 @@ function mod:GetOptions()
 end
 
 local function GenerateTestData()
+	ReputationBarsCommon:DebugLog("OK","GenerateTestData",4,"Function Started")
+
         local allFactions = ReputationBars:GetAllFactions()
-  
-	return {
-		[1] = {
-			name = allFactions[1].name,
-			amount = 100,
-			factionIndex = ReputationBars:GetFactionIndex(allFactions[1].name)
-		},
-		[2] = {
-			name = allFactions[2].name,
-			amount = 200,
-			factionIndex = ReputationBars:GetFactionIndex(allFactions[2].name)
-		},
-		[3] = {
-			name = allFactions[3].name,
-			amount = 300,
-			factionIndex = ReputationBars:GetFactionIndex(allFactions[3].name)
-		},
-		[4] = {
-			name = allFactions[4].name,
-			amount = 400,
-			factionIndex = ReputationBars:GetFactionIndex(allFactions[4].name)
-		},
-		[5] = {
-			name = allFactions[5].name,
-			amount = 500,
-			factionIndex = ReputationBars:GetFactionIndex(allFactions[5].name)
-		},		
-	}
+
+        retSet   = {}
+        retIndex = 1
+        
+
+
+	for factionIndex = 1, #allFactions do
+	        ReputationBarsCommon:DebugLog("OK","GenerateTestData",4,"Inside Loop: "..tostring(factionIndex))
+	
+                if retIndex <= 5 then
+                        ReputationBarsCommon:DebugLog("OK","GenerateTestData",4,"Inside if: "..tostring(retIndex))
+
+			local fi = allFactions[factionIndex]
+			if not fi.isHeader then
+				local fiName = fi.name
+
+				retSet[retIndex] = { 
+							name = fiName,
+							amount = retIndex*10,
+							factionIndex = ReputationBars:GetFactionIndex(fiName)
+						    }
+				retIndex = retIndex+1
+			end	
+		else
+			break
+		end
+	end
+
+	ReputationBarsCommon:DebugLog("OK","GenerateTestData",4,"Function Ended")
+        return retSet
 end
+
 
 mod.options = {
 	name = L["AutoBars settings"],

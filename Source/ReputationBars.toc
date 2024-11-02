@@ -1,7 +1,7 @@
 ## Interface: 110005
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
-## Version: 11.0.5-0005
+## Version: 11.0.5-0006
 ## IconTexture: Interface\AddOns\ReputationBars\textures\reputation-bars
 
 ###### ORIGINAL AUTHOR & SOURCE
@@ -113,9 +113,10 @@
 ##             - v11.0.2-0004 released
 ## Nov 01 2024 - Update the way Test bars are loaded (to handle language differences)
 ##             - Update COMBAT_TEXT_UPDATE event handler to properly capture faction name and recent earnings (thank you to modnarwave)
-##             - Update for odd/inconsistent isFactionActive functionality
 ##             - Update TOC for 11.0.5
 ##             - v11.0.5-0005 released
+## Nov 02 2024 - Tweaked the way TestBars work so they don't error out on fresh characters
+##             - v11.0.5-0006 released 
 
 ## TODO: Figure out how to refactor static bars this properly.
 
