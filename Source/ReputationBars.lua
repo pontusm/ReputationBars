@@ -162,23 +162,25 @@ function mod:RefreshAllFactions()
 			name, description, standingId, bottomValue, topValue, earnedValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus = GetFactionInfo(i)
 		else
 			local factionData=C_Reputation.GetFactionDataByIndex(i);
-			name           = factionData.name
-			description	 = factionData.description
-			standingId	 = factionData.reaction
-			bottomValue 	 = factionData.currentReactionThreshold
-			topValue	 = factionData.nextReactionThreshold
-			earnedValue    = factionData.currentStanding
-			atWarWith	 = factionData.atWarWith
-			canToggleAtWar = factionData.canToggleAtWar
-			isHeader	 = factionData.isHeader
-			isCollapsed    = factionData.isCollapsed
-			hasRep         = factionData.isHeaderWithRep
-			isWatched      = factionData.isWatched
-			isChild	 = factionData.isChild
-			factionID	 = factionData.factionID
-			canBeLFGBonus  = factionData.hasBonusRepGain
-			canSetInactive = factionData.canSetInactive
-			isAccountWide  = nil
+			if factionData then
+				name           = factionData.name
+				description	 = factionData.description
+				standingId	 = factionData.reaction
+				bottomValue 	 = factionData.currentReactionThreshold
+				topValue	 = factionData.nextReactionThreshold
+				earnedValue    = factionData.currentStanding
+				atWarWith	 = factionData.atWarWith
+				canToggleAtWar = factionData.canToggleAtWar
+				isHeader	 = factionData.isHeader
+				isCollapsed    = factionData.isCollapsed
+				hasRep         = factionData.isHeaderWithRep
+				isWatched      = factionData.isWatched
+				isChild	 = factionData.isChild
+				factionID	 = factionData.factionID
+				canBeLFGBonus  = factionData.hasBonusRepGain
+				canSetInactive = factionData.canSetInactive
+				isAccountWide  = nil
+			end
 		end
 		
 		local isParagon = factionID and C_Reputation.IsFactionParagon(factionID);
@@ -366,12 +368,29 @@ function mod:UpdateReputation()
 		local expansionLevel = GetClientDisplayExpansionLevel()
 
 		if expansionLevel < 10 then
+                        ReputationBarsCommon:DebugLog("WARN","UpdateReputation",6,"Expansion<10")
 			local isFactionActive         = not IsFactionInactive(factionIndex)
 		else
+                        ReputationBarsCommon:DebugLog("WARN","UpdateReputation",6,"Expansion>=10")
 			local isFactionActive         = C_Reputation.IsFactionActive(factionIndex)
 		end
+		
+		-- Override/Hack for when isFactionActive is invalid
+		if isFactionActive == nil then
+		    ReputationBarsCommon:DebugLog("WARN","UpdateReputation",6,"isFactionActive is still nil; need to fix it.")
+		    isFactionActive = true
+		else
+		    ReputationBarsCommon:DebugLog("WARN","UpdateReputation",6,"isFactionActive has a value.")
+		end
+		
 
-		if factionIndex and (isFactionActive or presentGainsForInactiveReputations) then
+		ReputationBarsCommon:DebugLog("WARN","UpdateReputation",6,"  => factionIndex:                       "..tostring(factionIndex))
+		ReputationBarsCommon:DebugLog("WARN","UpdateReputation",6,"  => isFactionActive:                    "..tostring(isFactionActive))
+		ReputationBarsCommon:DebugLog("WARN","UpdateReputation",6,"  => presentGainsForInactiveReputations: "..tostring(presentGainsForInactiveReputations))
+		ReputationBarsCommon:DebugLog("WARN","UpdateReputation",6,"  => name:                               "..tostring(name))
+		ReputationBarsCommon:DebugLog("WARN","UpdateReputation",6,"  => amount:                             "..tostring(amount))
+
+		if factionIndex and (isFactionActive or presentGainsForInactiveReputations) then   --this is the line that modnarwave is suggesting changing.
 			tinsert(changes, {
 				name = name,
 				amount = amount,
@@ -409,6 +428,11 @@ end
 ------------------------------------------------------------------------------
 function mod:COMBAT_TEXT_UPDATE(event, type, name, amount)
 	ReputationBarsCommon:DebugLog("OK","mod:COMBAT_TEXT_UPDATE",4,"Event Trapped...")	
+	--ReputationBarsCommon:DebugLog("OK","mod:COMBAT_TEXT_UPDATE",5,"  => event  : "..tostring(event))	
+	--ReputationBarsCommon:DebugLog("OK","mod:COMBAT_TEXT_UPDATE",5,"  => type   : "..tostring(type))
+	--ReputationBarsCommon:DebugLog("OK","mod:COMBAT_TEXT_UPDATE",5,"  => name   : "..tostring(name))	
+	--ReputationBarsCommon:DebugLog("OK","mod:COMBAT_TEXT_UPDATE",5,"  => amount : "..tostring(amount))	
+	
 	if (type == "FACTION") then
 		if IsInGuild() then
 			-- Check name for guild reputation
@@ -417,7 +441,11 @@ function mod:COMBAT_TEXT_UPDATE(event, type, name, amount)
 				if not name or name == "" then return end
 			end
 		end
-	
+		
+		name, amount=GetCurrentCombatTextEventInfo()
+		ReputationBarsCommon:DebugLog("OK","mod:COMBAT_TEXT_UPDATE",5,"  => name   (override): "..tostring(name))
+		ReputationBarsCommon:DebugLog("OK","mod:COMBAT_TEXT_UPDATE",5,"  => amount (override): "..tostring(amount))
+		
 		-- Collect all gained reputation before notifying modules
 		if name then
 			if not reputationChanges[name] then
@@ -616,6 +644,31 @@ mod.options = {
 					name = "===> 11.0.2-0004 released\n",
 					order = 212
 				},
+				Attributions_213 = {
+					type = 'description',
+					name = "Nov-01-2024: Update the way Test bars are loaded (to handle language differences)\n",
+					order = 213,
+				},
+				Attributions_214 = {
+					type = 'description',
+					name = "Nov-01-2024: Update COMBAT_TEXT_UPDATE event handler to properly capture faction name and recent earnings (thank you to modnarwave)\n",
+					order = 214,
+				},
+				Attributions_215 = {
+					type = 'description',
+					name = "Nov-01-2024: Update for inconsistent behaviour from isFactionActive API Call.\n",
+					order = 215
+				},
+				Attributions_216 = {
+					type = 'description',
+					name = "Nov-01-2024: Update ToC for 11.0.5\n",
+					order = 216,
+				},
+				Attributions_217 = {
+					type = 'description',
+					name = "===> 11.0.2-0005 released\n",
+					order = 217
+				},
 			},
 		},
 		
@@ -628,3 +681,5 @@ mod.options = {
 		},
 	},
 }
+
+

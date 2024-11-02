@@ -531,31 +531,33 @@ function mod:GetOptions()
 end
 
 local function GenerateTestData()
+        local allFactions = ReputationBars:GetAllFactions()
+  
 	return {
 		[1] = {
-			name = "Booty Bay",
-			amount = 200,
-			factionIndex = ReputationBars:GetFactionIndex("Darnassus")
+			name = allFactions[1].name,
+			amount = 100,
+			factionIndex = ReputationBars:GetFactionIndex(allFactions[1].name)
 		},
 		[2] = {
-			name = "Everlook",
-			amount = 100,
-			factionIndex = ReputationBars:GetFactionIndex("Ironforge")
+			name = allFactions[2].name,
+			amount = 200,
+			factionIndex = ReputationBars:GetFactionIndex(allFactions[2].name)
 		},
 		[3] = {
-			name = "Stormwind",
-			amount = 50,
-			factionIndex = ReputationBars:GetFactionIndex("Stormwind")
+			name = allFactions[3].name,
+			amount = 300,
+			factionIndex = ReputationBars:GetFactionIndex(allFactions[3].name)
 		},
 		[4] = {
-			name = "Orgrimmar",
-			amount = 50,
-			factionIndex = ReputationBars:GetFactionIndex("Orgrimmar")
+			name = allFactions[4].name,
+			amount = 400,
+			factionIndex = ReputationBars:GetFactionIndex(allFactions[4].name)
 		},
 		[5] = {
-			name = "Dragonscale Expedition",
-			amount = 50,
-			factionIndex = ReputationBars:GetFactionIndex("Dragonscale Expedition")
+			name = allFactions[5].name,
+			amount = 500,
+			factionIndex = ReputationBars:GetFactionIndex(allFactions[5].name)
 		},		
 	}
 end
