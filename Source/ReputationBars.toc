@@ -1,7 +1,7 @@
-## Interface: 110005
+## Interface: 110100
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
-## Version: 11.0.5-0006
+## Version: 11.1.0-0008
 ## IconTexture: Interface\AddOns\ReputationBars\textures\reputation-bars
 
 ###### ORIGINAL AUTHOR & SOURCE
@@ -117,6 +117,10 @@
 ##             - v11.0.5-0005 released
 ## Nov 02 2024 - Tweaked the way TestBars work so they don't error out on fresh characters
 ##             - v11.0.5-0006 released 
+## Nov 02 2024 - fixed load/compile error
+##             - v11.0.5-0007 released 
+## Feb 02 2025 - Update TOC for 11.1.0
+##             - v11.1.0-0008 released 
 
 ## TODO: Figure out how to refactor static bars this properly.
 

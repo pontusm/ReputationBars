@@ -661,7 +661,7 @@ mod.options = {
 				},
 				Attributions_216 = {
 					type = 'description',
-					name = "===> 11.0.2-0005 released\n",
+					name = "===> 11.0.5-0005 released\n",
 					order = 216
 				},
 				Attributions_217 = {
@@ -671,8 +671,28 @@ mod.options = {
 				},
 				Attributions_218 = {
 					type = 'description',
-					name = "===> 11.0.2-0006 released\n",
+					name = "===> 11.0.5-0006 released\n",
 					order = 218
+				},
+				Attributions_219 = {
+					type = 'description',
+					name = "Nov-02-2024: Fixed compile/load errorn",
+					order = 219,
+				},
+				Attributions_220 = {
+					type = 'description',
+					name = "===> 11.0.5-0007 released\n",
+					order = 220
+				},
+				Attributions_221 = {
+					type = 'description',
+					name = "Feb-04-2025: Update TOC for 11.1.0\n",
+					order = 221,
+				},
+				Attributions_222 = {
+					type = 'description',
+					name = "===> 11.1.0-0008 released\n",
+					order = 222
 				},
 			},
 		},
@@ -687,4 +707,3 @@ mod.options = {
 	},
 }
 
-Adjsuted the way TestBars work so they don't error out on fresh characters
