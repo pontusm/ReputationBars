@@ -155,6 +155,8 @@ function mod:RefreshAllFactions()
 		factionCount = C_Reputation.GetNumFactions()
 	end
 
+	
+	--Standard Load Pattern (from Blizzard's API-based list of factions I know)
 	for i = 1, factionCount do
 		local name, description, standingId, bottomValue, topValue, earnedValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus
 
@@ -182,132 +184,16 @@ function mod:RefreshAllFactions()
 				isAccountWide  = nil
 			end
 		end
-		
-		local isParagon = factionID and C_Reputation.IsFactionParagon(factionID);
-		local isMajorFaction = factionID and C_Reputation.IsMajorFaction(factionID);
-		
-		if not name or name == lastName and name ~= GUILD then break end
-	
-		--Step 1) define and populate (with faction data) all our "insert variables" for our internal table
-		local nsrt_name             = name
-		local nsrt_standingId       = standingId
-		local nsrt_min              = bottomValue
-		local nsrt_max              = topValue
-		local nsrt_value            = earnedValue
-		local nsrt_isHeader         = isHeader
-		local nsrt_isChild          = isChild
-		local nsrt_hasRep           = hasRep
-		local nsrt_isParagon        = isParagon
+
+
 		if expansionLevel < 10 then
-			local nsrt_isActive         = not IsFactionInactive(i)
+			local isActive         = not IsFactionInactive(i)
 		else
-			local nsrt_isActive         = C_Reputation.IsFactionActive(i)
-		end
-		local nsrt_factionID        = factionID
-		local nsrt_friendID
-		local nsrt_isMajorFaction   = isMajorFaction
-		local nsrt_hasRewardPending    = false
-		local nsrt_RewardsCollected = 0
-
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",5,"Loading/Updating '"..tostring(nsrt_name).."' into internal table")
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"Step1: nsrt_name            : "..tostring(nsrt_name))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_standingId      : "..tostring(nsrt_standingId))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_min             : "..tostring(nsrt_min))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_max             : "..tostring(nsrt_max))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value           : "..tostring(nsrt_value))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isHeader        : "..tostring(nsrt_isHeader))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isChild         : "..tostring(nsrt_isChild))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_hasRep          : "..tostring(nsrt_hasRep))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isParagon       : "..tostring(nsrt_isParagon))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isActive        : "..tostring(nsrt_isActive))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_factionID       : "..tostring(nsrt_factionID))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_friendID        : "..tostring(nsrt_friendID))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_isMajorFaction  : "..tostring(nsrt_isMajorFaction))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_hasRewardPending : "..tostring(nsrt_hasRewardPending))
-
-		--Step 2) figure out if this is a friend (rather than a faction), and if so, override some of our base faction values.
-		if nsrt_isHeader ~= true then
-			--we need to do this different ways for Dragonflight vs Shadowlands
-			if expansionLevel >= 9 then -- DragonFlight, The War Within, and beyond
-				local retOK, FriendshipInfo = pcall(C_GossipInfo.GetFriendshipReputation, factionID)
-
-				if retOK then --make sure pcall worked
-					ReputationBarsCommon:DebugLog("WARN","RefreshAllFactions",6,"       ***C_GossipInfo.GetFriendshipReputation call successful")
-					ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       FriendshipInfo: " .. tostring(FriendshipInfo))
-
-					if FriendshipInfo ~= nil then --make sure that we actually got a value from the API call
-					ReputationBarsCommon:DebugLog("WARN","RefreshAllFactions",6,"       FriendshipInfo.friendshipFactionID: " .. tostring(FriendshipInfo.friendshipFactionID))					
-					if FriendshipInfo.friendshipFactionID ~= 0 then --this is a friend .. handle them differently
-							nsrt_value = FriendshipInfo.standing
-							nsrt_friendID = FriendshipInfo.friendshipFactionID
-					
-							if FriendshipInfo.nextThreshold ~= nil then --this friend still has progress
-								nsrt_min = FriendshipInfo.reactionThreshold
-								nsrt_max = FriendshipInfo.nextThreshold
-							end
-						end
-					end
-				else
-					ReputationBarsCommon:DebugLog("ERR","RefreshAllFactions",6,"       ***C_GossipInfo.GetFriendshipReputation call FAILED")
-				end
-			end
+			local isActive         = C_Reputation.IsFactionActive(i)
 		end
 
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"Step2: nsrt_min          : "..tostring(nsrt_min))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_max          : "..tostring(nsrt_max))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value        : "..tostring(nsrt_value))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_friendID     : "..tostring(nsrt_friendID))
-
-		--Step 3) figure out if this is a major faction (new for Shadowlands)
-		if isMajorFaction then
-			local majorFactionInfo = C_MajorFactions.GetMajorFactionData(factionID);
-			nsrt_value = majorFactionInfo.renownReputationEarned
-			nsrt_min = 0
-			nsrt_max = majorFactionInfo.renownLevelThreshold
-		end
-
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"Step3: nsrt_isMajorFaction: "..tostring(nsrt_isMajorFaction))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value         : "..tostring(nsrt_value))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_min           : "..tostring(nsrt_min))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_max           : "..tostring(nsrt_max))
-
-		--Step 4) figure out if this is a paragon faction (extra rep beyond exalted), and if so, override some of our base faction values
-		if isParagon then
-			local currentValue, threshold, rewardQuestID, hasRewardPending, tooLowLevelForParagon = C_Reputation.GetFactionParagonInfo(factionID)
-			nsrt_value = currentValue % threshold
-			nsrt_min = 0
-			nsrt_max = threshold
-			nsrt_hasRewardPending = hasRewardPending
-		end
-		lastName = name
-
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"Step4: nsrt_isParagon        : "..tostring(nsrt_isParagon))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_value            : "..tostring(nsrt_value))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_min              : "..tostring(nsrt_min))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_max              : "..tostring(nsrt_max))
-		ReputationBarsCommon:DebugLog("","RefreshAllFactions",6,"       nsrt_hasRewardPending : "..tostring(nsrt_RewardPending))
-
-		lastName = name
-
-		--Step 5) *phew* that was a lot of work, save it before it's too late...
-		tinsert(factions, {
-			name             = nsrt_name,
-			standingId       = nsrt_standingId,
-			min              = nsrt_min,
-			max              = nsrt_max,
-			value            = nsrt_value,
-			isHeader         = nsrt_isHeader,
-			isChild          = nsrt_isChild,
-			hasRep           = nsrt_hasRep,
-			isParagon        = nsrt_isParagon,
-			isActive         = nsrt_isActive,
-			factionID        = nsrt_factionID,
-			friendID         = nsrt_friendID,
-			isMajorFaction   = nsrt_isMajorFaction,
-			hasRewardPending = nsrt_hasRewardPending,
-		})	
-		
-		UpdateFactionAmount(name, nsrt_value)
+		if not name or name == lastName and name ~= GUILD then break end
+		mod:ProcessFaction(factions, name, description, standingId, bottomValue, topValue, earnedValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, canBeLFGBonus, canSetInactive, isAccountWide, isActive);
 
 		if isCollapsed then
 			if expansionLevel < 10 then
@@ -318,9 +204,200 @@ function mod:RefreshAllFactions()
 		end
 	end
 
+
+	--'Special' Load Pattern (for factions that blizzard seems to "lose" regularly)
+	local twitchyFactions = {2570,2590,2594}
+	factionCount = #twitchyFactions
+	ReputationBarsCommon:DebugLog("OK","RefreshAllFactions",4,"Number of factions to handle in a special way: " .. tostring(factionCount));
+
+	for i = 1, factionCount do
+		missingFactionID = twitchyFactions[i];
+
+	    ReputationBarsCommon:DebugLog("OK","RefreshAllFactions",4,"Looking for problematic faction:" .. tostring(missingFactionID));
+		local isFactionMissing=true
+
+		for f = 1, #factions do
+			local faction = factions[f]
+			local factionID = faction.factionID
+
+			if (factionID == missingFactionID) then
+				isFactionMissing = false
+				break
+			end
+		end
+
+		if isFactionMissing then
+			ReputationBarsCommon:DebugLog("OK","RefreshAllFactions",4,"Preparing to special handle Faction: " .. tostring(missingFactionID));
+
+			local factionData=C_Reputation.GetFactionDataByID(missingFactionID);
+			if factionData then
+				name           = factionData.name
+				description	   = factionData.description
+				standingId	   = factionData.reaction
+				bottomValue    = factionData.currentReactionThreshold
+				topValue	   = factionData.nextReactionThreshold
+				earnedValue    = factionData.currentStanding
+				atWarWith	   = factionData.atWarWith
+				canToggleAtWar = factionData.canToggleAtWar
+				isHeader	   = factionData.isHeader
+				isCollapsed    = factionData.isCollapsed
+				hasRep         = factionData.isHeaderWithRep
+				isWatched      = factionData.isWatched
+				isChild	       = factionData.isChild
+				factionID	   = factionData.factionID
+				canBeLFGBonus  = factionData.hasBonusRepGain
+				canSetInactive = factionData.canSetInactive
+				isAccountWide  = nil
+				isActive       = false
+
+				mod:ProcessFaction(factions, name, description, standingId, bottomValue, topValue, earnedValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, canBeLFGBonus, canSetInactive, isAccountWide, isActive);
+			end
+			
+		else
+			ReputationBarsCommon:DebugLog("OK","RefreshAllFactions",4,"Faction is loaded; no action: " .. tostring(missingFactionID));
+		end
+    end
+
+
+
+
+
 	allFactions = factions
 	ReputationBarsCommon:DebugLog("OK","RefreshAllFactions",4,"Function Call Finished...")
 end
+
+
+function mod:ProcessFaction(factions, name, description, standingId, bottomValue, topValue, earnedValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, canBeLFGBonus, canSetInactive, isAccountWide, isActive)
+	ReputationBarsCommon:DebugLog("OK","ProcessFaction",5,"Function Call Started...")
+	local isParagon = factionID and C_Reputation.IsFactionParagon(factionID);
+	local isMajorFaction = factionID and C_Reputation.IsMajorFaction(factionID);
+	local expansionLevel = GetClientDisplayExpansionLevel()
+
+	
+	if factionID == 169 then --hack for Steamwheedle Cartel (classic faction #169 which has no rep)
+		return
+	end
+	
+	--Step 1) define and populate (with faction data) all our "insert variables" for our internal table
+	local nsrt_name             = name
+	local nsrt_standingId       = standingId
+	local nsrt_min              = bottomValue
+	local nsrt_max              = topValue
+	local nsrt_value            = earnedValue
+	local nsrt_isHeader         = isHeader
+	local nsrt_isChild          = isChild
+	local nsrt_hasRep           = hasRep
+	local nsrt_isParagon        = isParagon
+	local nsrt_isActive         = isActive
+	local nsrt_factionID        = factionID
+	local nsrt_friendID
+	local nsrt_isMajorFaction   = isMajorFaction
+	local nsrt_hasRewardPending    = false
+	local nsrt_RewardsCollected = 0
+
+	ReputationBarsCommon:DebugLog("","ProcessFaction",5,"Loading/Updating '"..tostring(nsrt_name).."' into internal table")
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"Step1: nsrt_name            : "..tostring(nsrt_name))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_standingId      : "..tostring(nsrt_standingId))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_min             : "..tostring(nsrt_min))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_max             : "..tostring(nsrt_max))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_value           : "..tostring(nsrt_value))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_isHeader        : "..tostring(nsrt_isHeader))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_isChild         : "..tostring(nsrt_isChild))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_hasRep          : "..tostring(nsrt_hasRep))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_isParagon       : "..tostring(nsrt_isParagon))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_isActive        : "..tostring(nsrt_isActive))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_factionID       : "..tostring(nsrt_factionID))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_friendID        : "..tostring(nsrt_friendID))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_isMajorFaction  : "..tostring(nsrt_isMajorFaction))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_hasRewardPending: "..tostring(nsrt_hasRewardPending))
+
+	--Step 2) figure out if this is a friend (rather than a faction), and if so, override some of our base faction values.
+	if nsrt_isHeader ~= true then
+		--we need to do this different ways for Dragonflight vs Shadowlands
+		if expansionLevel >= 9 then -- DragonFlight, The War Within, and beyond
+			local retOK, FriendshipInfo = pcall(C_GossipInfo.GetFriendshipReputation, factionID)
+
+			if retOK then --make sure pcall worked
+				ReputationBarsCommon:DebugLog("WARN","ProcessFaction",6,"       ***C_GossipInfo.GetFriendshipReputation call successful")
+				ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       FriendshipInfo: " .. tostring(FriendshipInfo))
+
+				if FriendshipInfo ~= nil then --make sure that we actually got a value from the API call
+				ReputationBarsCommon:DebugLog("WARN","ProcessFaction",6,"       FriendshipInfo.friendshipFactionID: " .. tostring(FriendshipInfo.friendshipFactionID))					
+				if FriendshipInfo.friendshipFactionID ~= 0 then --this is a friend .. handle them differently
+						nsrt_value = FriendshipInfo.standing
+						nsrt_friendID = FriendshipInfo.friendshipFactionID
+				
+						if FriendshipInfo.nextThreshold ~= nil then --this friend still has progress
+							nsrt_min = FriendshipInfo.reactionThreshold
+							nsrt_max = FriendshipInfo.nextThreshold
+						end
+					end
+				end
+			else
+				ReputationBarsCommon:DebugLog("ERR","ProcessFaction",6,"       ***C_GossipInfo.GetFriendshipReputation call FAILED")
+			end
+		end
+	end
+
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"Step2: nsrt_min          : "..tostring(nsrt_min))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_max          : "..tostring(nsrt_max))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_value        : "..tostring(nsrt_value))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_friendID     : "..tostring(nsrt_friendID))
+
+	--Step 3) figure out if this is a major faction (new for Shadowlands)
+	if isMajorFaction then
+		local majorFactionInfo = C_MajorFactions.GetMajorFactionData(factionID);
+		nsrt_value = majorFactionInfo.renownReputationEarned
+		nsrt_min = 0
+		nsrt_max = majorFactionInfo.renownLevelThreshold
+	end
+
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"Step3: nsrt_isMajorFaction: "..tostring(nsrt_isMajorFaction))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_value         : "..tostring(nsrt_value))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_min           : "..tostring(nsrt_min))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_max           : "..tostring(nsrt_max))
+
+	--Step 4) figure out if this is a paragon faction (extra rep beyond exalted), and if so, override some of our base faction values
+	if isParagon then
+		local currentValue, threshold, rewardQuestID, hasRewardPending, tooLowLevelForParagon = C_Reputation.GetFactionParagonInfo(factionID)
+		nsrt_value = currentValue % threshold
+		nsrt_min = 0
+		nsrt_max = threshold
+		nsrt_hasRewardPending = hasRewardPending
+	end
+	lastName = name
+
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"Step4: nsrt_isParagon        : "..tostring(nsrt_isParagon))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_value            : "..tostring(nsrt_value))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_min              : "..tostring(nsrt_min))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_max              : "..tostring(nsrt_max))
+	ReputationBarsCommon:DebugLog("","ProcessFaction",6,"       nsrt_hasRewardPending : "..tostring(nsrt_RewardPending))
+
+	lastName = name
+
+	--Step 5) *phew* that was a lot of work, save it before it's too late...
+	tinsert(factions, {
+		name             = nsrt_name,
+		standingId       = nsrt_standingId,
+		min              = nsrt_min,
+		max              = nsrt_max,
+		value            = nsrt_value,
+		isHeader         = nsrt_isHeader,
+		isChild          = nsrt_isChild,
+		hasRep           = nsrt_hasRep,
+		isParagon        = nsrt_isParagon,
+		isActive         = nsrt_isActive,
+		factionID        = nsrt_factionID,
+		friendID         = nsrt_friendID,
+		isMajorFaction   = nsrt_isMajorFaction,
+		hasRewardPending = nsrt_hasRewardPending,
+	})	
+	
+	UpdateFactionAmount(name, nsrt_value)
+	ReputationBarsCommon:DebugLog("OK","RefreshAllFactions",5,"Function Call Finished...")
+end
+
+
 
 ------------------------------------------------------------------------------
 -- Ensure factions and guild info are loaded
@@ -693,6 +770,31 @@ mod.options = {
 					type = 'description',
 					name = "===> 11.1.0-0008 released\n",
 					order = 222
+				},
+				Attributions_223 = {
+					type = 'description',
+					name = "Feb-28-2025: Pre-emptively refactored faction processing\n",
+					order = 223,
+				},
+				Attributions_224 = {
+					type = 'description',
+					name = "Mar-01-2025: Built forcible, and far from pretty, override for the disappearing faction problem affecting Hallowfall, Council of Dornogal, and Assembly.\n",
+					order = 224,
+				},
+				Attributions_225 = {
+					type = 'description',
+					name = "Mar-02-2025: Fixed issue with Steamwheedle Cartel showing incorrect reputation gains in Staticbars.\n",
+					order = 225,
+				},
+				Attributions_226 = {
+					type = 'description',
+					name = "Mar-02-2025: Fixed issue with Steamwheedle Cartel showing incorrect reputation gains in Autobars.\n",
+					order = 226,
+				},
+				Attributions_227 = {
+					type = 'description',
+					name = "===> 11.1.0-0009 released\n",
+					order = 227
 				},
 			},
 		},

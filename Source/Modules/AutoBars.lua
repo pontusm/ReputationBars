@@ -146,81 +146,85 @@ local function UpdateBarVisual()
 		local fi = allFactions[factionIndex]
 		local name = fi.name
 		local faction = factions[name]
-		if faction and (now - faction.lastUpdate) < db.removeFactionSeconds then
-			local bar = faction.bar
-			if not bar then
-				-- Create new bar
-				bar = AutoBarsGroup:NewCounterBar(modName..factionIndex, nil, 0, 100)
-				bar.label:ClearAllPoints()
-				bar.label:SetPoint("CENTER", bar, "CENTER", 0, 0)
 
-				-- Remember bar position
-				tinsert(barlist, name)
-				bar.sortOrder = #barlist
+		ReputationBarsCommon:DebugLog("WARN","UpdateBarVisual",6,"fi.factionID " .. tostring(fi.factionID))
+		if fi.factionID ~= 169 then --hack for Steamwheedle Cartel (classic faction #169 which has no rep)
+  		    if faction and (now - faction.lastUpdate) < db.removeFactionSeconds then
+				local bar = faction.bar
+				if not bar then
+					-- Create new bar
+					bar = AutoBarsGroup:NewCounterBar(modName..factionIndex, nil, 0, 100)
+					bar.label:ClearAllPoints()
+					bar.label:SetPoint("CENTER", bar, "CENTER", 0, 0)
 
-				UIFrameFadeIn(bar, 0.5, 0, 1)
+					-- Remember bar position
+					tinsert(barlist, name)
+					bar.sortOrder = #barlist
 
-				bar:EnableMouse(true)
-				bar:SetScript("OnEnter", function(frame)
-					hovering = frame
-					mod:UpdateBar(true)
-				end)
-				bar:SetScript("OnLeave", function(frame)
-					hovering = nil
-					UpdateBarVisual()
-				end)
-				
-				faction.bar = bar
-				
-				AutoBarsGroup:SortBars()
-			end
+					UIFrameFadeIn(bar, 0.5, 0, 1)
 
-			local colorIndex
-			if fi.friendID ~= nil then colorIndex = 5 else colorIndex = fi.standingId end
-			local colors = FACTION_BAR_COLORS[colorIndex]
-			bar:UnsetAllColors()
-			bar:SetColorAt(0, colors.r, colors.g, colors.b, 1)
-
-			local recentGainText = ""
-			--if (now - faction.lastUpdate) < 60 then                          --Karp removed this on Oct 24 2022 to prevent recent gains from disappearing on mouse hover
-			recentGainText = string.format(" |cffedf55f(%+d)", faction.amount)
-			--end                                                              --Karp removed this on Oct 24 2022 to prevent recent gains from disappearing on mouse hover
-
-			local displayMax = fi.max - fi.min
-			local displayVal = fi.value - fi.min
-			bar:SetValue(displayVal, displayMax)
-
-			local barLabel
-			if db.showText == "never" or (db.showText == "mouseover" and hovering ~= bar) then
-				barLabel = ""
-			else
-				if hovering == bar and db.showText ~= "mouseover" then
-					if fi.isParagon then
-						barLabel = string.format("%s",L["Paragon"])
-					elseif fi.isMajorFaction then
-						local majorFactionInfo = C_MajorFactions.GetMajorFactionData(fi.factionID);
-						barLabel = string.format("%s%s |cffedf55f(%d to go)", RENOWN_LEVEL_LABEL, majorFactionInfo.renownLevel, displayMax-displayVal)
-					elseif fi.friendID ~= nil then
-						local FriendshipInfo = C_GossipInfo.GetFriendshipReputation(fi.factionID)
-						friendTextLevel = FriendshipInfo.reaction
-						barLabel = string.format("%s", friendTextLevel)
-					else
-						local gender = UnitSex("player")
-						local standingText = GetText("FACTION_STANDING_LABEL"..fi.standingId, gender)
-						if fi.standingId < 8 then
-							local nextStandingText = GetText("FACTION_STANDING_LABEL"..fi.standingId+1, gender);
-							barLabel = string.format("%s |cffedf55f(%d to %s)", standingText, displayMax-displayVal, nextStandingText)
-						else
-							barLabel = string.format("%s", standingText)
-						end
-					end
-				else
-					barLabel = string.format("%s (%d / %d)%s", name, displayVal, displayMax, recentGainText)
+					bar:EnableMouse(true)
+					bar:SetScript("OnEnter", function(frame)
+						hovering = frame
+						mod:UpdateBar(true)
+					end)
+					bar:SetScript("OnLeave", function(frame)
+						hovering = nil
+						UpdateBarVisual()
+					end)
+					
+					faction.bar = bar
+					
+					AutoBarsGroup:SortBars()
 				end
+
+				local colorIndex
+				if fi.friendID ~= nil then colorIndex = 5 else colorIndex = fi.standingId end
+				local colors = FACTION_BAR_COLORS[colorIndex]
+				bar:UnsetAllColors()
+				bar:SetColorAt(0, colors.r, colors.g, colors.b, 1)
+
+				local recentGainText = ""
+				--if (now - faction.lastUpdate) < 60 then                          --Karp removed this on Oct 24 2022 to prevent recent gains from disappearing on mouse hover
+				recentGainText = string.format(" |cffedf55f(%+d)", faction.amount)
+				--end                                                              --Karp removed this on Oct 24 2022 to prevent recent gains from disappearing on mouse hover
+
+				local displayMax = fi.max - fi.min
+				local displayVal = fi.value - fi.min
+				bar:SetValue(displayVal, displayMax)
+
+				local barLabel
+				if db.showText == "never" or (db.showText == "mouseover" and hovering ~= bar) then
+					barLabel = ""
+				else
+					if hovering == bar and db.showText ~= "mouseover" then
+						if fi.isParagon then
+							barLabel = string.format("%s",L["Paragon"])
+						elseif fi.isMajorFaction then
+							local majorFactionInfo = C_MajorFactions.GetMajorFactionData(fi.factionID);
+							barLabel = string.format("%s%s |cffedf55f(%d to go)", RENOWN_LEVEL_LABEL, majorFactionInfo.renownLevel, displayMax-displayVal)
+						elseif fi.friendID ~= nil then
+							local FriendshipInfo = C_GossipInfo.GetFriendshipReputation(fi.factionID)
+							friendTextLevel = FriendshipInfo.reaction
+							barLabel = string.format("%s", friendTextLevel)
+						else
+							local gender = UnitSex("player")
+							local standingText = GetText("FACTION_STANDING_LABEL"..fi.standingId, gender)
+							if fi.standingId < 8 then
+								local nextStandingText = GetText("FACTION_STANDING_LABEL"..fi.standingId+1, gender);
+								barLabel = string.format("%s |cffedf55f(%d to %s)", standingText, displayMax-displayVal, nextStandingText)
+							else
+								barLabel = string.format("%s", standingText)
+							end
+						end
+					else
+						barLabel = string.format("%s (%d / %d)%s", name, displayVal, displayMax, recentGainText)
+					end
+				end
+				
+				bar:SetLabel(barLabel)
 			end
-			
-			bar:SetLabel(barLabel)
-		end
+		end	--hack for Steamwheedle Cartel (classic faction #169 which has no rep)
 	end
 
 end

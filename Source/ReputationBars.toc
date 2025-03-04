@@ -1,7 +1,7 @@
 ## Interface: 110100
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
-## Version: 11.1.0-0008
+## Version: 11.1.0-0009
 ## IconTexture: Interface\AddOns\ReputationBars\textures\reputation-bars
 
 ###### ORIGINAL AUTHOR & SOURCE
@@ -121,6 +121,13 @@
 ##             - v11.0.5-0007 released 
 ## Feb 02 2025 - Update TOC for 11.1.0
 ##             - v11.1.0-0008 released 
+## Feb 02 2025 - Update TOC for 11.1.0
+##             - v11.1.0-0008 released 
+## Feb 28 2025 - Refactored faction processing
+##             - Built forcible workaround for the disappearing faction problem (Hallowfall, Council and Assembly)
+##             - Fixed issues with Steamwhedle cartel showing incorrect reputation gains in StaticBars
+##             - Fixed issues with Steamwhedle cartel showing incorrect reputation gains in Autobars
+##             - v11.1.0-0009 released 
 
 ## TODO: Figure out how to refactor static bars this properly.
 

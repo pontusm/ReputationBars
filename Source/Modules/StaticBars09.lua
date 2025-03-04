@@ -165,139 +165,146 @@ local function UpdateBarVisual()
 	for factionIndex = 1, #allFactions do
 		local fi = allFactions[factionIndex]
 		local name = fi.name
+		local factionID = fi.factionID
+
 		if mod.db.char.watchedFactions[name] then
-			if not factions[name] then factions[name] = {} end
-			local faction = factions[name]
+			ReputationBarsCommon:DebugLog("WARN","UpdateBarVisual",6,"fi.factionID " .. tostring(fi.factionID))
+			if fi.factionID ~= 169 then --hack for Steamwheedle Cartel (classic faction #169 which has no rep)
 
-			local bar = faction.bar
-			if not bar then
-				-- Create new bar
-				bar = StaticBarsGroup:NewCounterBar(modName..factionIndex, nil, 0, 100)
-				bar.label:ClearAllPoints()
-				bar.label:SetPoint("CENTER", bar, "CENTER", 0, 0)
+				if not factions[name] then factions[name] = {} end
+				local faction = factions[name] 
 
-				-- Remember bar position
-				--tinsert(barlist, name)
+				local bar = faction.bar
+				if not bar then
+					-- Create new bar
+					bar = StaticBarsGroup:NewCounterBar(modName..factionIndex, nil, 0, 100)
+					bar.label:ClearAllPoints()
+					bar.label:SetPoint("CENTER", bar, "CENTER", 0, 0)
 
-				UIFrameFadeIn(bar, 0.5, 0, 1)
+					-- Remember bar position
+					--tinsert(barlist, name)
 
-				bar:EnableMouse(true)
-				bar:SetScript("OnEnter", function(frame)
-					hovering = frame
-					mod:UpdateBar(true)
-				end)
-				bar:SetScript("OnLeave", function(frame)
-					hovering = nil
-					UpdateBarVisual()
-				end)
-				
-				faction.bar = bar
+					UIFrameFadeIn(bar, 0.5, 0, 1)
 
-			end
+					bar:EnableMouse(true)
+					bar:SetScript("OnEnter", function(frame)
+						hovering = frame
+						mod:UpdateBar(true)
+					end)
+					bar:SetScript("OnLeave", function(frame)
+						hovering = nil
+						UpdateBarVisual()
+					end)
+					
+					faction.bar = bar
 
-			bar.sortOrder = { name = fi.name, value = fi.value }
+				end
 
-			StaticBarsGroup:SortBars()
+				bar.sortOrder = { name = fi.name, value = fi.value }
 
-			local colorIndex
-			if fi.friendID ~= nil then colorIndex = 5 else colorIndex = fi.standingId end
-			local colors = FACTION_BAR_COLORS[colorIndex]
-			bar:UnsetAllColors()
-			bar:SetColorAt(0, colors.r, colors.g, colors.b, 1)
+				StaticBarsGroup:SortBars()
 
-			local recentGainText = ""
-			if faction.lastUpdate and (now - faction.lastUpdate) < 60 then
-				recentGainText = string.format(" |cffedf55f(%+d)", faction.amount)
-			end
+				local colorIndex
+				if fi.friendID ~= nil then colorIndex = 5 else colorIndex = fi.standingId end
+				local colors = FACTION_BAR_COLORS[colorIndex]
+				bar:UnsetAllColors()
+				bar:SetColorAt(0, colors.r, colors.g, colors.b, 1)
 
-			local displayMax = fi.max - fi.min
-			local displayVal = fi.value - fi.min
-			bar:SetValue(displayVal, displayMax)
-			local barLabel
+				local recentGainText = ""
+				if faction.lastUpdate and (now - faction.lastUpdate) < 60 then
+					recentGainText = string.format(" |cffedf55f(%+d)", faction.amount)
+				end
 
-			ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"--------> " .. tostring(fi.name))
-			ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"fi.isParagon " .. tostring(fi.isParagon))
-			ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"fi.friendID " .. tostring(fi.friendID))
-			ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"fi.standingId " .. tostring(fi.standingId))
-			ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"displayVal " .. tostring(displayVal))
-			ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"displayMax " .. tostring(displayMax))			
-			ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"fi.hasRewardPending " .. tostring(fi.hasRewardPending))			
+				local displayMax = fi.max - fi.min
+				local displayVal = fi.value - fi.min
+				bar:SetValue(displayVal, displayMax)
+				local barLabel
 
-			if db.showText == "never" or (db.showText == "mouseover" and hovering ~= bar) then
-				barLabel = ""
-			else
-				if hovering == bar and db.showText ~= "mouseover" then
-					--We're hovering over the reputation bar... let's show some specific information about the faction
-					if fi.isParagon then
-						--override the default "exalted" with "paragon"
-						ReputationBarsCommon:DebugLog("","ReputationBars_AutoBars:UpdateBarVisual",6,"===> hasRewardPending "..tostring(fi.hasRewardPending))
-						if fi.hasRewardPending then 
-						    barLabel = string.format("%s",L["Paragon"] .. " *** Reward Pending ***")	
+				ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"--------> " .. tostring(fi.name))
+				ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"fi.factionID " .. tostring(fi.factionID))
+				ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"fi.isParagon " .. tostring(fi.isParagon))
+				ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"fi.friendID " .. tostring(fi.friendID))
+				ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"fi.standingId " .. tostring(fi.standingId))
+				ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"displayVal " .. tostring(displayVal))
+				ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"displayMax " .. tostring(displayMax))			
+				ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"fi.hasRewardPending " .. tostring(fi.hasRewardPending))			
+
+				if db.showText == "never" or (db.showText == "mouseover" and hovering ~= bar) then
+					barLabel = ""
+				else
+					if hovering == bar and db.showText ~= "mouseover" then
+						--We're hovering over the reputation bar... let's show some specific information about the faction
+						if fi.isParagon then
+							--override the default "exalted" with "paragon"
+							ReputationBarsCommon:DebugLog("","ReputationBars_AutoBars:UpdateBarVisual",6,"===> hasRewardPending "..tostring(fi.hasRewardPending))
+							if fi.hasRewardPending then 
+								barLabel = string.format("%s",L["Paragon"] .. " *** Reward Pending ***")	
+							else
+								barLabel = string.format("%s",L["Paragon"])
+							end
+						elseif fi.isMajorFaction then
+							--Major factions (added in dragonflight) work different than default factions, they need special handling
+							local majorFactionInfo = C_MajorFactions.GetMajorFactionData(fi.factionID);
+
+							local renownLevelsInfo = C_MajorFactions.GetRenownLevels(fi.factionID)
+							local maxRenownLevel = 0
+							for index, value in ipairs(renownLevelsInfo) do
+								ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"          index => "..tostring(index))
+								ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"          value => "..tostring(value))
+								ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"          value.level       => "..tostring(value.level))
+								if value.level > maxRenownLevel then
+									maxRenownLevel = value.level
+									ReputationBarsCommon:DebugLog("WARN","UpdateBarVisual",6,"          maxRenownLevel set to: "..tostring(maxRenownLevel))
+								end
+							end
+
+							barLabel = string.format("%s%s|cff1E90FF (of %s) |cffedf55f(%d to go)", RENOWN_LEVEL_LABEL, majorFactionInfo.renownLevel, maxRenownLevel, displayMax-displayVal)
+						elseif fi.friendID ~= nil then
+							--Friends are another oddball pattern, and need special handling
+							local FriendshipInfo = C_GossipInfo.GetFriendshipReputation(fi.factionID)
+							ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"FriendshipInfo.reaction " .. tostring(FriendshipInfo.reaction))					
+							friendTextLevel = FriendshipInfo.reaction
+							ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"friendTextLevel " .. tostring(friendTextLevel))
+							barLabel = string.format("%s", friendTextLevel)
+
+							local rankInfo = C_GossipInfo.GetFriendshipReputationRanks(fi.friendID)
+							local currentRank = rankInfo.currentLevel
+							local maxRank = rankInfo.maxLevel
+							ReputationBarsCommon:DebugLog("WRN","UpdateBarVisual",6,"==> currentRank " .. tostring(currentRank))
+							ReputationBarsCommon:DebugLog("WRN","UpdateBarVisual",6,"==> maxRank " .. tostring(maxRank))
+							
+							--Adjust the hover text for friends to indicate whether we're in the final rank grind or not...
+							if currentRank < maxRank then
+								barLabel = string.format("%s |cff1E90FF(%s/%s) |cffedf55f(%d to go)", friendTextLevel, currentRank, maxRank, displayMax-displayVal)
+							else
+								barLabel = string.format("%s |cff1E90FF(%s/%s)", friendTextLevel, currentRank, maxRank)
+							end					
 						else
-						    barLabel = string.format("%s",L["Paragon"])
-						end
-					elseif fi.isMajorFaction then
-						--Major factions (added in dragonflight) work different than default factions, they need special handling
-						local majorFactionInfo = C_MajorFactions.GetMajorFactionData(fi.factionID);
-
-						local renownLevelsInfo = C_MajorFactions.GetRenownLevels(fi.factionID)
-						local maxRenownLevel = 0
-						for index, value in ipairs(renownLevelsInfo) do
-							ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"          index => "..tostring(index))
-							ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"          value => "..tostring(value))
-							ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"          value.level       => "..tostring(value.level))
-							if value.level > maxRenownLevel then
-								maxRenownLevel = value.level
-								ReputationBarsCommon:DebugLog("WARN","UpdateBarVisual",6,"          maxRenownLevel set to: "..tostring(maxRenownLevel))
+							--this is the default fall-back hover text for not-special factions
+							local gender = UnitSex("player")
+							local standingText = GetText("FACTION_STANDING_LABEL"..fi.standingId, gender)
+							if fi.standingId < 8 then
+								local nextStandingText = GetText("FACTION_STANDING_LABEL"..fi.standingId+1, gender);
+								ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"nextStandingText " .. tostring(nextStandingText))
+								barLabel = string.format("%s |cffedf55f(%d to %s)", standingText, displayMax-displayVal, nextStandingText)
+							else
+								barLabel = string.format("%s", standingText)
 							end
 						end
-
-						barLabel = string.format("%s%s|cff1E90FF (of %s) |cffedf55f(%d to go)", RENOWN_LEVEL_LABEL, majorFactionInfo.renownLevel, maxRenownLevel, displayMax-displayVal)
-					elseif fi.friendID ~= nil then
-						--Friends are another oddball pattern, and need special handling
-						local FriendshipInfo = C_GossipInfo.GetFriendshipReputation(fi.factionID)
-						ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"FriendshipInfo.reaction " .. tostring(FriendshipInfo.reaction))					
-						friendTextLevel = FriendshipInfo.reaction
-						ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"friendTextLevel " .. tostring(friendTextLevel))
-						barLabel = string.format("%s", friendTextLevel)
-
-						local rankInfo = C_GossipInfo.GetFriendshipReputationRanks(fi.friendID)
-						local currentRank = rankInfo.currentLevel
-						local maxRank = rankInfo.maxLevel
-						ReputationBarsCommon:DebugLog("WRN","UpdateBarVisual",6,"==> currentRank " .. tostring(currentRank))
-						ReputationBarsCommon:DebugLog("WRN","UpdateBarVisual",6,"==> maxRank " .. tostring(maxRank))
-						
-						--Adjust the hover text for friends to indicate whether we're in the final rank grind or not...
-						if currentRank < maxRank then
-							barLabel = string.format("%s |cff1E90FF(%s/%s) |cffedf55f(%d to go)", friendTextLevel, currentRank, maxRank, displayMax-displayVal)
+					elseif displayVal == 0 and displayMax == 0 then
+						barLabel = string.format("%s", name)
+					else
+						--This is the default "non-hovering" bar text
+						if fi.hasRewardPending then 
+							barLabel = string.format("%s (%d / %d)%s", name, displayVal, displayMax, recentGainText) .. " !!! "
 						else
-							barLabel = string.format("%s |cff1E90FF(%s/%s)", friendTextLevel, currentRank, maxRank)
+							barLabel = string.format("%s (%d / %d)%s", name, displayVal, displayMax, recentGainText)
 						end					
-					else
-						--this is the default fall-back hover text for not-special factions
-						local gender = UnitSex("player")
-						local standingText = GetText("FACTION_STANDING_LABEL"..fi.standingId, gender)
-						if fi.standingId < 8 then
-							local nextStandingText = GetText("FACTION_STANDING_LABEL"..fi.standingId+1, gender);
-							ReputationBarsCommon:DebugLog("OK","UpdateBarVisual",6,"nextStandingText " .. tostring(nextStandingText))
-							barLabel = string.format("%s |cffedf55f(%d to %s)", standingText, displayMax-displayVal, nextStandingText)
-						else
-							barLabel = string.format("%s", standingText)
-						end
 					end
-				elseif displayVal == 0 and displayMax == 0 then
-					barLabel = string.format("%s", name)
-				else
-					--This is the default "non-hovering" bar text
-					if fi.hasRewardPending then 
-						barLabel = string.format("%s (%d / %d)%s", name, displayVal, displayMax, recentGainText) .. " !!! "
-					else
-						barLabel = string.format("%s (%d / %d)%s", name, displayVal, displayMax, recentGainText)
-					end					
 				end
-			end
-			
-			bar:SetLabel(barLabel)
+				
+				bar:SetLabel(barLabel)
+			end --hack for Steamwheedle Cartel (classic faction #169 which has no rep)
 		else
 			-- Ensure faction is not shown
 			if factions[name] and factions[name].bar then
