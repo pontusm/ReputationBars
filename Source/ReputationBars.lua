@@ -796,6 +796,31 @@ mod.options = {
 					name = "===> 11.1.0-0009 released\n",
 					order = 227
 				},
+				Attributions_301 = {
+					type = 'description',
+					name = "\n****** MIDNIGHT ******\n",
+					order = 301,
+				},
+				Attributions_302 = {
+					type = 'description',
+					name = "Nov-11-2025: Update TOC for 12.0.0\n",
+					order = 302,
+				},
+				Attributions_303 = {
+					type = 'description',
+					name = "===> 12.0.0-0001 released\n",
+					order = 303
+				},
+				Attributions_304 = {
+					type = 'description',
+					name = "Nov-15-2025: Updated ACE3 to r1377\n",
+					order = 304,
+				},
+				Attributions_305 = {
+					type = 'description',
+					name = "===> 12.0.0-0002 released\n",
+					order = 305,
+				},
 			},
 		},
 		

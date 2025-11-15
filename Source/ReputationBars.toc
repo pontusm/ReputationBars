@@ -1,7 +1,7 @@
-## Interface: 110100
+## Interface: 120000
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
-## Version: 11.1.0-0009
+## Version: 12.0.0-0002
 ## IconTexture: Interface\AddOns\ReputationBars\textures\reputation-bars
 
 ###### ORIGINAL AUTHOR & SOURCE
@@ -106,7 +106,7 @@
 ## Jul 02 2024 - v11.0.0-0001 released
 ## Jul 21 2024 - Update TOC for 11.0.2
 ##             - v11.0.2-0002 released
-###### PREPATCH CHANGE LOG 
+###### PREPATCH/RELEASE CHANGE LOG 
 ## Jul 28 2024 - Update api call for inactive reputations (resulting from TWW api warband changes)
 ##             - v11.0.2-0003 released
 ## Jul 28 2024 - Update ACE3 to r1349
@@ -129,8 +129,21 @@
 ##             - Fixed issues with Steamwhedle cartel showing incorrect reputation gains in Autobars
 ##             - v11.1.0-0009 released 
 
-## TODO: Figure out how to refactor static bars this properly.
 
+###### MIDNIGHT
+## Author: Karpana @ Ysera-US
+## https://github.com/pontusm/ReputationBars  
+###### BETA CHANGE LOG 
+## Nov 11 2025 - Update TOC for 12.0.0
+##             - v12.0.0-0001 released 
+## Nov 15 2025 - Update ACE3 to r1377
+##             - v12.0.0-0002 released 
+###### PREPATCH CHANGE LOG 
+###### RELEASE CHANGE LOG 
+
+
+
+## TODO: Figure out how to refactor static bars properly.
 
 
 ## OptionalDeps: Ace3
