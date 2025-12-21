@@ -1,7 +1,7 @@
-## Interface: 120000
+## Interface: 120001
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
-## Version: 12.0.0-0002
+## Version: 12.0.1-0003
 ## IconTexture: Interface\AddOns\ReputationBars\textures\reputation-bars
 
 ###### ORIGINAL AUTHOR & SOURCE
@@ -138,6 +138,11 @@
 ##             - v12.0.0-0001 released 
 ## Nov 15 2025 - Update ACE3 to r1377
 ##             - v12.0.0-0002 released 
+## Dec 20 2025 - Russian Translations (Many thanks to ZamestoTV)
+##             - Italian Transalation (Many thanks to Lagorn)
+##             - Update TOC for 12.0.1
+## Dec 20 2025 - v12.0.1-0003 released
+
 ###### PREPATCH CHANGE LOG 
 ###### RELEASE CHANGE LOG 
 

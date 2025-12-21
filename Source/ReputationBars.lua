@@ -821,6 +821,26 @@ mod.options = {
 					name = "===> 12.0.0-0002 released\n",
 					order = 305,
 				},
+				Attributions_306 = {
+					type = 'description',
+					name = "Dec-20-2025: Russian Translations.  Many thanks to ZamestoTV\n",
+					order = 306,
+				},
+				Attributions_307 = {
+					type = 'description',
+					name = "Dec-20-2025: Italian Translations.  Many thanks to Lagorn\n",
+					order = 307,
+				},
+				Attributions_308 = {
+					type = 'description',
+					name = "Dec-21-2025: Update TOC for 12.0.1\n",
+					order = 308,
+				},
+				Attributions_309 = {
+					type = 'description',
+					name = "===> 12.0.1-0003 released\n",
+					order = 309,
+				},
 			},
 		},
 		
