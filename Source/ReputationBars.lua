@@ -841,6 +841,16 @@ mod.options = {
 					name = "===> 12.0.1-0003 released\n",
 					order = 309,
 				},
+				Attributions_310 = {
+					type = 'description',
+					name = "Dec-21-2025: Bug #15 (static bars tree view disappearing after 3 clicks)\n",
+					order = 310,
+				},
+				Attributions_311 = {
+					type = 'description',
+					name = "===> 12.0.1-0004 released\n",
+					order = 311,
+				},
 			},
 		},
 		

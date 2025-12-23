@@ -1,7 +1,7 @@
 ## Interface: 120001
 ## Title: Reputation Bars 
 ## Notes: Tracks reputation using some glorious bars!
-## Version: 12.0.1-0003
+## Version: 12.0.1-0004
 ## IconTexture: Interface\AddOns\ReputationBars\textures\reputation-bars
 
 ###### ORIGINAL AUTHOR & SOURCE
@@ -142,6 +142,9 @@
 ##             - Italian Transalation (Many thanks to Lagorn)
 ##             - Update TOC for 12.0.1
 ## Dec 20 2025 - v12.0.1-0003 released
+## Dec 22 2025 - Bug #15 (static bars tree view disappearing after 3 clicks)
+## Dec 22 2025 - v12.0.1-0004 released
+
 
 ###### PREPATCH CHANGE LOG 
 ###### RELEASE CHANGE LOG 

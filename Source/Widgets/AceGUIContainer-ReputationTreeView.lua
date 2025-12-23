@@ -351,6 +351,27 @@ local methods = {
 
 		local tree = GetFactionTree()
 		self:SetTree(tree, nil)
+
+		local buttons = self.buttons		--Start Fix for Bug #15
+		for i, v in ipairs(buttons) do
+			--v:Hide()
+			if v.selected then
+				--at this point ... v represents the "frame" object as accepted by the button_OnClick event.
+				--in theory, I should be able to just run the same code...
+				
+				--this next bit of code borrowed (and thinned) from button_OnClick
+				local frame=v				
+				local self = frame.obj
+				self:Fire("OnClick", frame.uniquevalue, frame.selected)
+
+				self:SetSelected(frame.uniquevalue)
+
+				frame:LockHighlight()
+                self:RefreshTree()
+
+			end
+		end									--End Fix for Bug #15
+
 	end,
 
 	["OnRelease"] = function(self)
@@ -445,9 +466,11 @@ local methods = {
 		local buttons = self.buttons
 		local lines = self.lines
 
-		for i, v in ipairs(buttons) do
-			v:Hide()
-		end
+        --Removed this iteration for Bug #15
+        --for i, v in ipairs(buttons) do
+		--	v:Hide()
+		--end
+
 		while lines[1] do
 			local t = tremove(lines)
 			for k in pairs(t) do
@@ -549,8 +572,7 @@ local methods = {
 			UpdateButton(button, line, status.selected == line.uniquevalue, line.hasChildren, groupstatus[line.uniquevalue] )
 			button:Show()
 			buttonnum = buttonnum + 1
-		end
-		
+		end		
 	end,
 
 	["SetDisabled"] = function(self, disabled)
