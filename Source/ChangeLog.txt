@@ -1,0 +1,135 @@
+###### SHADOWLANDS
+## Author: Karpana @ Ysera-US
+## https://github.com/pontusm/ReputationBars  
+##
+###### CHANGE LOG
+## Oct 15 2020 - Changes made to support Shadowlands 9.X 'CreateFrame' changes made by Blizzard
+##                   - hack made to LibBars library
+##                   - hack made to ReputationTreeView widget
+## Jan 25 2021 - Duplicated a second "StaticBar".  Can't figure out how to sort the option tables though but it works.
+## Jan 30 2021 - Sorted the Options SubPanes (Since the new StaticBar2 wasn't showing up in an appropriate sequence)
+## Mar 07 2021 - Internal updates for 9.0.5 (Interface version in this file, and Config screen in ReputationsBars.lua)
+## Jun 29 2021 - Internal updates for 9.1.5 (Interface version in this file, and Config screen in ReputationsBars.lua)
+## Jul 26 2021 - Fix for Ve'nari, which is now a Paragon Reputation.  Need to consider whether to "flip" the functionality of the if/elseif statement at lines 139/145.
+## Aug 21 2021 - Fix for Achivist's Codex, which is a Paragon Reputation, similart to Ven'ari.   Many THanks to Mithrasangel.
+## Oct 22 2021 - Second Fix for Fix for Achivist's Codex
+## Oct 22 2021 - Preparations for 9.1.5 (Interface version in this file, and Config screen in ReputationBars.lua)
+## Feb 01 2022 - Preparations for 9.2.0 (Interface version in this file, and Config screen in ReputationBars.lua)
+## Sep 25 2022 - Update ToC for 9.2.7
+
+
+###### DRAGONFLIGHT
+## Author: Karpana @ Ysera-US
+## https://github.com/pontusm/ReputationBars  
+###### PREPATCH CHANGE LOG 
+## Sep 25 2022 - Changes to support Friendship data being sourced from GetFriendshipReputation in Shadowlandsand and seamlessly switching over to C_GossipInfo.GetFriendshipReputation in Dragonflight
+##             - Permanently(?) fix issues with Shadowlands (and future) factions that aren't standard, and aren't friends (e.g. Venari and Archivist's Codex)
+##             - QoL improvement for Paragon reputations (shows Paragon instead of Exalted)
+## Sep 26 2022 - Faction checkboxes have a scrollbar (for those long lists, including Inactive)
+##             - Upate of ACE3 libs to r1281
+## Sep 27 2022 - Cleanup of StaticBars module internal variable naming to account for more bars
+## Sep 28 2022 - duplication of StaticBars2 into StaticBars 3 thru 9 (for a total of 9)
+## Sep 30 2022 - Refactored StaticBars
+##             - Update ToC for 10.0.0 (will likely need to update during pre-patch at some point...) 
+##             - DragonFlight PTR Readiness confirmed
+## Oct 01 2022 - Fix paragon reputation change updates
+## Oct 18 2022 - Updates to DLAPI logging behaviour
+##             - Override option in Autobars to change default ignore behaviour
+## Oct 24 2022 - Prevent recent gains from disappearing on from Autobars on hovering mouse on bar
+## Oct 26 2022 - Fixed incorrect friend logic
+##             - Update ACE3 libs to r1294
+##             - QOL updates for friend reputations
+## Oct 27 2022 - More QOL updates for friend reputations
+##             - Error Trapping/Handling for call to C_GossipInfo.GetFriendshipReputation
+##
+###### 10.0.2 CHANGE LOG
+## Nov 06 2022 - ToC Update for 10.0.2
+##             - v10.0.2-0008 released
+## Nov 27 2022 - attempt to address/fix the upvalue bug
+##             - v10.0.2-0009 released
+## Nov 29 2022 - Enhancements for "major factions" (factions with renown) introduced with Dragonflight
+##             - Cleanup of Friendship Code
+##             - Removal of deprecated Shadowlands code
+##             - v10.0.2-0010 released
+## Jan 18 2023 - Reprioritized processing sequence for faction attributes to fix Major Factions as Paragons
+##             - v10.0.2-0011 released
+###### 10.0.5 CHANGE LOG
+## Jan 24 2023 - ToC Updates for 10.0.5
+##             - v10.0.5-0012 released
+## Jan 27 2023 - Minor QoL for Paragon rewards
+###### 10.0.7 CHANGE LOG
+## Jan 24 2023 - ToC Updates for 10.0.7
+##             - v10.0.7-0013 released
+###### 10.1.0 CHANGE LOG
+## May 03 2023 - Update ToC for 10.1.0
+##             - v10.1.0-0014 released
+## May 04 2023 - Fiddling around with the addon icon inside of the addons and options screens
+###### 10.1.5 CHANGE LOG
+## Jul 11 2023 - Update ToC for 10.1.5
+##             - v10.1.0-0015 released
+## Jun 01 2024 - Update ToC for 10.2.7
+##             - Undo code refactoring from Sept-2022 due to a blizz chnage with 10.2.7 that causes errors and warning on ui load duet duplicate file load
+##             - v10.2.7-0016 released
+## Jun 04 2024 - internal version inconsistency correction
+##             - v10.2.7-0018 released
+## Jun 06 2024 - Updated ACE3 to r1341
+##             - Updated ACE3-SharedMedia to r65
+##             - Official Deprecation and removal of WatchBars
+## Jun 07 2024 - v10.2.7-0019 released
+
+
+###### THE WAR WITHIN
+## Author: Karpana @ Ysera-US
+## https://github.com/pontusm/ReputationBars  
+###### BETA CHANGE LOG 
+## Jun 05 2024 - Prepare for API changes in TWW
+## Jun 07 2024 - v10.2.7-0019 released
+## Jun 26 2024 - Update TOC for 11.0.0
+##             - Update internal version for 11.0.0
+## Jul 02 2024 - v11.0.0-0001 released
+## Jul 21 2024 - Update TOC for 11.0.2
+##             - v11.0.2-0002 released
+###### PREPATCH/RELEASE CHANGE LOG 
+## Jul 28 2024 - Update api call for inactive reputations (resulting from TWW api warband changes)
+##             - v11.0.2-0003 released
+##             - Update ACE3 to r1349
+##             - v11.0.2-0004 released
+## Nov 01 2024 - Update the way Test bars are loaded (to handle language differences)
+##             - Update COMBAT_TEXT_UPDATE event handler to properly capture faction name and recent earnings (thank you to modnarwave)
+##             - Update TOC for 11.0.5
+##             - v11.0.5-0005 released
+## Nov 02 2024 - Tweaked the way TestBars work so they don't error out on fresh characters
+##             - v11.0.5-0006 released 
+##             - fixed load/compile error
+##             - v11.0.5-0007 released 
+## Feb 02 2025 - Update TOC for 11.1.0
+##             - v11.1.0-0008 released 
+## Feb 02 2025 - Update TOC for 11.1.0
+##             - v11.1.0-0008 released 
+## Feb 28 2025 - Refactored faction processing
+##             - Built forcible workaround for the disappearing faction problem (Hallowfall, Council and Assembly)
+##             - Fixed issues with Steamwhedle cartel showing incorrect reputation gains in StaticBars
+##             - Fixed issues with Steamwhedle cartel showing incorrect reputation gains in Autobars
+##             - v11.1.0-0009 released 
+
+
+###### MIDNIGHT
+## Author: Karpana @ Ysera-US
+## https://github.com/pontusm/ReputationBars  
+###### BETA CHANGE LOG 
+## Nov 11 2025 - Update TOC for 12.0.0
+##             - v12.0.0-0001 released 
+## Nov 15 2025 - Update ACE3 to r1377
+##             - v12.0.0-0002 released 
+## Dec 20 2025 - Russian Translations (Many thanks to ZamestoTV)
+##             - Italian Transalation (Many thanks to Lagorn)
+##             - Update TOC for 12.0.1
+## Dec 20 2025 - v12.0.1-0003 released
+## Dec 22 2025 - Bug #15 (static bars tree view disappearing after 3 clicks)
+##             - v12.0.1-0004 released
+###### PREPATCH CHANGE LOG 
+## Jan 20 2026 - updated TOC to *also* cover 12.0.0
+##             - v12.0.1-0005 released
+## Jan 21 2026 - Cleanup Changelogs as a new file
+##             - v12.0.1-0006 released
+###### RELEASE CHANGE LOG 

@@ -11,4 +11,3 @@ You can use this while leveling to see your reputation bar or simply as a way
 to show you how much you have left for various factions as you grind your
 way to exalted...
 
-More information is available at [WoWInterface](http://www.wowinterface.com/downloads/info14251-ReputationBars.html)
