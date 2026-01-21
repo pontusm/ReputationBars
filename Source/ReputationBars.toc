@@ -144,13 +144,10 @@
 ## Dec 20 2025 - v12.0.1-0003 released
 ## Dec 22 2025 - Bug #15 (static bars tree view disappearing after 3 clicks)
 ## Dec 22 2025 - v12.0.1-0004 released
+###### PREPATCH CHANGE LOG 
 ## Jan 20 2026 - updated TOC to *also* cover 12.0.0
 ## Jan 20 2026 - v12.0.1-0005 released
-
-
-###### PREPATCH CHANGE LOG 
 ###### RELEASE CHANGE LOG 
-
 
 
 ## TODO: Figure out how to refactor static bars properly.
