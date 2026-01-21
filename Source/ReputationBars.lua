@@ -851,6 +851,16 @@ mod.options = {
 					name = "===> 12.0.1-0004 released\n",
 					order = 311,
 				},
+				Attributions_310 = {
+					type = 'description',
+					name = "Jan-20-2025: Blizz is requireing 120000 for the interface version during prepatch\n",
+					order = 312,
+				},
+				Attributions_311 = {
+					type = 'description',
+					name = "===> 12.0.1-0005 released\n",
+					order = 313,
+				},
 			},
 		},
 		

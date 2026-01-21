@@ -10,5 +10,5 @@ LibBars
 LibSharedMedia
     https://www.curseforge.com/wow/addons/libsharedmedia-3-0/files/all?page=1&pageSize=20
     
-    Note: r98 version in this addon (from Oct 25, 2016), has a current version as of July 2024)
+    Note: r98 version in this addon (from Oct 25, 2016), has a current version as of Sep 23, 2025)
 
