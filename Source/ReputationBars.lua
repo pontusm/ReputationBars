@@ -64,7 +64,7 @@ end
 -------------------------------------------------------------------------------
 function mod:OnEnable()
 	self:ScheduleTimer("EnsureFactionsLoaded", 0.5)	
-	self:RegisterEvent("COMBAT_TEXT_UPDATE")
+	--self:RegisterEvent("COMBAT_TEXT_UPDATE")
 	self:RegisterEvent("UPDATE_FACTION")
 end
 
@@ -504,7 +504,7 @@ end
 -- Events
 ------------------------------------------------------------------------------
 function mod:COMBAT_TEXT_UPDATE(event, type, name, amount)
-	ReputationBarsCommon:DebugLog("OK","mod:COMBAT_TEXT_UPDATE",4,"Event Trapped...")	
+--	ReputationBarsCommon:DebugLog("OK","mod:COMBAT_TEXT_UPDATE",4,"Event Trapped...")	
 	--ReputationBarsCommon:DebugLog("OK","mod:COMBAT_TEXT_UPDATE",5,"  => event  : "..tostring(event))	
 	--ReputationBarsCommon:DebugLog("OK","mod:COMBAT_TEXT_UPDATE",5,"  => type   : "..tostring(type))
 	--ReputationBarsCommon:DebugLog("OK","mod:COMBAT_TEXT_UPDATE",5,"  => name   : "..tostring(name))	

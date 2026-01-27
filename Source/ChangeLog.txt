@@ -132,4 +132,6 @@
 ##             - v12.0.1-0005 released
 ## Jan 21 2026 - Cleanup Changelogs as a new file
 ##             - v12.0.1-0006 released
+## Jan 27 2026 - Removed Event Registration for COMBAT_TEXT_UPDATE, as this causes a taint for some world quests.  Unsure of the entire ramifications at this point; needs more testing
+##             - v12.0.1-0007 released
 ###### RELEASE CHANGE LOG 
