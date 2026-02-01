@@ -268,8 +268,11 @@ end
 
 
 function mod:ProcessFaction(factions, name, description, standingId, bottomValue, topValue, earnedValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, canBeLFGBonus, canSetInactive, isAccountWide, isActive)
+	--HELPFUL HINT:  Blizzard ReputationFrame Code is a life-saver:   https://github.com/tomrus88/BlizzardInterfaceCode/blob/master/Interface/AddOns/Blizzard_UIPanels_Game/Mainline/ReputationFrame.lua
+
 	ReputationBarsCommon:DebugLog("OK","ProcessFaction",5,"Function Call Started...")
-	local isParagon = factionID and C_Reputation.IsFactionParagon(factionID);
+	--local isParagon = factionID and C_Reputation.IsFactionParagon(factionID);                                                            --This is telling us only that the faction has a paragon track.  
+	local isParagon = factionID and C_Reputation.IsFactionParagon(factionID) and C_Reputation.IsFactionParagonForCurrentPlayer(factionID); --This tells us whether the current player has this as a paragon reputation
 	local isMajorFaction = factionID and C_Reputation.IsMajorFaction(factionID);
 	local expansionLevel = GetClientDisplayExpansionLevel()
 

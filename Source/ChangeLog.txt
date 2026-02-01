@@ -134,4 +134,6 @@
 ##             - v12.0.1-0006 released
 ## Jan 27 2026 - Removed Event Registration for COMBAT_TEXT_UPDATE, as this causes a taint for some world quests.  Unsure of the entire ramifications at this point; needs more testing
 ##             - v12.0.1-0007 released
+## Feb 01 2026 - Fixed issue with Paragon Reputations that aren't yet paragon level
+##             - v12.0.1-0008 released
 ###### RELEASE CHANGE LOG 
