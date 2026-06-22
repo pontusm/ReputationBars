@@ -136,4 +136,8 @@
 ##             - v12.0.1-0007 released
 ## Feb 01 2026 - Fixed issue with Paragon Reputations that aren't yet paragon level
 ##             - v12.0.1-0008 released
+## Mar 19 2026 - Fixed issued #16
+##             - v12.0.1-0009 staged
+## Jun 22 2026 - Fixed ToC for 12.0.7
+##             - v12.0.7-0010 staged
 ###### RELEASE CHANGE LOG 

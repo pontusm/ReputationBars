@@ -195,13 +195,14 @@ function mod:RefreshAllFactions()
 		if not name or name == lastName and name ~= GUILD then break end
 		mod:ProcessFaction(factions, name, description, standingId, bottomValue, topValue, earnedValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, canBeLFGBonus, canSetInactive, isAccountWide, isActive);
 
-		if isCollapsed then
-			if expansionLevel < 10 then
-				ExpandFactionHeader(i)
-			else
-				C_Reputation.ExpandFactionHeader(i)
-			end
-		end
+		--##REMOVED AS PART OF ISSUE #16
+		--if isCollapsed then
+		--	if expansionLevel < 10 then
+		--		ExpandFactionHeader(i)
+		--	else
+		--		C_Reputation.ExpandFactionHeader(i)
+		--	end
+		--end
 	end
 
 
